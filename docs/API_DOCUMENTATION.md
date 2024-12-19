@@ -1,24 +1,16 @@
 # SocioX
 
+```markdown
 # SocioX API Documentation
 
-This document provides comprehensive documentation for the SocioX API, outlining available endpoints, request methods, request/response formats, and important notes.
+This document provides detailed information about the SocioX API endpoints.
 
-## Authentication Endpoints
+## Authentication (`/api/auth`)
 
 ### 1. Register Parent Email
+**Description:** Registers a new parent user with an email and password.
 
-**Description:**
-Registers a new parent user with an email, password, and name.
-
-**Endpoint:**
-`POST http://localhost:5000/api/auth/register`
-
-**Request Headers:**
-
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
+**Endpoint:** `POST /api/auth/register`
 
 **Request Body:**
 ```json
@@ -29,27 +21,29 @@ Registers a new parent user with an email, password, and name.
 }
 ```
 
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/auth/register \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "xnikunjadu2@gmail.com",
+    "password": "yourpassword123",
+    "name": "Test User"
+  }'
+```
+
 **Response:**
-*   A successful registration does not return any content itself (201 Status Code on successful new creation). However, it may include a token in response headers, and this token needs to be used in the following endpoints that require authentication. 
+- 201 - User Created Success
 
-**Important Notes:**
+**Notes:**
+-  The user is created with parent role, on successful registration an email is sent to verify the user email.
 
-*   Replace `xnikunjadu2@gmail.com`, `yourpassword123`, and `Test User` with actual parent user data.
-*   This endpoint registers parent users. The system will detect the role from backend.
-
+---
 ### 2. Register Child Email
+**Description:** Registers a new child user with an email and password.
 
-**Description:**
-Registers a new child user with an email, password, and name.
-
-**Endpoint:**
-`POST http://localhost:5000/api/auth/register`
-
- **Request Headers:**
- 
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
+**Endpoint:** `POST /api/auth/register`
 
 **Request Body:**
 ```json
@@ -59,28 +53,30 @@ Registers a new child user with an email, password, and name.
     "name": "Test User"
 }
 ```
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/auth/register \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "xnikunjadu2@gmail.com",
+    "password": "yourpassword123",
+    "name": "Test User"
+  }'
+```
 
 **Response:**
-*   A successful registration does not return any content itself (201 Status Code on successful new creation). However, it may include a token in response headers, and this token needs to be used in the following endpoints that require authentication.
+- 201 - User Created Success
 
-**Important Notes:**
+**Notes:**
+- The user is created with child role , on successful registration an email is sent to verify the user email.
 
-*   Replace `xnikunjadu2@gmail.com`, `yourpassword123`, and `Test User` with actual child user data.
-*   This endpoint registers child users. The system will detect the role from backend.
+---
 
 ### 3. Login Email
+**Description:** Logs in an existing user with email and password and returns JWT token.
 
-**Description:**
-Logs in an existing user using their registered email and password.
-
-**Endpoint:**
-`POST http://localhost:5000/api/auth/login`
-
-**Request Headers:**
-
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
+**Endpoint:** `POST /api/auth/login`
 
 **Request Body:**
 ```json
@@ -90,27 +86,27 @@ Logs in an existing user using their registered email and password.
 }
 ```
 
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "xnikunjadu2@gmail.com",
+    "password": "123456"
+  }'
+```
+
 **Response:**
+- 200 - Successful login.
 
-*   A successful login will have a status code of 200 and return a JWT token for authentication which you have to use in subsequent requests.
-
-**Important Notes:**
-
-*   Replace `xnikunjadu2@gmail.com` and `123456` with the user's actual email and password.
-
+**Notes:**
+-  Returns a JWT (JSON Web Token) upon successful authentication.
+---
 ### 4. Forgot Password
+**Description:** Initiates the forgot password process sending an OTP to provided email.
 
-**Description:**
-Initiates the forgot password process by sending an OTP to a registered email.
-
-**Endpoint:**
-`POST http://localhost:5000/api/auth/forgot-password`
-
-**Request Headers:**
-
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
+**Endpoint:** `POST /api/auth/forgot-password`
 
 **Request Body:**
 ```json
@@ -119,25 +115,26 @@ Initiates the forgot password process by sending an OTP to a registered email.
 }
 ```
 
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/auth/forgot-password \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "xnikunja@gmail.com"
+  }'
+```
 **Response:**
-*   A successful forgot password request does not return any content itself. The status code of 200 indicated successful process.
+   - 200 - OTP Sent Successfully
 
-**Important Notes:**
+**Notes:**
+- An OTP will be sent to the email provided to confirm password reset request.
 
-*   Replace `xnikunja@gmail.com` with the user's actual registered email.
-
+---
 ### 5. Reset Email Password
+**Description:** Resets a user's password using an OTP sent to the user's email and a new password.
 
-**Description:**
-Resets a user's password using the email, OTP, and new password.
-
-**Endpoint:**
-`POST http://localhost:5000/api/auth/reset-password`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
+**Endpoint:** `POST /api/auth/reset-password`
 
 **Request Body:**
 ```json
@@ -147,32 +144,33 @@ Resets a user's password using the email, OTP, and new password.
   "newPassword": "your-new-password"
 }
 ```
-
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/auth/reset-password \
+   -H 'Content-Type: application/json' \
+  -d '{
+  "email": "xnikunja@gmail.com",
+  "otp": "840907",
+  "newPassword": "your-new-password"
+}'
+```
 **Response:**
-*   A successful password reset does not return any content itself. However, it will return a status code of 200 and indicates successful processing.
+- 200 - Password reset successful.
 
-**Important Notes:**
+**Notes:**
+- Use the OTP received by the user for password reset.
 
-*   Replace `xnikunja@gmail.com`, `840907`, and `your-new-password` with the actual data.
+---
 
-## Admin Endpoints
+## Admin (`/api/admin`)
 
-### User Subscription Management
+### 1. User Subscription Management (`/api/admin/users/{userId}/subscription`)
 
-#### 1. Subscribe User Plan
+#### 1.1. Subscribe User to a Plan
+**Description:** Subscribes a user to a specific plan.
 
-**Description:**
-Subscribes a user to a specific plan.
-
-**Endpoint:**
-`POST http://localhost:5000/api/admin/users/{userId}/subscription`
-
-**Request Headers:**
-
-| Header        | Value                  |
-|---------------|------------------------|
-| Content-Type  | application/json       |
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Endpoint:** `POST /api/admin/users/{userId}/subscription`
 
 **Request Body:**
 ```json
@@ -181,392 +179,156 @@ Subscribes a user to a specific plan.
     "billingCycle": "monthly"
 }
 ```
+
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
+    "planId": "67616c378c821544d3c5400b",
+    "billingCycle": "monthly"
+  }'
+```
+
 **Response:**
+   - 200 - User Subscribed to plan
 
-*   Successful plan subscription status code is 201.
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+-  Replace `{userId}` with the actual User ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
+#### 1.2. Cancel Subscription
+**Description:** Cancels a user's current subscription.
 
-**Important Notes:**
-
-*   Replace `6761443efbceffa2810be4be` with the actual user ID.
-*   Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*  `planId` is the ID of one of the available plan. You can get the list of all available plans via, `GET http://localhost:5000/api/subscription/admin/plans`
-*   `billingCycle` can be `monthly` or `yearly`.
-
-#### 2. Cancel User Plan
-
-**Description:**
-Cancels a user's current subscription plan.
-
-**Endpoint:**
-`POST http://localhost:5000/api/admin/users/{userId}/subscription/cancel`
-
-**Request Headers:**
-
-| Header        | Value                  |
-|---------------|------------------------|
-| Content-Type  | application/json       |
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Endpoint:** `POST /api/admin/users/{userId}/subscription/cancel`
 
 **Request Body:**
 ```json
 {
+    "reason": "i dont really know the reason"
+}
+```
+
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription/cancel \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
     "reason":"i dont really know the reason"
-}
-```
-**Response:**
-*   Status code of 200 indicates a successful cancellation. 
-
-**Important Notes:**
-
-*   Replace `6761443efbceffa2810be4be` with the actual user ID.
-*   Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   `reason` is the explanation for cancellation
-
-#### 3. Get Subscription by User ID
-
-**Description:**
-Retrieves the subscription details of a specific user.
-
-**Endpoint:**
-`GET http://localhost:5000/api/admin/users/{userId}/subscription`
-
-**Request Headers:**
-
-| Header        | Value                  |
-|---------------|------------------------|
-| Content-Type  | application/json       |
-| Authorization | Bearer `ADMIN_TOKEN` |
-
-**Response:**
-```json
-{
-    "subscription": {
-      "_id": "6761730c591c87f6c40056c2",
-      "userId": "6761443efbceffa2810be4be",
-      "planId": "67616c378c821544d3c5400b",
-      "billingCycle": "monthly",
-      "startDate": "2024-06-06T16:19:24.485Z",
-      "status": "active",
-      "createdAt": "2024-06-06T16:19:24.488Z",
-        "updatedAt": "2024-06-06T16:19:24.488Z",
-      
-    },
-    "plan": {
-  "_id": "67616c378c821544d3c5400b",
-  "name": "premium",
-  "displayName": "Premium Plan",
-  "price": {
-    "monthly": {
-      "amount": 29.99,
-      "currency": "USD"
-    },
-    "yearly": {
-      "amount": 299.99,
-      "currency": "USD",
-        "savings": 60
-    }
-  },
-  "features": {
-    "socialAccounts": {
-      "total": 10,
-      "perPlatform": {
-        "facebook": 3,
-        "instagram": 3,
-        "twitter": 4
-      }
-    },
-    "teamMembers": 5,
-    "posting": {
-      "postsPerDay": 20,
-      "bulkScheduling": true,
-      "autoScheduling": true
-    },
-    "analytics": {
-    "reportTypes": [
-      "basic",
-      "advanced"
-     ],
-    "exportFormats": [
-       "pdf",
-       "csv"
-      ],
-      "retentionDays": 365
-    },
-    "support": "24/7",
-    "additional": {
-      "customBranding": true,
-      "apiAccess": true,
-      "contentCalendar": true,
-        "hashtagManager": true
-    }
-  },
-  "recommended": true,
-  "category": "enterprise",
-    "status": "active",
-   "createdAt": "2024-05-25T09:10:55.302Z",
-    "updatedAt": "2024-05-25T09:10:55.302Z"
-}
-}
+  }'
 ```
 
-**Important Notes:**
-*   Replace `6761443efbceffa2810be4be` with the actual user ID.
-*   Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   The response includes both subscription and plan details.
+**Response:**
+   - 200 - User Subscription canceled.
 
-#### 4. Update Subscription by User ID
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+-  Replace `{userId}` with the actual User ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
 
-**Description:**
-Updates a user's current subscription plan.
+#### 1.3. Get Subscription by User ID
+**Description:** Retrieves a user's current subscription details.
 
-**Endpoint:**
-`POST http://localhost:5000/api/admin/users/{userId}/subscription/update`
+**Endpoint:** `GET /api/admin/users/{userId}/subscription`
 
-**Request Headers:**
+**cURL Example:**
 
-| Header        | Value              |
-|---------------|--------------------|
-| Content-Type  | application/json   |
-| Authorization | Bearer `ADMIN_TOKEN` |
+```bash
+curl -X GET \
+  http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN'
+```
+
+**Response:**
+   -  200 - returns current plan details.
+
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{userId}` with the actual User ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
+#### 1.4. Update Subscription
+**Description:** Updates a user's current subscription plan.
+
+**Endpoint:** `POST /api/admin/users/{userId}/subscription/update`
 
 **Request Body:**
 ```json
 {
     "planId": "67616c378c821544d3c5400b",
-    "billingCycle": "monthly"
+    "billingCycle":"monthly"
 }
+```
+
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription/update \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
+    "planId": "67616c378c821544d3c5400b",
+    "billingCycle": "monthly"
+  }'
+```
+**Response:**
+   - 200 - Users Subscription updated.
+
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{userId}` with the actual User ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
+### 2. Subscription Management (`/api/subscription/admin/plans`)
+#### 2.1. Get All Plans
+**Description:** Retrieves all subscription plans.
+
+**Endpoint:** `GET /api/subscription/admin/plans`
+
+**cURL Example:**
+```bash
+curl -X GET \
+  http://localhost:5000/api/subscription/admin/plans \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN'
 ```
 
 **Response:**
-*   A successful update provides the status code of 200
+- 200 - List of all plans.
 
-**Important Notes:**
+**Notes:**
 
-*   Replace `6761443efbceffa2810be4be` with the actual user ID.
-*   Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*  `planId` is the ID of one of the available plan. You can get the list of all available plans via, `GET http://localhost:5000/api/subscription/admin/plans`
-*   `billingCycle` can be `monthly` or `yearly`.
+- Requires a valid admin token in the `Authorization` header.
+    - Replace `YOUR_ADMIN_TOKEN` with admin token.
 
-### Subscription Management
+---
+#### 2.2. Get Plan by ID
+**Description:** Retrieves a specific subscription plan by its ID.
 
-#### 1. Get Plans
+**Endpoint:** `GET /api/subscription/admin/plans/{planId}`
 
-**Description:**
-Retrieves a list of all available subscription plans.
-
-**Endpoint:**
-`GET http://localhost:5000/api/subscription/admin/plans`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN`|
-
-**Response Example:**
-```json
-[
-    {
-        "_id": "67615c96f1b0dd4f39fd05b3",
-        "name": "basic",
-        "displayName": "Basic Plan",
-        "price": {
-            "monthly": {
-                "amount": 19.99,
-                "currency": "USD"
-            },
-            "yearly": {
-                "amount": 199.99,
-                "currency": "USD",
-                "savings": 40
-            }
-        },
-        "features": {
-            "socialAccounts": {
-                "total": 2,
-                "perPlatform": {
-                    "facebook": 1,
-                    "instagram": 1,
-                    "twitter": 0
-                }
-            },
-            "teamMembers": 1,
-            "posting": {
-                "postsPerDay": 5,
-                "bulkScheduling": true,
-                "autoScheduling": false
-            },
-            "analytics": {
-                "reportTypes": [
-                    "basic"
-                ],
-                "exportFormats": [
-                    "pdf"
-                ],
-                "retentionDays": 30
-            },
-            "support": "email",
-            "additional": {
-                "customBranding": false,
-                "apiAccess": false,
-                "contentCalendar": true,
-                "hashtagManager": false
-            }
-        },
-        "recommended": false,
-        "category": "basic"
-    },
-    {
-        "_id": "67616c378c821544d3c5400b",
-        "name": "premium",
-        "displayName": "Premium Plan",
-        "price": {
-            "monthly": {
-                "amount": 29.99,
-                "currency": "USD"
-            },
-            "yearly": {
-                "amount": 299.99,
-                "currency": "USD",
-                "savings": 60
-            }
-        },
-        "features": {
-            "socialAccounts": {
-                "total": 10,
-                "perPlatform": {
-                    "facebook": 3,
-                    "instagram": 3,
-                    "twitter": 4
-                }
-            },
-            "teamMembers": 5,
-            "posting": {
-                "postsPerDay": 20,
-                "bulkScheduling": true,
-                "autoScheduling": true
-            },
-            "analytics": {
-                "reportTypes": [
-                    "basic",
-                    "advanced"
-                ],
-                "exportFormats": [
-                    "pdf",
-                    "csv"
-                ],
-                "retentionDays": 365
-            },
-            "support": "24/7",
-            "additional": {
-                "customBranding": true,
-                "apiAccess": true,
-                "contentCalendar": true,
-                "hashtagManager": true
-            }
-        },
-        "recommended": true,
-        "category": "enterprise"
-    }
-]
+**cURL Example:**
+```bash
+curl -X GET \
+  http://localhost:5000/api/subscription/admin/plans/67616c378c821544d3c5400b \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN'
 ```
-**Important Notes:**
-*  Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   The response is an array of plan objects.
+**Response:**
+ - 200 - Plan details.
 
-#### 2. Get Plan by ID
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{planId}` with the actual Plan ID. and `YOUR_ADMIN_TOKEN` with admin token.
 
-**Description:**
-Retrieves a specific subscription plan by its ID.
+---
+#### 2.3. Update Custom Features
+**Description:** Updates the custom features of a subscription plan by its ID.
 
-**Endpoint:**
-`GET  http://localhost:5000/api/subscription/admin/plans/{planId}`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN`|
-
-**Response Example:**
-```json
-{
-  "_id": "67616c378c821544d3c5400b",
-  "name": "premium",
-  "displayName": "Premium Plan",
-  "price": {
-    "monthly": {
-      "amount": 29.99,
-      "currency": "USD"
-    },
-    "yearly": {
-      "amount": 299.99,
-      "currency": "USD",
-        "savings": 60
-    }
-  },
-  "features": {
-    "socialAccounts": {
-      "total": 10,
-      "perPlatform": {
-        "facebook": 3,
-        "instagram": 3,
-        "twitter": 4
-      }
-    },
-    "teamMembers": 5,
-    "posting": {
-      "postsPerDay": 20,
-      "bulkScheduling": true,
-      "autoScheduling": true
-    },
-    "analytics": {
-    "reportTypes": [
-      "basic",
-      "advanced"
-     ],
-    "exportFormats": [
-       "pdf",
-       "csv"
-      ],
-      "retentionDays": 365
-    },
-    "support": "24/7",
-    "additional": {
-      "customBranding": true,
-      "apiAccess": true,
-      "contentCalendar": true,
-        "hashtagManager": true
-    }
-  },
-  "recommended": true,
-  "category": "enterprise",
-    "status": "active",
-   "createdAt": "2024-05-25T09:10:55.302Z",
-    "updatedAt": "2024-05-25T09:10:55.302Z"
-}
-```
-
-**Important Notes:**
-
-*   Replace `67616c378c821544d3c5400b` with the actual plan ID.
-*    Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   The response includes the specific plan's details.
-
-#### 3. Update Custom Features
-
-**Description:**
-Updates the custom features of a specific subscription plan.
-
-**Endpoint:**
-`PATCH http://localhost:5000/api/subscription/admin/plans/{planId}/features`
-
-**Request Headers:**
-
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Endpoint:** `PATCH /api/subscription/admin/plans/{planId}/features`
 
 **Request Body:**
 ```json
@@ -580,28 +342,33 @@ Updates the custom features of a specific subscription plan.
   }
 ```
 
+**cURL Example:**
+```bash
+curl -X PATCH \
+  http://localhost:5000/api/subscription/admin/plans/67616c378c821544d3c5400b/features \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
+    "customFeatures": [
+      "White label reports",
+      "Custom URL shortener",
+      "Advanced team permissions",
+      "API rate limit increase"
+    ]
+  }'
+```
+
 **Response:**
-* The response for successful update is 200 status code.
+  -  200 - Custom features Updated.
 
-**Important Notes:**
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{planId}` with the actual Plan ID. and `YOUR_ADMIN_TOKEN` with admin token.
+---
+#### 2.4. Create a New Plan
+**Description:** Creates a new subscription plan.
 
-*   Replace `67616c378c821544d3c5400b` with the actual plan ID.
-*   Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   This endpoint only updates custom features.
-
-#### 4. Create Plan
-
-**Description:**
-Creates a new subscription plan.
-
-**Endpoint:**
-`POST http://localhost:5000/api/subscription/admin/plans`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Endpoint:** `POST /api/subscription/admin/plans`
 
 **Request Body:**
 ```json
@@ -652,29 +419,73 @@ Creates a new subscription plan.
   "category": "enterprise"
 }
 ```
+
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/subscription/admin/plans \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
+    "id": "unique-plan-id",
+    "name": "premium",
+    "displayName": "Premium Plan",
+    "price": {
+      "monthly": {
+          "amount": 29.99,
+          "currency": "USD"
+        },
+      "yearly": {
+          "amount": 299.99,
+          "currency": "USD",
+          "savings": 60
+        }
+      },
+      "features": {
+        "socialAccounts": {
+            "total": 10,
+            "perPlatform": {
+              "facebook": 3,
+              "instagram": 3,
+              "twitter": 4
+          }
+         },
+      "teamMembers": 5,
+      "posting": {
+           "postsPerDay": 20,
+           "bulkScheduling": true,
+           "autoScheduling": true
+        },
+      "analytics": {
+         "reportTypes": ["basic", "advanced"],
+         "exportFormats": ["pdf", "csv"],
+         "retentionDays": 365
+        },
+     "support": "24/7",
+     "additional": {
+       "customBranding": true,
+       "apiAccess": true,
+      "contentCalendar": true,
+      "hashtagManager": true
+       }
+    },
+     "recommended": true,
+     "category": "enterprise"
+  }'
+```
+
 **Response:**
+ - 201 - Plan Created.
 
-* Successful creation response is 201 status code.
+**Notes:**
+-Requires a valid admin token in the `Authorization` header.
+ - Replace `YOUR_ADMIN_TOKEN` with admin token.
 
-**Important Notes:**
-*   Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   The `id` field is used to generate the plan id.
-* The created plan can be accessed by `GET http://localhost:5000/api/subscription/admin/plans/{planId}` with id provided in the creation parameters
+---
+#### 2.5. Update a Plan
+**Description:** Updates an existing subscription plan by its ID.
 
-#### 5. Update Plan
-
-**Description:**
-Updates an existing subscription plan.
-
-**Endpoint:**
-`PUT http://localhost:5000/api/subscription/admin/plans/{planId}`
-
-**Request Headers:**
-
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Endpoint:** `PUT /api/subscription/admin/plans/{planId}`
 
 **Request Body:**
 ```json
@@ -724,26 +535,71 @@ Updates an existing subscription plan.
     "category": "basic"
   }
 ```
-**Response**
-*   A successful plan update provides the status code of 200.
 
-**Important Notes:**
+**cURL Example:**
+```bash
+curl -X PUT \
+  http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3 \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
+    "name": "basic",
+    "displayName": "Basic Plan",
+    "price": {
+      "monthly": {
+        "amount": 29.99,
+        "currency": "USD"
+      },
+      "yearly": {
+        "amount": 299.99,
+        "currency": "USD",
+        "savings": 59.89
+      }
+    },
+    "features": {
+      "socialAccounts": {
+        "total": 5,
+        "perPlatform": {
+          "facebook": 2,
+          "instagram": 2,
+          "twitter": 1
+        }
+      },
+      "teamMembers": 3,
+      "posting": {
+        "postsPerDay": 10,
+        "bulkScheduling": true,
+        "autoScheduling": false
+      },
+      "analytics": {
+        "reportTypes": ["basic", "advanced"],
+        "exportFormats": ["pdf", "csv"],
+        "retentionDays": 30
+      },
+      "support": "email",
+      "additional": {
+        "customBranding": false,
+        "apiAccess": false,
+        "contentCalendar": true,
+        "hashtagManager": true
+      }
+    },
+    "recommended": false,
+    "category": "basic"
+  }'
+```
 
-*   Replace `67615fa882f14b0d21c065a3` with the actual plan ID.
-*   Replace `ADMIN_TOKEN` with a valid admin JWT token.
+**Response:**
+   - 200 - Plan Updated.
 
-#### 6. Update Plan Status
-**Description:**
-Updates the status of a specific plan.
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{planId}` with the actual Plan ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
+#### 2.6. Update Plan Status
+**Description:** Updates the status of a subscription plan by its ID example "active" or "inactive".
 
-**Endpoint:**
-`POST http://localhost:5000/api/subscription/admin/plans/{planId}/status`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Endpoint:** `POST /api/subscription/admin/plans/{planId}/status`
 
 **Request Body:**
 ```json
@@ -751,58 +607,91 @@ Updates the status of a specific plan.
     "status": "active"
   }
 ```
-**Response:**
-*   A successful plan status update provides status code of 200.
 
-**Important Notes:**
-*  Replace `67615fa882f14b0d21c065a3` with the actual plan ID.
-*  Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   The `status` can be `active` or `inactive`.
-
-#### 7. Delete Plan
-**Description:** Deletes a specific plan by its ID
-
-**Endpoint:**
-`DELETE http://localhost:5000/api/subscription/admin/plans/{planId}`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN` |
-
-**Request Body:**
-```json
-{
-    "status": "inactive"
-  }
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3/status \
+   -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_JWT_TOKEN' \
+  -d '{
+    "status": "active"
+  }'
 ```
 **Response:**
-*   A successful plan delete provides a status code of 200.
+- 200 - Plan status updated.
 
-**Important Notes:**
-*  Replace `67615fa882f14b0d21c065a3` with the actual plan ID.
-*  Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   The `status` is optional to be sent and it does not matter.
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{planId}` with the actual Plan ID and `YOUR_ADMIN_JWT_TOKEN` with admin token.
+---
+#### 2.7. Delete a Plan
+**Description:** Deletes a subscription plan by its ID.
 
-#### 8. Update Both Features
+**Endpoint:** `DELETE /api/subscription/admin/plans/{planId}`
 
-**Description:**
-Updates both features and custom features of a specific plan.
 
-**Endpoint:**
-`PUT http://localhost:3000/api/subscriptions/plan-features/{planId}`
 
-**Request Headers:**
+**cURL Example:**
+```bash
+curl -X DELETE \
+  http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3 \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_JWT_TOKEN'
+```
+**Response:**
+   - 200 - Plan Deleted Successfully
 
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{planId}` with the actual Plan ID and `YOUR_ADMIN_JWT_TOKEN` with admin token.
+
+---
+#### 2.8. Update Both Features
+**Description:** Updates both standard and custom features of a subscription plan.
+
+**Endpoint:** `PUT http://localhost:3000/api/subscriptions/plan-features/{planId}`
 
 **Request Body:**
 ```json
 {
+  "features": {
+    "socialAccounts": {
+      "total": 15,
+      "perPlatform": {
+        "facebook": 5,
+        "instagram": 5,
+        "twitter": 5
+      }
+    },
+    "teamMembers": 10,
+    "posting": {
+      "postsPerDay": 50,
+      "bulkScheduling": true,
+      "autoScheduling": true
+    },
+    "analytics": {
+      "reportTypes": ["basic", "advanced"],
+      "exportFormats": ["pdf", "csv"],
+      "retentionDays": 90
+    },
+        "support": "priority"
+  },
+    "customFeatures": [
+      "White label reports",
+      "Custom URL shortener",
+      "Advanced team permissions"
+    ]
+  }
+```
+**cURL Example:**
+
+```bash
+curl -X PUT \
+  http://localhost:3000/api/subscriptions/plan-features/64f5a7b1c25a \
+  -H 'Content-Type: application/json' \
+   -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
     "features": {
       "socialAccounts": {
         "total": 15,
@@ -830,272 +719,345 @@ Updates both features and custom features of a specific plan.
       "Custom URL shortener",
       "Advanced team permissions"
     ]
-  }
+  }'
 ```
 
 **Response:**
-* A successful plan feature update results in status code of 200.
+ - 200 - Features updated successfully.
 
-**Important Notes:**
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{planId}` with the actual Plan ID and `YOUR_ADMIN_TOKEN` with admin token.
 
-*   Replace `64f5a7b1c25a` with the actual plan ID.
-*   Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   This endpoint updates both standard and custom features
+---
 
-#### 9. Update Standard Features
+#### 2.9 Update  Standard Features
+**Description:** Updates standard features of a subscription plan.
 
-**Description:**
-Updates the standard features of a specific plan.
-
-**Endpoint:**
-`PUT http://localhost:3000/api/subscriptions/plan-features/{planId}`
-
-**Request Headers:**
-
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Endpoint:** `PUT /api/subscriptions/plan-features/{planId}`
 
 **Request Body:**
 ```json
 {
-"features": {
+    "features": {
       "teamMembers": 15,
       "support": "24/7"
     }
   }
 ```
-
-**Response:**
-*  Update of plan provides status code of 200.
-
-**Important Notes:**
-
-*   Replace `64f5a7b1c25a` with the actual plan ID.
-*       Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   This endpoint only updates the standard features.
-
-### User Management
-
-#### 1. Reactivate User
-
-**Description:**
-Reactivates a deactivated user.
-
-**Endpoint:**
-`GET http://localhost:5000/api/admin/users/{userId}/reactivate`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Authorization | Bearer `ADMIN_TOKEN` |
-
-**Response:**
-*  A successful plan user reactivation results in a status code of of 200
-
-**Important Notes:**
-
-*   Replace `6761443efbceffa2810be4be` with the actual user ID.
-*  Replace `ADMIN_TOKEN` with a valid admin JWT token.
-
-#### 2. Get List of Users
-
-**Description:**
-Retrieves a list of all users.
-
-**Endpoint:**
-`GET http://localhost:5000/api/admin/users`
-
-**Request Headers:**
-
-| Header        | Value             |
-|---------------|-------------------|
-| Content-Type  | application/json  |
-| Authorization | Bearer `ADMIN_TOKEN` |
-
-**Response Example:**
-``` json
-[
-    {
-        "_id": "675bd3220bfee16d58204fe8",
-        "name": "Nikunja",
-        "email": "xnikunja@gmail.com",
-        "picture": "dsafsd",
-         "isDeactivated":false
-    },
-    {
-        "_id": "6761443efbceffa2810be4be",
-        "name": "Test User",
-        "email": "xnikunjadu2@gmail.com",
-        "picture": null,
-         "isDeactivated":true
+**cURL Example:**
+```bash
+curl -X PUT \
+  http://localhost:3000/api/subscriptions/plan-features/64f5a7b1c25a \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
+    "features": {
+      "teamMembers": 15,
+      "support": "24/7"
     }
-]
+  }'
 ```
-**Important Notes:**
-
-*  Replace `ADMIN_TOKEN` with a valid admin JWT token.
-*   The response is an array of user objects.
-*   `isDeactivated` is used to determine if user is deactivated or not.
-
-#### 3. Delete User
-
-**Description:**
-Deletes a user by ID.
-
-**Endpoint:**
-`DELETE http://localhost:5000/api/admin/users/{userId}`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Authorization | Bearer `ADMIN_TOKEN` |
 
 **Response:**
-* Successful deletion of user provides a status code of 200
+- 200 - Features updated successfully.
 
-**Important Notes:**
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{planId}` with the actual Plan ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
 
-*   Replace `675bd3220bfee16d58204fe8` with the actual user ID.
-*  Replace `ADMIN_TOKEN` with a valid admin JWT token.
+### 3. User Management (`/api/admin/users`)
 
-#### 4. Deactivate User
+#### 3.1. Reactivate User
+**Description:** Reactivates a deactivated user by ID.
 
-**Description:**
-Deactivates a user by ID.
+**Endpoint:** `GET /api/admin/users/{userId}/reactivate`
 
-**Endpoint:**
-`GET http://localhost:5000/api/admin/users/{userId}/deactivate`
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Authorization | Bearer `ADMIN_TOKEN` |
-
-**Response:**
-*  A suucessful user deactivation result in a status code of 200.
-
-**Important Notes:**
-
-*   Replace `6761443efbceffa2810be4be` with the actual user ID.
-*  Replace `ADMIN_TOKEN` with a valid admin JWT token.
-
-#### 5. Get Complete User Details by ID
-
-**Description:**
-Retrieves detailed information about a user by ID.
-
-**Endpoint:**
-`GET http://localhost:5000/api/admin/users/{userId}/details`
-
-**Request Headers:**
-| Header        | Value             |
-|---------------|-------------------|
-| Authorization | Bearer `ADMIN_TOKEN` |
-
-**Response Example:**
-``` json
-{
-    "_id": "6761443efbceffa2810be4be",
-    "name": "Test User",
-    "email": "xnikunjadu2@gmail.com",
-    "picture": null,
-    "role": "parent",
- "isDeactivated":true,
-    "subscription":{
-       "_id": "6761730c591c87f6c40056c2",
-      "userId": "6761443efbceffa2810be4be",
-      "planId": "67616c378c821544d3c5400b",
-        "billingCycle": "monthly",
-        "startDate": "2024-06-06T16:19:24.485Z",
-       "status": "active",
-      "createdAt": "2024-06-06T16:19:24.488Z",
-        "updatedAt": "2024-06-06T16:19:24.488Z"
-    },
-      "plan": {
-  "_id": "67616c378c821544d3c5400b",
-  "name": "premium",
-  "displayName": "Premium Plan",
-  "price": {
-    "monthly": {
-      "amount": 29.99,
-      "currency": "USD"
-    },
-    "yearly": {
-      "amount": 299.99,
-      "currency": "USD",
-      "savings": 60
-    }
-  },
-  "features": {
-    "socialAccounts": {
-      "total": 10,
-      "perPlatform": {
-        "facebook": 3,
-        "instagram": 3,
-        "twitter": 4
-      }
-    },
-    "teamMembers": 5,
-    "posting": {
-      "postsPerDay": 20,
-      "bulkScheduling": true,
-      "autoScheduling": true
-    },
-    "analytics": {
-      "reportTypes": [
-      "basic",
-      "advanced"
-     ],
-    "exportFormats": [
-       "pdf",
-       "csv"
-      ],
-      "retentionDays": 365
-    },
-    "support": "24/7",
-    "additional": {
-      "customBranding": true,
-      "apiAccess": true,
-      "contentCalendar": true,
-        "hashtagManager": true
-    }
-  },
-  "recommended": true,
-  "category": "enterprise",
-    "status": "active",
-   "createdAt": "2024-05-25T09:10:55.302Z",
-    "updatedAt": "2024-05-25T09:10:55.302Z"
-}
-}
+**cURL Example:**
+```bash
+curl -X GET \
+  http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/reactivate \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN'
 ```
-**Important Notes:**
 
-*   Replace `6761443efbceffa2810be4be` with the actual user ID.
-* Replace `ADMIN_TOKEN` with a valid admin JWT token
-*   The response includes complete user details with subscription and plan details
+**Response:**
+   - 200 - User reactivated.
 
-#### 6. Send Reset Password Link
-**Description:**
-Sends a reset password link to the registered email of a given user.
+**Notes:**
 
-**Endpoint:**
-`POST http://localhost:5000/api/admin/users/sendPasswordResetLink`
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{userId}` with the actual User ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
+#### 3.2. Get List of Users
+**Description:** Retrieves a list of all users.
 
-**Request Headers:**
-| Header        | Value              |
-|---------------|--------------------|
-| Authorization | Bearer `ADMIN_TOKEN` |
+**Endpoint:** `GET /api/admin/users`
+
+**cURL Example:**
+```bash
+curl -X GET \
+  http://localhost:5000/api/admin/users \
+  -H 'Content-Type: application/json'
+```
+
+**Response:**
+- 200 - List of all users
+
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+---
+#### 3.3. Delete User
+**Description:** Deletes a user by their ID.
+
+**Endpoint:** `DELETE /api/admin/users/{userId}`
+
+
+**cURL Example:**
+```bash
+curl -X DELETE \
+  http://localhost:5000/api/admin/users/675bd3220bfee16d58204fe8 \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN'
+```
+
+**Response:**
+   - 200 - User deleted successfully.
+
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{userId}` with the actual User ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
+#### 3.4. Deactivate User
+**Description:** Deactivates a user by their ID.
+
+**Endpoint:** `GET /api/admin/users/{userId}/deactivate`
+
+**cURL Example:**
+```bash
+ curl -X GET \
+  http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/deactivate \
+   -H 'Authorization: Bearer YOUR_ADMIN_TOKEN'
+```
+
+**Response:**
+- 200 - User Deactivated Successfully
+
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{userId}` with the actual User ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
+#### 3.5. Get Complete User Details
+**Description:** Retrieves complete details of a user by their ID.
+
+**Endpoint:** `GET /api/admin/users/{userId}/details`
+
+**cURL Example:**
+```bash
+ curl -X GET \
+  http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/details \
+   -H 'Authorization: Bearer YOUR_ADMIN_TOKEN'
+```
+**Response:**
+  -200 - Returns complete user details.
+
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `{userId}` with the actual User ID and `YOUR_ADMIN_TOKEN` with admin token.
+---
+
+#### 3.6. Send Password Reset Link
+**Description:** Sends a password reset link to the provided user email.
+
+**Endpoint:** `POST /api/admin/users/sendPasswordResetLink`
 
 **Request Body:**
 ```json
 {
-    "email":"xnikunjadu2@gmail.com"
+    "email": "xnikunjadu2@gmail.com"
 }
 ```
-**Response:**
-*  A successful reset link generation results in a status code of 200.
 
-**Important Notes:**
-*  Replace `ADMIN_TOKEN` with a valid admin JWT token.
-* Replace `xnikunjadu2@gmail.com` with the
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/admin/users/sendPasswordResetLink \
+  -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+   -d '{
+    "email": "xnikunjadu2@gmail.com"
+  }'
+```
+
+**Response:**
+- 200 - Sends Password reset link to the email.
+
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `YOUR_ADMIN_TOKEN` with admin token.
+
+---
+#### 3.7. Reset User Password
+**Description:** Resets user password using the reset token and new password.
+
+**Endpoint:** `POST /api/admin/users/reset-password`
+
+**Request Body:**
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJpYXQiOjE3MzQ1MDg1ODgsImV4cCI6MTczNDUxMjE4OH0.e17UzfnRrBCAqXkWfP9LWmN3UZyaSFaQtEz7keJDrhY",
+    "newPassword": "123456"
+}
+```
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/admin/users/reset-password \
+   -H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+  -d '{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJpYXQiOjE3MzQ1MDg1ODgsImV4cCI6MTczNDUxMjE4OH0.e17UzfnRrBCAqXkWfP9LWmN3UZyaSFaQtEz7keJDrhY",
+    "newPassword":"123456"
+  }'
+```
+**Response:**
+ -200 - Reset the user password
+
+**Notes:**
+- Requires a valid admin token in the `Authorization` header.
+- Replace `YOUR_ADMIN_TOKEN` with admin token.
+---
+### 4. Admin Login (`/api/admin/login`)
+
+**Description:** Admin login to get admin access.
+**Endpoint:** `POST /api/admin/login`
+
+**Request Body:**
+
+```json
+{
+ "email":"your.email@example.com",
+ "password":"your_secure_password"
+}
+```
+**cURL Example:**
+```bash
+curl -X POST \
+http://localhost:5000/api/admin/login \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer YOUR_ADMIN_TOKEN' \
+-d '{
+"email":"your.email@example.com", "password":"your_secure_password"
+}'
+```
+**Response:**
+- 200 - Returns admin JWT
+
+**Notes:**
+- Replace `YOUR_ADMIN_TOKEN` with admin token.
+
+---
+## User (`/api/users`)
+
+### 1. Subscription (`/api/users/subscription`)
+
+#### 1.1. Get Current Plan
+**Description:** Retrieves the user's current subscription plan.
+
+**Endpoint:** `GET /api/users/subscription`
+
+**cURL Example:**
+```bash
+curl -X GET \
+  http://localhost:5000/api/users/subscription \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN'
+```
+
+**Response:**
+  - 200 - Returns user's current plan.
+
+**Notes:**
+- Requires a valid user token in the `Authorization` header.
+- Replace `YOUR_JWT_TOKEN` with user token.
+---
+#### 1.2. Cancel User Subscription
+**Description:** Cancels the user's current subscription.
+
+**Endpoint:** `POST /api/users/cancel-subscription`
+
+**Request Body:**
+```json
+{
+  "reason": "Switching to a different service"
+}
+```
+**cURL Example:**
+```bash
+curl -X POST \
+  http://localhost:5000/api/users/cancel-subscription \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN' \
+  -d '{
+    "reason": "Switching to a different service"
+  }'
+```
+**Response:**
+ - 200 - Subscription Cancelled
+
+**Notes:**
+- Requires a valid user token in the `Authorization` header.
+ -Replace `YOUR_JWT_TOKEN` with user token.
+---
+#### 1.3. Subscribe to a Plan
+**Description:** Subscribes the user to a specific subscription plan.
+
+**Endpoint:** `POST /api/users/subscribe`
+
+**Request Body:**
+```json
+{
+  "planId": "67616c378c821544d3c5400b",
+  "billingCycle": "monthly"
+}
+```
+
+**cURL Example:**
+
+```bash
+curl -X POST \
+  http://localhost:5000/api/users/subscribe \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN' \
+  -d '{
+    "planId": "67616c378c821544d3c5400b",
+    "billingCycle":"monthly"
+  }'
+```
+
+**Response:**
+- 200 - Subscribed to the plan.
+
+**Notes:**
+- Requires a valid user token in the `Authorization` header.
+ -Replace `YOUR_JWT_TOKEN` with user token.
+---
+#### 1.4. Update Subscription Plan
+**Description:** Updates the user's current subscription plan.
+
+**Endpoint:** `PUT /api/users/subscription/update`
+
+**Request Body:**
+```json
+{
+  "planId": "67616c378c821544d3c5400b",
+  "billingCycle": "monthly"
+}
+```
+
+**cURL Example:**
+```bash
+curl -X PUT \
+  http://localhost:5000/api/users/subscription/update \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN' \
+  -d '{
+    "planId": "67616c378c821544d3c5400b",
+    "billingCycle":"monthly"
+  }'
