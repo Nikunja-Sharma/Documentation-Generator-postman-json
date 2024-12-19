@@ -1,0 +1,1541 @@
+{
+	"info": {
+		"_postman_id": "fd7c26be-ea36-49d7-8d62-2c0111d69671",
+		"name": "SocioX",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27268203"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register parent email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"xnikunjadu2@gmail.com\",\n    \"password\": \"yourpassword123\",\n    \"name\": \"Test User\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register child email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"xnikunjadu2@gmail.com\",\n    \"password\": \"yourpassword123\",\n    \"name\": \"Test User\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"xnikunjadu2@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ForgotPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"xnikunja@gmail.com\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/forgot-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Email Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"xnikunja@gmail.com\",\n  \"otp\": \"840907\",\n  \"newPassword\": \"your-new-password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "user subscription",
+					"item": [
+						{
+							"name": "subs user plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDQxOTYsImV4cCI6MTczNDU0NzM5Nn0.T2hZGQ_--k0y-AUa9EPAlz21vmd_OdN6_OnFVfEcvhU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"planId\": \"67616c378c821544d3c5400b\",\n    \"billingCycle\": \"monthly\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"6761443efbceffa2810be4be",
+										"subscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cancel subs user plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDQxOTYsImV4cCI6MTczNDU0NzM5Nn0.T2hZGQ_--k0y-AUa9EPAlz21vmd_OdN6_OnFVfEcvhU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"reason\":\"i dont really know the reason\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription/cancel",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"6761443efbceffa2810be4be",
+										"subscription",
+										"cancel"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get sub by userid",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDQxOTYsImV4cCI6MTczNDU0NzM5Nn0.T2hZGQ_--k0y-AUa9EPAlz21vmd_OdN6_OnFVfEcvhU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"reason\":\"i dont really know the reason\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"6761443efbceffa2810be4be",
+										"subscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update sub by userid",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDQxOTYsImV4cCI6MTczNDU0NzM5Nn0.T2hZGQ_--k0y-AUa9EPAlz21vmd_OdN6_OnFVfEcvhU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"planId\": \"67616c378c821544d3c5400b\",\n    \"billingCycle\": \"monthly\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"6761443efbceffa2810be4be",
+										"subscription",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Subscription management",
+					"item": [
+						{
+							"name": "get Plans",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MzI1OTUsImV4cCI6MTczNDQ3NTc5NX0.HLCPyhBKBeUspn4YoJCHXYdSV5dhG4yzqXFxs_G3Zwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5000/api/subscription/admin/plans",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"subscription",
+										"admin",
+										"plans"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get Plans by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MzI1OTUsImV4cCI6MTczNDQ3NTc5NX0.HLCPyhBKBeUspn4YoJCHXYdSV5dhG4yzqXFxs_G3Zwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5000/api/subscription/admin/plans/67616c378c821544d3c5400b",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"subscription",
+										"admin",
+										"plans",
+										"67616c378c821544d3c5400b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update custom features",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MzI1OTUsImV4cCI6MTczNDQ3NTc5NX0.HLCPyhBKBeUspn4YoJCHXYdSV5dhG4yzqXFxs_G3Zwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_TOKEN",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"customFeatures\": [\n      \"White label reports\",\n      \"Custom URL shortener\",\n      \"Advanced team permissions\",\n      \"API rate limit increase\"\n    ]\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/subscription/admin/plans/67616c378c821544d3c5400b/features",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"subscription",
+										"admin",
+										"plans",
+										"67616c378c821544d3c5400b",
+										"features"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MzI1OTUsImV4cCI6MTczNDQ3NTc5NX0.HLCPyhBKBeUspn4YoJCHXYdSV5dhG4yzqXFxs_G3Zwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": \"unique-plan-id\",\n  \"name\": \"premium\",\n  \"displayName\": \"Premium Plan\",\n  \"price\": {\n    \"monthly\": {\n      \"amount\": 29.99,\n      \"currency\": \"USD\"\n    },\n    \"yearly\": {\n      \"amount\": 299.99,\n      \"currency\": \"USD\",\n      \"savings\": 60\n    }\n  },\n  \"features\": {\n    \"socialAccounts\": {\n      \"total\": 10,\n      \"perPlatform\": {\n        \"facebook\": 3,\n        \"instagram\": 3,\n        \"twitter\": 4\n      }\n    },\n    \"teamMembers\": 5,\n    \"posting\": {\n      \"postsPerDay\": 20,\n      \"bulkScheduling\": true,\n      \"autoScheduling\": true\n    },\n    \"analytics\": {\n      \"reportTypes\": [\"basic\", \"advanced\"],\n      \"exportFormats\": [\"pdf\", \"csv\"],\n      \"retentionDays\": 365\n    },\n    \"support\": \"24/7\",\n    \"additional\": {\n      \"customBranding\": true,\n      \"apiAccess\": true,\n      \"contentCalendar\": true,\n      \"hashtagManager\": true\n    }\n  },\n  \"recommended\": true,\n  \"category\": \"enterprise\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/subscription/admin/plans",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"subscription",
+										"admin",
+										"plans"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MzI1OTUsImV4cCI6MTczNDQ3NTc5NX0.HLCPyhBKBeUspn4YoJCHXYdSV5dhG4yzqXFxs_G3Zwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_JWT_TOKEN",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"basic\",\n    \"displayName\": \"Basic Plan\",\n    \"price\": {\n      \"monthly\": {\n        \"amount\": 29.99,\n        \"currency\": \"USD\"\n      },\n      \"yearly\": {\n        \"amount\": 299.99,\n        \"currency\": \"USD\",\n        \"savings\": 59.89\n      }\n    },\n    \"features\": {\n      \"socialAccounts\": {\n        \"total\": 5,\n        \"perPlatform\": {\n          \"facebook\": 2,\n          \"instagram\": 2,\n          \"twitter\": 1\n        }\n      },\n      \"teamMembers\": 3,\n      \"posting\": {\n        \"postsPerDay\": 10,\n        \"bulkScheduling\": true,\n        \"autoScheduling\": false\n      },\n      \"analytics\": {\n        \"reportTypes\": [\"basic\", \"advanced\"],\n        \"exportFormats\": [\"pdf\", \"csv\"],\n        \"retentionDays\": 30\n      },\n      \"support\": \"email\",\n      \"additional\": {\n        \"customBranding\": false,\n        \"apiAccess\": false,\n        \"contentCalendar\": true,\n        \"hashtagManager\": true\n      }\n    },\n    \"recommended\": false,\n    \"category\": \"basic\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"subscription",
+										"admin",
+										"plans",
+										"67615fa882f14b0d21c065a3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update plan status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MzI1OTUsImV4cCI6MTczNDQ3NTc5NX0.HLCPyhBKBeUspn4YoJCHXYdSV5dhG4yzqXFxs_G3Zwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_JWT_TOKEN"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"active\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3/status",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"subscription",
+										"admin",
+										"plans",
+										"67615fa882f14b0d21c065a3",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MzI1OTUsImV4cCI6MTczNDQ3NTc5NX0.HLCPyhBKBeUspn4YoJCHXYdSV5dhG4yzqXFxs_G3Zwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_JWT_TOKEN"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"inactive\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"subscription",
+										"admin",
+										"plans",
+										"67615fa882f14b0d21c065a3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update both  features",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"features\": {\n      \"socialAccounts\": {\n        \"total\": 15,\n        \"perPlatform\": {\n          \"facebook\": 5,\n          \"instagram\": 5,\n          \"twitter\": 5\n        }\n      },\n      \"teamMembers\": 10,\n      \"posting\": {\n        \"postsPerDay\": 50,\n        \"bulkScheduling\": true,\n        \"autoScheduling\": true\n      },\n      \"analytics\": {\n        \"reportTypes\": [\"basic\", \"advanced\"],\n        \"exportFormats\": [\"pdf\", \"csv\"],\n        \"retentionDays\": 90\n      },\n      \"support\": \"priority\"\n    },\n    \"customFeatures\": [\n      \"White label reports\",\n      \"Custom URL shortener\",\n      \"Advanced team permissions\"\n    ]\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/subscriptions/plan-features/64f5a7b1c25a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"subscriptions",
+										"plan-features",
+										"64f5a7b1c25a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update  standard feature",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_ADMIN_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"features\": {\n      \"teamMembers\": 15,\n      \"support\": \"24/7\"\n    }\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/subscriptions/plan-features/64f5a7b1c25a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"subscriptions",
+										"plan-features",
+										"64f5a7b1c25a"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "user management",
+					"item": [
+						{
+							"name": "reactivate user",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0Mjg0NzUsImV4cCI6MTczNDQ3MTY3NX0.c0NMnFHCDpC0g8Gd6hWyR0Lb7Ayba23K1MM6UM_3Gxw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Nikunja\",\r\n    \"email\":\"xnikunja@gmail.com\",\r\n    \"picture\":\"dsafsd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/reactivate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"6761443efbceffa2810be4be",
+										"reactivate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get List of users",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\":\"your.email@example.com\",\"password\":\"your_secure_password\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MjI2ODUsImV4cCI6MTczNDQ2NTg4NX0.d96XKVoq63oTjxt9EG-X2ph7Y5Np1-HbBsL0VomTLig",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Nikunja\",\r\n    \"email\":\"xnikunja@gmail.com\",\r\n    \"picture\":\"dsafsd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/675bd3220bfee16d58204fe8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"675bd3220bfee16d58204fe8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deactivate User",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDgyOTcsImV4cCI6MTczNDU1MTQ5N30.6Zhupr3u4q_oihSUyVoroAr9hK0y2BLs6FcRwaqsxc4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Nikunja\",\r\n    \"email\":\"xnikunja@gmail.com\",\r\n    \"picture\":\"dsafsd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/deactivate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"6761443efbceffa2810be4be",
+										"deactivate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "complete user details by id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDU5NjAsImV4cCI6MTczNDU0OTE2MH0.sIanIim1nre35LOT3O4ubxF2HvKW56u0PsHDvg2Ksxg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Nikunja\",\r\n    \"email\":\"xnikunja@gmail.com\",\r\n    \"picture\":\"dsafsd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/details",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"6761443efbceffa2810be4be",
+										"details"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "send reset password link",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDgyOTcsImV4cCI6MTczNDU1MTQ5N30.6Zhupr3u4q_oihSUyVoroAr9hK0y2BLs6FcRwaqsxc4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"xnikunjadu2@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/sendPasswordResetLink",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"sendPasswordResetLink"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reset user password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDgyOTcsImV4cCI6MTczNDU1MTQ5N30.6Zhupr3u4q_oihSUyVoroAr9hK0y2BLs6FcRwaqsxc4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJpYXQiOjE3MzQ1MDg1ODgsImV4cCI6MTczNDUxMjE4OH0.e17UzfnRrBCAqXkWfP9LWmN3UZyaSFaQtEz7keJDrhY\",\r\n    \"newPassword\":\"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/admin/users/reset-password",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"reset-password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJlbWFpbCI6InhuaWt1bmphZHUyQGdtYWlsLmNvbSIsImlhdCI6MTczNDQyNzcyMywiZXhwIjoxNzM0NTE0MTIzfQ.OyUlg063Zf1fNo9iCDksA1BJMRNCfNFov2UzFuMlAAY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"your.email@example.com\",\"password\":\"your_secure_password\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/admin/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "subscribe",
+					"item": [
+						{
+							"name": "Get current plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJlbWFpbCI6InhuaWt1bmphZHUyQGdtYWlsLmNvbSIsImlhdCI6MTczNDUwMDAzMiwiZXhwIjoxNzM0NTg2NDMyfQ.JSVJG9V5CVyTqn7LUv0I8r0MYF9MKQXU9uWcM3c-DxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_JWT_TOKEN"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5000/api/users/subscription",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"users",
+										"subscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cancel subs",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJlbWFpbCI6InhuaWt1bmphZHUyQGdtYWlsLmNvbSIsImlhdCI6MTczNDUwMDAzMiwiZXhwIjoxNzM0NTg2NDMyfQ.JSVJG9V5CVyTqn7LUv0I8r0MYF9MKQXU9uWcM3c-DxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_JWT_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"reason\": \"Switching to a different service\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/users/cancel-subscription",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"users",
+										"cancel-subscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "subscribe a plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJlbWFpbCI6InhuaWt1bmphZHUyQGdtYWlsLmNvbSIsImlhdCI6MTczNDUwMDAzMiwiZXhwIjoxNzM0NTg2NDMyfQ.JSVJG9V5CVyTqn7LUv0I8r0MYF9MKQXU9uWcM3c-DxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_JWT_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"planId\": \"67616c378c821544d3c5400b\",\n  \"billingCycle\": \"monthly\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/users/subscribe",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"users",
+										"subscribe"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJlbWFpbCI6InhuaWt1bmphZHUyQGdtYWlsLmNvbSIsImlhdCI6MTczNDUwMDAzMiwiZXhwIjoxNzM0NTg2NDMyfQ.JSVJG9V5CVyTqn7LUv0I8r0MYF9MKQXU9uWcM3c-DxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_JWT_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"planId\": \"67616c378c821544d3c5400b\",\n  \"billingCycle\": \"monthly\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/users/subscription/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"users",
+										"subscription",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "USER OPERATION",
+					"item": []
+				},
+				{
+					"name": "user PROFILE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/users/675bd3220bfee16d58204fe8/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"675bd3220bfee16d58204fe8",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ0MjM1NjgsImV4cCI6MTczNDQ2Njc2OH0.aiXHNs84Vav4sQGpmiQXp2MzqyWqQ7BoC97SzZSelsE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Nikunja\",\r\n    \"email\":\"xnikunja@gmail.com\",\r\n    \"picture\":\"dsafsd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/675bd3220bfee16d58204fe8/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"675bd3220bfee16d58204fe8",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJlbWFpbCI6InhuaWt1bmphZHUyQGdtYWlsLmNvbSIsImlhdCI6MTczNDUwMDAzMiwiZXhwIjoxNzM0NTg2NDMyfQ.JSVJG9V5CVyTqn7LUv0I8r0MYF9MKQXU9uWcM3c-DxI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/users/details",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDAxODRkNGE2NjJiMjVkZTc1MTgiLCJlbWFpbCI6InhuaWt1bmphZHUyQGdtYWlsLmNvbSIsImlhdCI6MTczNDQyNjY1NCwiZXhwIjoxNzM0NTEzMDU0fQ.R3M84y8NBhOdvUlUbYHfcW_PsNB6DBs7SnB-ip-nCg8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Nikunja\",\r\n    \"email\":\"xnikunja@gmail.com\",\r\n    \"picture\":\"dsafsd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confim delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDAxODRkNGE2NjJiMjVkZTc1MTgiLCJlbWFpbCI6InhuaWt1bmphZHUyQGdtYWlsLmNvbSIsImlhdCI6MTczNDQyNjY1NCwiZXhwIjoxNzM0NTEzMDU0fQ.R3M84y8NBhOdvUlUbYHfcW_PsNB6DBs7SnB-ip-nCg8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDAxODRkNGE2NjJiMjVkZTc1MTgiLCJpYXQiOjE3MzQ0MjY2NjUsImV4cCI6MTczNDQzMDI2NX0.sEFZye1spypGkzc6pIIOwh_x7Xg6qMN3Woaw3wqowm0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/confirm-delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"confirm-delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
