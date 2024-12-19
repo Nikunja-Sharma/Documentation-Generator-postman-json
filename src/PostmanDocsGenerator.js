@@ -48,7 +48,7 @@ class PostmanDocsGenerator {
 
     async generateDocumentationForChunk(chunk) {
         const prompt = `Create comprehensive API documentation for the following Postman collection chunk. 
-        Include detailed descriptions, request/response examples, and any important notes. Give the curl command for each endpoint.
+        Include detailed descriptions, request/response examples, and any important notes.
         
         The output should be in the following format:
         # API_NAME
