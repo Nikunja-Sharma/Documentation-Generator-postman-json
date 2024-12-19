@@ -3,344 +3,632 @@
 # SocioX API Documentation
 
 ## Overview
-
-This API provides functionalities for user authentication, admin management, subscription management, and user operations. It's designed to support a platform with parent and child user roles, various subscription plans, and administrative oversight.
+This document provides a comprehensive guide to the SocioX API, covering authentication, user management, subscription services, and admin functionalities. It includes descriptions of each endpoint, request and response examples, and important notes to ensure smooth integration.
 
 ### Authentication
-Authentication is primarily handled using JSON Web Tokens (JWT). Certain endpoints require a valid JWT to be included in the `Authorization` header as a `Bearer` token. When interacting with admin functionality make sure admin token is provided.
+Authentication for this API is primarily done using JSON Web Tokens (JWT). You'll typically receive a JWT upon successful login, and this token must be included in the `Authorization` header of protected endpoints as a `Bearer` token.
 
 ### Endpoints
-
-Here's a detailed breakdown of the available endpoints:
 
 ---
 ## Auth
 
-### Register parent email
+### 1. Register Parent Email
+#### Description
+Registers a new parent user with the system.
 
-*   **Description:** Registers a new parent user with email, password, and name.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/v1/auth/register`
-*   **Headers:**
+#### Request
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/auth/register`
+*   **Headers**:
     *   `Content-Type: application/json`
-*   **Request Body (raw JSON):**
+*   **Body**:
 
-    ```json
-    {
+```json
+{
+  "email": "xnikunjadu@gmail.com",
+  "password": "yourpassword123",
+  "name": "Test User"
+}
+```
+
+*   **Curl Command**:
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
         "email": "xnikunjadu@gmail.com",
         "password": "yourpassword123",
         "name": "Test User"
-    }
+      }' \
+    http://localhost:5000/api/v1/auth/register
     ```
-*   **Response:**
-    *   Success: 201 status , the user is registered successfully.
-    *   Failure: Appropriate status codes like 400,500.
 
-*   **Notes:**
-    * This endpoint creates a parent user account.
-   
-### Register child email
+#### Response
+*   **Status Code**: `201 Created` (Successful)  
+*   **Body**: (This might vary based on your actual backend setup)
 
-*   **Description:** Registers a new child user under a parent account. Requires a valid parent JWT token.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/users/child-users`
-*    **Headers:**
-        *    `Content-Type: application/json`
-        *    `Authorization: Bearer <PARENT_JWT_TOKEN>`
-*   **Request Body (raw JSON):**
+### 2. Register Child Email
+#### Description
+Registers a new child user associated with a parent account. Requires valid parent auth token.
 
-    ```json
-    {
-      "email": "child@example.com",
-      "password": "childewqepassword123",
-      "name": "Child User",
-      "permissions": ["create_posts", "view_analytics"]
-    }
-    ```
-*   **Response:**
-    *   Success: 201 status code along with the user data.
-    *   Failure: Appropriate status codes like 400,500.
-*   **Notes:**
-    *   Requires a valid JWT representing a parent user.
-    *  The `permissions` field is an array specifying the child's access levels.
-
-### Login email
-
-*   **Description:** Logs in an existing user with email and password.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/v1/auth/login`
-*   **Headers:**
+#### Request
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/users/child-users`
+*   **Headers**:
     *   `Content-Type: application/json`
-*  **Request Body (raw JSON):**
-    ```json
-    {
+    *   `Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYyYjdiZDQzZTFiNjgzZDZhYTlkMmEiLCJlbWFpbCI6ImNoaWxkQGV4YW1wbGUuY29tIiwidXNlclR5cGUiOiJjaGlsZCIsInBlcm1pc3Npb25zIjpbImNyZWF0ZV9wb3N0cyIsInZpZXdfYW5hbHl0aWNzIl0sInBhcmVudElkIjoiNjc2MTQ0M2VmYmNlZmZhMjgxMGJlNGJlIiwiaWF0IjoxNzM0NTIyODE0LCJleHAiOjE3MzQ2MDkyMTR9.E6aWLfK0ar0MSpAd6vDyhXPF9gYbG9y5UbsApb-JFMM`
+*   **Body**:
+
+```json
+{
+  "email": "child@example.com",
+  "password": "childewqepassword123",
+  "name": "Child User",
+  "permissions": ["create_posts", "view_analytics"]
+}
+```
+
+*   **Curl Command**:
+   ```bash
+   curl -X POST \
+   -H "Content-Type: application/json" \
+   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYyYjdiZDQzZTFiNjgzZDZhYTlkMmEiLCJlbWFpbCI6ImNoaWxkQGV4YW1wbGUuY29tIiwidXNlclR5cGUiOiJjaGlsZCIsInBlcm1pc3Npb25zIjpbImNyZWF0ZV9wb3N0cyIsInZpZXdfYW5hbHl0aWNzIl0sInBhcmVudElkIjoiNjc2MTQ0M2VmYmNlZmZhMjgxMGJlNGJlIiwiaWF0IjoxNzM0NTIyODE0LCJleHAiOjE3MzQ2MDkyMTR9.E6aWLfK0ar0MSpAd6vDyhXPF9gYbG9y5UbsApb-JFMM" \
+   -d '{
+       "email": "child@example.com",
+       "password": "childewqepassword123",
+       "name": "Child User",
+       "permissions": ["create_posts", "view_analytics"]
+     }' \
+   http://localhost:5000/api/users/child-users
+   ```
+
+#### Response
+*   **Status Code**: `201 Created` (Successful)
+
+### 3. Login Email
+#### Description
+Logs in an existing user using their email and password.
+
+#### Request
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/auth/login`
+*  **Headers**:
+      * `Content-Type: application/json`
+*   **Body**:
+```json
+{
+  "email": "john@example.com",
+  "password": "childewqepassword123"
+}
+```
+
+*   **Curl Command**:
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
         "email": "john@example.com",
         "password": "childewqepassword123"
-    }
+      }' \
+      http://localhost:5000/api/v1/auth/login
     ```
-*   **Response:**
-    *   Success: 200 status code with a jwt token
-    *   Failure: Appropriate status codes like 400,401.
-*   **Notes:**
-    *   Returns a JWT upon successful authentication.
 
-### ForgotPassword
+#### Response
+*   **Status Code**: `200 OK` (Successful)
+*   **Body**: *Typically returns a JWT in the successful case.*
 
-*   **Description:** Initiates the password reset process by sending a reset link to the user's email.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/auth/forgot-password`
-*   **Headers:**
+### 4. Forgot Password
+#### Description
+Initiates the password reset process by sending an OTP to the provided email.
+
+#### Request
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/auth/forgot-password`
+*   **Headers**:
     *   `Content-Type: application/json`
-*  **Request Body (raw JSON):**
-    ```json
-    {
+*   **Body**:
+```json
+{
+  "email": "xnikunjadu2@gmail.com"
+}
+```
+
+*  **Curl Command**:
+     ```bash
+      curl -X POST \
+      -H "Content-Type: application/json" \
+      -d '{
         "email": "xnikunjadu2@gmail.com"
-    }
-    ```
-*   **Response:**
-   * Success: 200 status, an email will be sent to the registered email address.
-   * Failure: 400 status if email is not provided or any server error.
-*   **Notes:** The server will send an email with a link containing a reset token.
+        }' \
+        http://localhost:5000/api/auth/forgot-password
+     ```
+#### Response
+*   **Status Code**: `200 OK` (Successful)
 
-### Reset Email Password
+### 5. Reset Email Password
+#### Description
+Resets the user password after verifying the provided OTP.
 
-*   **Description:** Resets the user's password using the reset token and new password.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/auth/reset-password`
-*   **Headers:**
+#### Request
+*   **Method**: `POST`
+*    **URL**: `http://localhost:5000/api/auth/reset-password`
+*   **Headers**:
     *   `Content-Type: application/json`
-*  **Request Body (raw JSON):**
-    ```json
-    {
-      "email": "xnikunjadu2@gmail.com",
-      "otp": "360892",
-      "newPassword": "your-new-password"
-    }
+*   **Body**:
+```json
+{
+  "email": "xnikunjadu2@gmail.com",
+  "otp": "360892",
+  "newPassword": "your-new-password"
+}
+```
+*   **Curl Command**:
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+        "email": "xnikunjadu2@gmail.com",
+        "otp": "360892",
+        "newPassword": "your-new-password"
+      }' \
+      http://localhost:5000/api/auth/reset-password
     ```
-*  **Response:**
+#### Response
+*   **Status Code**: `200 OK` (Successful)
 
-    *   Success: 200 status code. password changed .
-    *   Failure: 400, 500 status codes based on errors.
-*   **Notes:**
-    *   The `otp` is the reset token sent to the user's email.
- 
 ---
-
 ## Admin
-### User subscription
-#### subs user plan
 
-*   **Description:** Subscribes a user to a specific plan.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/v1/admin/users/{userId}/subscription`
-*   **Headers:**
-    *   `Content-Type: application/json`
-    *   `Authorization: Bearer <ADMIN_JWT_TOKEN>`
-*  **Request Body (raw JSON):**
-    ```json
-    {
-        "planId": "67616c378c821544d3c5400b",
-        "billingCycle": "monthly"
-    }
-    ```
-*  **Response:**
-   * Success: 200 status.
-   *  Failure: 400, 500 status codes with errors.
-*   **Notes:**
+### 1. User Subscription
+#### 1.1. Subscribe User to a Plan
+##### Description
+Allows an admin to subscribe a specific user to a subscription plan.
 
-    *   Replace `{userId}` with the actual ID of the user.
-
-#### cancel subs user plan
-
-*   **Description**: Cancels a user's active subscription.
-*   **Method:** `POST`
-*   **URL:**  `http://localhost:5000/api/v1/admin/users/{userId}/subscription/cancel`
-*   **Headers:** 
-    * `Content-Type: application/json`
-   *  `Authorization: Bearer YOUR_ADMIN_TOKEN`
-* **Request Body (raw JSON):**
-    ```json
-    {
-        "reason":"i dont really know the reason"
-    }
-    ```
-*   **Response:**
-    * Success: 200 status.
-    * Failure: 400 ,500 status codes with errors.
-*   **Notes:**
-
-    *   Replace `{userId}` with the actual ID of the user.
-
-#### get sub by userid
-
-*   **Description:** Retrieves the subscription details for a specific user.
-*   **Method:** `GET`
-*   **URL:** `http://localhost:5000/api/admin/users/{userId}/subscription`
-*    **Headers:**
-        *  `Content-Type: application/json`
-        *  `Authorization: Bearer YOUR_ADMIN_TOKEN`
-*  **Request Body (raw JSON):**
-    ```json
-    {
-        "reason":"i dont really know the reason"
-    }
-    ```
-*  **Response:**
-    *   Success: 200 status code along with subscription details.
-    *   Failure: 400, 500 status codes with errors.
-*   **Notes:**
-    *   Replace {userId} with the actual ID of the user.
-
-#### update sub by userid
-
-*   **Description:** Updates a user's subscription with a new plan.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/admin/users/{userId}/subscription/update`
-*  **Headers:**
-     * `Content-Type: application/json`
-     * `Authorization: Bearer YOUR_ADMIN_TOKEN`
-*  **Request Body (raw JSON):**
-    ```json
-    {
-        "planId": "67616c378c821544d3c5400b",
-        "billingCycle": "monthly"
-    }
-    ```
-*  **Response:**
-    *   Success: 200 status code
-    *  Failure: 400,500 status codes with error messages.
-*   **Notes:**
-
-    *   Replace `{userId}` with the actual ID of the user.
-
-### Subscription management
-
-#### get Plans
-
-*   **Description:** Retrieves a list of subscription plans based on optional query parameters.
-*   **Method:** `GET`
-*   **URL:** `http://localhost:5000/api/v1/admin/subscription/plans?category=enterprise&status=active&name=premium`
-*   **Headers:**
-    *   `Authorization: Bearer YOUR_JWT_TOKEN`
-*   **Query Parameters:**
-    *   `category`: Filters plans by category.
-    *   `status`: Filters plans by status (e.g., active, inactive).
-    *   `name`: Filters plans by name.
-*   **Response:**
-    *   Success: 200 status . Returns a list of plans.
-    *   Failure: 400,500 status codes with error.
-*   **Notes:**
-    *   All query parameters are optional.
-
-#### get Plans by id
-
-*   **Description:** Retrieves a specific subscription plan by its ID.
-*   **Method:** `GET`
-*   **URL:** `http://localhost:5000/api/admin/subscription/plans/{planId}`
-*   **Headers:**
-    *   `Content-Type: application/json`
-*  **Response:**
-    *   Success: 200 status code with plan details.
-    *   Failure: 400, 500 status codes if plan is not found or any server issue.
-*   **Notes:**
-    *   Replace `{planId}` with the actual ID of the plan.
-
-#### update custom features
-
-*   **Description:** Updates the custom features of a subscription plan.
-*   **Method:** `PATCH`
-*   **URL:** `http://localhost:5000/api/admin/subscription/plans/{planId}/features`
-*   **Headers:**
+##### Request
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/admin/users/6761443efbceffa2810be4be/subscription`
+*   **Headers**:
     *   `Content-Type: application/json`
     *   `Authorization: Bearer YOUR_ADMIN_TOKEN`
-*  **Request Body (raw JSON):**
-    ```json
-    {
-    "customFeatures": [
-        "White label reports",
-        "Custom URL shortener",
-        "Advanced team permissions",
-        "API rate limit increase"
-        ]
+*   **Body**:
+```json
+{
+  "planId": "67616c378c821544d3c5400b",
+    "billingCycle": "monthly"
+}
+```
+*  **Curl Command**:
+   ```bash
+   curl -X POST \
+   -H "Content-Type: application/json" \
+    -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+   -d '{
+        "planId": "67616c378c821544d3c5400b",
+         "billingCycle": "monthly"
+      }' \
+     http://localhost:5000/api/v1/admin/users/6761443efbceffa2810be4be/subscription
+   ```
+##### Response
+*   **Status Code**: `201 Created` (Successful)
+
+#### 1.2. Cancel User Subscription
+##### Description
+Allows an admin to cancel a user’s subscription.
+
+##### Request
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/admin/users/6761443efbceffa2810be4be/subscription/cancel`
+*   **Headers**:
+    *   `Content-Type: application/json`
+    *   `Authorization: Bearer YOUR_ADMIN_TOKEN`
+*  **Body**:
+```json
+{
+  "reason":"i dont really know the reason"
+}
+```
+ * **Curl Command**:
+    ```bash
+   curl -X POST \
+   -H "Content-Type: application/json" \
+   -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+    -d '{
+       "reason":"i dont really know the reason"
+      }' \
+    http://localhost:5000/api/v1/admin/users/6761443efbceffa2810be4be/subscription/cancel
+   ```
+##### Response
+*   **Status Code**: `200 OK` (Successful)
+
+#### 1.3. Get Subscription by User ID
+##### Description
+Fetches subscription details for a user via their ID.
+
+##### Request
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription`
+*   **Headers**:
+    *    `Content-Type: application/json`
+    *   `Authorization: Bearer YOUR_ADMIN_TOKEN`
+
+* **Curl Command**:
+  ```bash
+   curl -X GET \
+   -H "Content-Type: application/json" \
+   -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+   http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription
+
+   ```
+##### Response
+*   **Status Code**: `200 OK` (Successful)
+*   **Body**:
+    ```
+       {
+         "subscription": {
+            "planId": "67616c378c821544d3c5400b",
+            "billingCycle": "monthly",
+            "startDate": "2024-01-18T19:48:32.064Z",
+           "status": "active",
+             "isTrial": false,
+             "nextBillingDate": "2024-02-18T19:48:32.064Z"
+         },
+         "user": {
+            "_id": "6761443efbceffa2810be4be"
+         }
     }
     ```
-*  **Response:**
-   * Success: 200 status code.
-   *  Failure: 400,500 status codes with error.
-*   **Notes:**
-    *   Replace `{planId}` with the actual ID of the plan.
 
-#### create plan
+#### 1.4. Update Subscription by User ID
+##### Description
+Updates an existing user subscription's detail.
 
-*   **Description:** Creates a new subscription plan.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/admin/subscription/plans`
-*   **Headers:**
+##### Request
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription/update`
+*   **Headers**:
     *   `Content-Type: application/json`
-*  **Request Body (raw JSON):**
+    *   `Authorization: Bearer YOUR_ADMIN_TOKEN`
+*   **Body**:
     ```json
     {
-      "name": "premium",
-      "displayName": "Premium Plan",
-      "price": {
-        "monthly": {
-          "amount": 29.99,
-          "currency": "USD"
-        },
-        "yearly": {
-          "amount": 299.99,
-          "currency": "USD",
-          "savings": 60
-        }
-      },
-      "features": {
-        "socialAccounts": {
-          "total": 10,
-          "perPlatform": {
-            "facebook": 3,
-            "instagram": 3,
-            "twitter": 4
+        "planId": "67616c378c821544d3c5400b",
+        "billingCycle": "monthly"
+     }
+    ```
+*  **Curl Command**:
+   ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+    -d '{
+         "planId": "67616c378c821544d3c5400b",
+        "billingCycle": "monthly"
+       }' \
+    http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/subscription/update
+   ```
+
+##### Response
+*   **Status Code**: `200 OK` (Successful)
+
+### 2. Subscription Management
+#### 2.1. Get Plans
+##### Description
+Retrieves a list of subscription plans, optionally filtered by `category`, `status`, and `name`.
+
+##### Request
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/v1/admin/subscription/plans?category=enterprise&status=active&name=premium`
+*   **Headers**:
+    *   `Authorization: Bearer YOUR_JWT_TOKEN`
+*  **Curl Command**:
+
+    ```bash
+    curl -X GET \
+    -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+    "http://localhost:5000/api/v1/admin/subscription/plans?category=enterprise&status=active&name=premium"
+    ```
+
+##### Response
+*   **Status Code**: `200 OK` (Successful)
+*   **Body**:
+    ```json
+    [
+        {
+            "_id": "67616c378c821544d3c5400b",
+            "name": "premium",
+            "displayName": "Premium Plan",
+            "price": {
+              "monthly": {
+                "amount": 29.99,
+                "currency": "USD"
+               },
+              "yearly": {
+                 "amount": 299.99,
+                "currency": "USD",
+                  "savings": 60
+             }
+           },
+           "features": {
+             "socialAccounts": {
+               "total": 10,
+              "perPlatform": {
+                  "facebook": 3,
+                "instagram": 3,
+               "twitter": 4
+              }
+            },
+            "teamMembers": 5,
+           "posting": {
+             "postsPerDay": 20,
+             "bulkScheduling": true,
+              "autoScheduling": true
+            },
+          "analytics": {
+              "reportTypes": [
+                 "basic",
+                "advanced"
+              ],
+              "exportFormats": [
+                "pdf",
+                "csv"
+              ],
+              "retentionDays": 365
+             },
+           "support": "24/7",
+             "additional": {
+               "customBranding": true,
+              "apiAccess": true,
+               "contentCalendar": true,
+               "hashtagManager": true
+             }
+           },
+            "recommended": true,
+           "category": "enterprise",
+            "status": "active"
           }
-        },
-        "teamMembers": 5,
-        "posting": {
-          "postsPerDay": 20,
-          "bulkScheduling": true,
-          "autoScheduling": true
-        },
-        "analytics": {
-          "reportTypes": ["basic", "advanced"],
-          "exportFormats": ["pdf", "csv"],
-          "retentionDays": 365
-        },
-        "support": "24/7",
-        "additional": {
-          "customBranding": true,
-          "apiAccess": true,
-          "contentCalendar": true,
-          "hashtagManager": true
-        }
-      },
-      "recommended": true,
-      "category": "enterprise"
-    }
+    ]
     ```
-*   **Response:**
-    *   Success: 201 status code with the new plan details.
-    *   Failure: 400, 500 status codes with error.
 
-#### update plan
+#### 2.2. Get Plan by ID
+##### Description
+Retrieves a specific subscription plan using its ID.
 
-*   **Description:** Updates an existing subscription plan by ID.
-*   **Method:** `PUT`
-*   **URL:** `http://localhost:5000/api/admin/subscription/plans/{planId}`
-     *  `Authorization: Bearer YOUR_JWT_TOKEN`
-*   **Headers:**
+##### Request
+*   **Method**: `GET`
+*    **URL**: `http://localhost:5000/api/admin/subscription/plans/67616c378c821544d3c5400b`
+*   **Headers**:
     *   `Content-Type: application/json`
+*  **Curl Command**:
 
-* **Request Body (raw JSON):**
+    ```bash
+     curl -X GET \
+      -H "Content-Type: application/json" \
+       http://localhost:5000/api/admin/subscription/plans/67616c378c821544d3c5400b
+    ```
+
+##### Response
+*   **Status Code**: `200 OK` (Successful)
+*   **Body**:
+   ```json
+        {
+            "_id": "67616c378c821544d3c5400b",
+            "name": "premium",
+            "displayName": "Premium Plan",
+            "price": {
+              "monthly": {
+                "amount": 29.99,
+                "currency": "USD"
+               },
+              "yearly": {
+                 "amount": 299.99,
+                "currency": "USD",
+                  "savings": 60
+             }
+           },
+           "features": {
+             "socialAccounts": {
+               "total": 10,
+              "perPlatform": {
+                  "facebook": 3,
+                "instagram": 3,
+               "twitter": 4
+              }
+            },
+            "teamMembers": 5,
+           "posting": {
+             "postsPerDay": 20,
+             "bulkScheduling": true,
+              "autoScheduling": true
+            },
+          "analytics": {
+              "reportTypes": [
+                 "basic",
+                "advanced"
+              ],
+              "exportFormats": [
+                "pdf",
+                "csv"
+              ],
+              "retentionDays": 365
+             },
+           "support": "24/7",
+             "additional": {
+               "customBranding": true,
+              "apiAccess": true,
+               "contentCalendar": true,
+               "hashtagManager": true
+             }
+           },
+            "recommended": true,
+           "category": "enterprise",
+            "status": "active"
+      }
+   ```
+
+#### 2.3. Update Custom Features
+##### Description
+Updates the custom features of a subscription plan.
+
+##### Request
+*   **Method**: `PATCH`
+*   **URL**: `http://localhost:5000/api/admin/subscription/plans/67616c378c821544d3c5400b/features`
+*   **Headers**:
+    *   `Content-Type: application/json`
+    *   `Authorization: Bearer YOUR_ADMIN_TOKEN`
+*   **Body**:
+```json
+{
+  "customFeatures": [
+    "White label reports",
+    "Custom URL shortener",
+    "Advanced team permissions",
+    "API rate limit increase"
+  ]
+}
+```
+*   **Curl Command**:
+    ```bash
+        curl -X PATCH \
+       -H "Content-Type: application/json" \
+        -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+       -d '{
+              "customFeatures": [
+                "White label reports",
+                "Custom URL shortener",
+               "Advanced team permissions",
+                "API rate limit increase"
+             ]
+           }' \
+        http://localhost:5000/api/admin/subscription/plans/67616c378c821544d3c5400b/features
+    ```
+##### Response
+*   **Status Code**: `200 OK` (Successful)
+
+#### 2.4. Create Plan
+##### Description
+Creates a new subscription plan.
+
+##### Request
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/admin/subscription/plans`
+*   **Headers**:
+    *   `Content-Type: application/json`
+*   **Body**:
     ```json
     {
+        "name": "premium",
+        "displayName": "Premium Plan",
+        "price": {
+          "monthly": {
+            "amount": 29.99,
+            "currency": "USD"
+          },
+          "yearly": {
+            "amount": 299.99,
+             "currency": "USD",
+            "savings": 60
+          }
+         },
+       "features": {
+          "socialAccounts": {
+            "total": 10,
+           "perPlatform": {
+             "facebook": 3,
+            "instagram": 3,
+             "twitter": 4
+            }
+          },
+          "teamMembers": 5,
+          "posting": {
+            "postsPerDay": 20,
+           "bulkScheduling": true,
+            "autoScheduling": true
+          },
+        "analytics": {
+            "reportTypes": ["basic", "advanced"],
+            "exportFormats": ["pdf", "csv"],
+            "retentionDays": 365
+            },
+          "support": "24/7",
+           "additional": {
+           "customBranding": true,
+            "apiAccess": true,
+           "contentCalendar": true,
+            "hashtagManager": true
+           }
+         },
+       "recommended": true,
+       "category": "enterprise"
+    }
+    ```
+*   **Curl Command**:
+    ```bash
+   curl -X POST \
+   -H "Content-Type: application/json" \
+   -d '{
+          "name": "premium",
+          "displayName": "Premium Plan",
+          "price": {
+           "monthly": {
+              "amount": 29.99,
+              "currency": "USD"
+            },
+             "yearly": {
+               "amount": 299.99,
+                "currency": "USD",
+               "savings": 60
+              }
+            },
+          "features": {
+              "socialAccounts": {
+               "total": 10,
+                "perPlatform": {
+                   "facebook": 3,
+                  "instagram": 3,
+                    "twitter": 4
+                  }
+                },
+              "teamMembers": 5,
+                "posting": {
+                  "postsPerDay": 20,
+                    "bulkScheduling": true,
+                    "autoScheduling": true
+                },
+              "analytics": {
+                  "reportTypes": ["basic", "advanced"],
+                  "exportFormats": ["pdf", "csv"],
+                  "retentionDays": 365
+                 },
+                "support": "24/7",
+                "additional": {
+                  "customBranding": true,
+                 "apiAccess": true,
+                  "contentCalendar": true,
+                  "hashtagManager": true
+                }
+               },
+        "recommended": true,
+        "category": "enterprise"
+      }' \
+      http://localhost:5000/api/admin/subscription/plans
+    ```
+##### Response
+*   **Status Code**: `201 Created` (Successful)
+
+#### 2.5. Update Plan
+##### Description
+Updates an existing subscription plan.
+
+##### Request
+*   **Method**: `PUT`
+*   **URL**: `http://localhost:5000/api/admin/subscription/plans/67615fa882f14b0d21c065a3`
+*   **Headers**:
+    *   `Content-Type: application/json`
+    *   `Authorization: Bearer YOUR_JWT_TOKEN`
+*   **Body**:
+```json
+{
         "name": "basic",
         "displayName": "Basic Plan",
         "price": {
@@ -352,8 +640,8 @@ Here's a detailed breakdown of the available endpoints:
             "amount": 299.99,
             "currency": "USD",
             "savings": 59.89
-          }
-        },
+             }
+         },
         "features": {
           "socialAccounts": {
             "total": 5,
@@ -362,504 +650,301 @@ Here's a detailed breakdown of the available endpoints:
               "instagram": 2,
               "twitter": 1
             }
-          },
-        "teamMembers": 3,
-        "posting": {
-          "postsPerDay": 10,
-          "bulkScheduling": true,
-          "autoScheduling": false
-        },
-        "analytics": {
-            "reportTypes": ["basic", "advanced"],
-            "exportFormats": ["pdf", "csv"],
-            "retentionDays": 30
-        },
-        "support": "email",
-        "additional": {
-            "customBranding": false,
-            "apiAccess": false,
-            "contentCalendar": true,
-            "hashtagManager": true
-        }
-        },
-        "recommended": false,
-        "category": "basic"
-    }
-    ```
-*   **Response:**
-    *   Success: 200 status with updated plan details.
-    *   Failure: 400, 500 status codes with error.
-*   **Notes:**
-    *   Replace `{planId}` with the actual ID of the plan.
-
-#### update plan status
-
-*   **Description:** Updates the status of a subscription plan (e.g., active/inactive).
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/subscription/admin/plans/{planId}/status`
-*   **Headers:**
-    *   `Authorization: Bearer YOUR_ADMIN_JWT_TOKEN`
-    *    `Content-Type: application/json`
-*  **Request Body (raw JSON):**
-    ```json
-    {
-        "status": "active"
-    }
-    ```
-*   **Response:**
-    *   Success: 200 status code with updated plan details.
-    *   Failure: 400, 500 with error.
-*   **Notes:**
-    *   Replace `{planId}` with the actual ID of the plan.
-
-#### delete plan
-
-*   **Description:** Deletes a subscription plan.
-*   **Method:** `DELETE`
-*   **URL:** `http://localhost:5000/api/subscription/admin/plans/{planId}`
-*   **Headers:**
-    *  `Authorization: Bearer YOUR_ADMIN_JWT_TOKEN`
-  *   `Content-Type: application/json`
-  *  **Request Body (raw JSON):**
-  ```json
-  {
-    "status": "inactive"
-  }
-  ```
-*   **Response:**
-    *   Success: 200 status code.
-    *  Failure: 404,500 status codes with errors if no plan is found.
-*   **Notes:**
-    *   Replace `{planId}` with the actual ID of the plan.
-
-#### update both features
-
-*  **Description:** Updates both standard and custom features of a subscription plan.
-*  **Method:** `PUT`
-*   **URL:** `http://localhost:3000/api/subscriptions/plan-features/{planId}`
-*  **Headers:**
-    * `Content-Type: application/json`
-    * `Authorization: Bearer YOUR_ADMIN_TOKEN`
-*   **Request body (raw JSON):**
-
-    ```json
-    {
-        "features": {
-          "socialAccounts": {
-            "total": 15,
-            "perPlatform": {
-              "facebook": 5,
-              "instagram": 5,
-              "twitter": 5
-            }
-          },
-          "teamMembers": 10,
-          "posting": {
-            "postsPerDay": 50,
-            "bulkScheduling": true,
-            "autoScheduling": true
-          },
+           },
+           "teamMembers": 3,
+           "posting": {
+              "postsPerDay": 10,
+              "bulkScheduling": true,
+             "autoScheduling": false
+            },
            "analytics": {
             "reportTypes": ["basic", "advanced"],
             "exportFormats": ["pdf", "csv"],
-            "retentionDays": 90
-          },
-          "support": "priority"
-        },
-        "customFeatures": [
-            "White label reports",
-            "Custom URL shortener",
-            "Advanced team permissions"
-        ]
-    }
+            "retentionDays": 30
+           },
+           "support": "email",
+           "additional": {
+             "customBranding": false,
+             "apiAccess": false,
+            "contentCalendar": true,
+             "hashtagManager": true
+           }
+         },
+         "recommended": false,
+         "category": "basic"
+}
+```
+*   **Curl Command**:
+    ```bash
+     curl -X PUT \
+     -H "Content-Type: application/json" \
+      -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+     -d '{
+           "name": "basic",
+           "displayName": "Basic Plan",
+            "price": {
+              "monthly": {
+                 "amount": 29.99,
+                "currency": "USD"
+               },
+              "yearly": {
+                 "amount": 299.99,
+                "currency": "USD",
+                 "savings": 59.89
+               }
+             },
+            "features": {
+              "socialAccounts": {
+                  "total": 5,
+                 "perPlatform": {
+                  "facebook": 2,
+                  "instagram": 2,
+                   "twitter": 1
+                   }
+                },
+              "teamMembers": 3,
+               "posting": {
+                   "postsPerDay": 10,
+                   "bulkScheduling": true,
+                   "autoScheduling": false
+                 },
+                "analytics": {
+                   "reportTypes": ["basic", "advanced"],
+                   "exportFormats": ["pdf", "csv"],
+                  "retentionDays": 30
+                 },
+              "support": "email",
+              "additional": {
+                "customBranding": false,
+                "apiAccess": false,
+                "contentCalendar": true,
+                 "hashtagManager": true
+                }
+             },
+            "recommended": false,
+            "category": "basic"
+        }' \
+     http://localhost:5000/api/admin/subscription/plans/67615fa882f14b0d21c065a3
+   ```
+
+##### Response
+*   **Status Code**: `200 OK` (Successful)
+
+#### 2.6. Update Plan Status
+##### Description
+Updates the status of a subscription plan (e.g., active or inactive).
+
+##### Request
+*  **Method**: `POST`
+*  **URL**: `http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3/status`
+*   **Headers**:
+    *   `Authorization: Bearer YOUR_ADMIN_JWT_TOKEN`
+    *   `Content-Type: application/json`
+*  **Body**:
+```json
+     {
+         "status": "active"
+      }
+```
+*   **Curl Command**:
+    ```bash
+       curl -X POST \
+       -H "Authorization: Bearer YOUR_ADMIN_JWT_TOKEN" \
+       -H "Content-Type: application/json" \
+       -d '{
+            "status": "active"
+            }' \
+        http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3/status
     ```
-*   **Response:**
-    *   Success: 200 status.
-    *   Failure: 400,500 status codes .
-*   **Notes:**
-    *    Replace `{planId}` with the actual ID of plan.
-    * The `features` object encapsulates standard features, and `customFeatures` lists non-standard features.
 
-#### update  standard feature
+##### Response
+*   **Status Code**: `200 OK` (Successful)
 
-*  **Description:** Updates standard features of a subscription plan.
-*   **Method:** `PUT`
-*  `URL: http://localhost:3000/api/subscriptions/plan-features/{planId}`
-*  **Headers:**
-  * `Content-Type: application/json`
-  * `Authorization: Bearer YOUR_ADMIN_TOKEN`
-*   **Request Body (raw JSON):**
-  ```json
-    {
-        "features": {
-            "teamMembers": 15,
-            "support": "24/7"
-        }
-    }
+#### 2.7. Delete Plan
+##### Description
+Deletes a subscription plan. Note: Ensure the correct plan ID is used.
+
+##### Request
+*   **Method**: `DELETE`
+*   **URL**: `http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3`
+*   **Headers**:
+    *   `Authorization: Bearer YOUR_ADMIN_JWT_TOKEN`
+    *  `Content-Type: application/json`
+
+*   **Curl Command**:
+    ```bash
+    curl -X DELETE \
+    -H "Authorization: Bearer YOUR_ADMIN_JWT_TOKEN" \
+    -H "Content-Type: application/json" \
+    http://localhost:5000/api/subscription/admin/plans/67615fa882f14b0d21c065a3
     ```
-* **Response:**
-   * Success: 200 status.
-   * Failure: 400,500 status codes .
-*   **Notes:**
-    *    Replace `{planId}` with the actual ID of plan.
-    *    `features` object contains the updated parameters.
-#### GET PLAN BY GATAGOTIES
+##### Response
+*   **Status Code**: `200 OK` (Successful)
 
-*   **Description:** Returns the subscription plans based on their categories.
-*  **Method:** `GET`
-*   **URL:**  // dynamic link.
-*   **Headers** : None 
-*  **Response**
-    *   Success : 200 status code along with the plans matching categories.
-    *  Failure : 400 or 500 errors if the plans are missing.
-*Note :
-   *  this endpoint may contain more details about categories of user.
+#### 2.8. Update both Features
+##### Description
+Updates both standard and custom features of a subscription plan.
 
-### user management
+##### Request
+*   **Method**: `PUT`
+*   **URL**: `http://localhost:3000/api/subscriptions/plan-features/64f5a7b1c25a`
+*   **Headers**:
+    *   `Content-Type: application/json`
+    *   `Authorization: Bearer YOUR_ADMIN_TOKEN`
 
-#### reactivate user
-
-*   **Description:** Reactivates a previously deactivated user account.
-    **Method:** `GET`
-    **URL:**  `http://localhost:5000/api/admin/users/{userId}/reactivate`
-*  **Headers:**
-    * None
-* **Request Body**
-
+*   **Body**:
 ```json
 {
-    "name":"Nikunja",
-    "email":"xnikunja@gmail.com",
-    "picture":"dsafsd"
-}
-```
-*  **Response:**
-    *   Success: 200 status code, with user details.
-    *  Failure: 400,500 errors if not found.
-*   **Notes:**
-    *   Replace `{userId}` with the actual ID of the user.
-
-#### Get List of users
-
-*   **Description:** Retrieves a list of all users.
-    **Method:** `GET`
-*   **URL:**  `http://localhost:5000/api/v1/admin/users`
-*   **Headers:**
-        * `Content-Type: application/json`
-* **Request body:**
-
-```json
- {
-  "email":"your.email@example.com",
-  "password":"your_secure_password"
- }
-```
-*   **Response:**
-    *   Success: 200 with a list of users..
-    * Failure: 400 or 500 if list not found or server issue.
-
-#### User delete
-*   **Description:** Deletes a user.
-*   **Method:** `DELETE`
-*   **URL:**  `http://localhost:5000/api/admin/users/{userId}`
-*   **Headers:** None
-*  **Request body **
-```json
-{
-    "name":"Nikunja",
-    "email":"xnikunja@gmail.com",
-    "picture":"dsafsd"
-}
-```
-*  **Response:**
-
-    *    Success: 200 status if deletion successful.
-    *    Failure: 400,500 if user not found.
-*   **Notes:**
-    *   Replace `{userId}` with the actual ID of the user.
-
-#### Deactivate User
-
-*   **Description:** Deactivates a user account.
-*   **Method:** `GET`
-*    **URL:** `http://localhost:5000/api/admin/users/{userId}/deactivate`
-* **Headers:** None
-
-*    **Request Body**
-```json
-{
-    "name":"Nikunja",
-    "email":"xnikunja@gmail.com",
-    "picture":"dsafsd"
-}
-```
-*   **Response:**
-    *   Success: 200, with the details of the deactivated user.
-    *   Failure: 400,500 if no user is found or server error.
-*   **Notes:**
-    *   Replace `{userId}` with the actual ID of the user.
-
-#### complete user details by id
-
-*   **Description:** Retrieves complete details of a user with user id.
-*   **Method:** `GET`
-*   **URL:** `http://localhost:5000/api/admin/users/{userId}/details`
-*   **Headers:** none
-* **Request body:**
-```json
-{
-    "name":"Nikunja",
-    "email":"xnikunja@gmail.com",
-    "picture":"dsafsd"
-}
-```
-*    **Response:**
-        * Success: 200 with user details.
-       * Failure: 400 ,500 errors if the user is missing or request error.
-*   **Notes:**
-    *   Replace `{userId}` with the actual ID of the user.
-
-#### send reset password link
-    
-*   **Description:** Sends a reset password link to the user's email address.
- *  **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/admin/users/sendPasswordResetLink`
-*  **Headers:** None
- *   **Request body:**
-    ```json
-    {
-        "email":"xnikunjadu2@gmail.com"
-    }
-    ```
-*   **Response:**
-        *  Success: 200 , an email with a password reset link will be sent.
-       *   Failure: 400,500 status code based on server and request errors.
-
-#### reset user password
-
-*   **Description:** Resets the password of a user .
-*   `Method: POST`
-*   `URL: http://localhost:5000/api/admin/users/reset-password`
-* `Headers: None`
-*   **Request Body (raw JSON):**
-
-  ```json
-  {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJpYXQiOjE3MzQ1MDg1ODgsImV4cCI6MTczNDUxMjE4OH0.e17UzfnRrBCAqXkWfP9LWmN3UZyaSFaQtEz7keJDrhY",
-    "newPassword":"123456"
-}
-```
-*   **Response:**
-    *   Success: 200 status code, user password successfully reset.
-         * Failure: 400 or 500 errors.
----
-
-### admin management
-
-#### Admin Login
-*   **Description:** Authenticates an admin user and provides a JWT.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/v1/admin/login`
-*    **Headers:**`Content-Type: application/json`
- *    **Request body:**
-
- ```json
- {
-   "email": "nikunjadu2@gmail.com",
-   "password": "nikunjadu2"
- }          
-```
-*   **Response:**
-       *   Success: 200 status , JWT will be returned.
-       *  Failure: 400, 401,500 status codes based on server error.
-
-#### create admin by superadmin
-*   **Description:** Creates new admin user by superadmin.
-*   **Method:** `POST`
-*   **URL:**`http://localhost:5000/api/v1/admin/create-admin`
-*   **Headers:**
-    *   `Authorization: Bearer YOUR_JWT_TOKEN`
-    * `Content-Type: application/json`
-*   **Request body :**
-```json
-{
-    "email": "newadsmin@example.com",
-    "password": "securePassword123!",
-    "name": "New Admin",
-    "permissions": [
-        "manage_users",
-        "view_user_details",
-        "manage_content"
+  "features": {
+    "socialAccounts": {
+      "total": 15,
+      "perPlatform": {
+        "facebook": 5,
+        "instagram": 5,
+        "twitter": 5
+       }
+     },
+     "teamMembers": 10,
+    "posting": {
+      "postsPerDay": 50,
+      "bulkScheduling": true,
+      "autoScheduling": true
+    },
+    "analytics": {
+      "reportTypes": ["basic", "advanced"],
+      "exportFormats": ["pdf", "csv"],
+      "retentionDays": 90
+       },
+     "support": "priority"
+  },
+  "customFeatures": [
+    "White label reports",
+    "Custom URL shortener",
+     "Advanced team permissions"
     ]
 }
 ```
-*   **Response:**
-    *   Success: 201 status with new admin details.
-    *   Failure: 400 ,500 if any error occurs.
-*   **Notes:**
-    *   This endpoint is only accessible to super admin users.
-
-#### get-all-admins
-
- * **Description:** Retrieves a list of all admin users
- *  **Method:** `GET`
-*  **URL:** `http://localhost:5000/api/v1/admin/get-all-admins`
-*   **Headers:** None
-*  **Response:**
-    *   Success: 200 status with the admin list.
-    *   Failure: 400,500 with not found or server error.
-
-#### delete admins
-
-*  **Description:** Deletes an admin user.
-*  **Method:** `DELETE`
-* **URL:** `http://localhost:5000/api/v1/admin/delete-admin/{adminId}`
-*   **Headers:** None
-*  **Response:**
-    * Success: 200 status.
-    * Failure: 400,500 if server is missing or user not found.
-* **Notes**:
-        Replace {adminId} with the actual ID of the admin to be deleted.
-
-#### get-admin-details
-
-*  **Description:**  Retrieves details for a specific admin user.
-*   **Method:** `GET`
-*  `URL: http://localhost:5000/api/v1/admin/get-admin-details/{adminId}`
-*   **Headers:** None
-*  **Response:**
-        *  Success: 200, with the specific admin details.
-        *  Failure: 400,500 if server is down or the user is not available.
-*   **Notes**:
-    *   Replace {adminId} with the actual ID of the admin whose details you want.
-
-#### update admin permission
-
-*  **Description:**  Updates the permissions for a specific admin user by admin Id.
-*   **Method:** `GET`
-*  `URL: http://localhost:5000/api/v1/admin/get-admin-details/{adminId}`
-*   **Headers:** None
-*  **Response:**
-         *  Success: 200, with the updated admin details.
-         *   Failure: 400,500 if server is down or the user is not available.
-*   **Notes**:
-       *   Replace {adminId} with the actual ID of the admin whose details you want.
----
-
-## user
-
-### subscribe
-#### Get current plan
-
-*   **Description:** Retrieves the current subscription plan of a user.
-*   **Method:** `GET`
-*   **URL:** `http://localhost:5000/api/v1/users/subscription`
-*   **Headers:**
-    *   `Authorization: Bearer YOUR_JWT_TOKEN`
-*    **Response:**
-        *   Success: 200 , current sub details .
-        *  Failure: 400, 500 if no plan found or server error.
-
-#### cancel subs
-*   **Description:** Cancels the user's current subscription.
-    **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/v1/users/cancel-subscription`
-*  **Headers:**
-    *   `Content-Type: application/json`
-    *   Authorization: Bearer YOUR_JWT_TOKEN
-* **Request body (raw JSON):**
-
-    ```json
-    {
-      "reason": "my wish why do u wanna know "
-    }
+*   **Curl Command**:
+     ```bash
+      curl -X PUT \
+       -H "Content-Type: application/json" \
+      -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+       -d '{
+            "features": {
+              "socialAccounts": {
+                "total": 15,
+                "perPlatform": {
+                  "facebook": 5,
+                  "instagram": 5,
+                   "twitter": 5
+                 }
+               },
+              "teamMembers": 10,
+              "posting": {
+               "postsPerDay": 50,
+               "bulkScheduling": true,
+               "autoScheduling": true
+                },
+              "analytics": {
+                   "reportTypes": ["basic", "advanced"],
+                  "exportFormats": ["pdf", "csv"],
+                   "retentionDays": 90
+                 },
+                "support": "priority"
+              },
+              "customFeatures": [
+              "White label reports",
+               "Custom URL shortener",
+                 "Advanced team permissions"
+              ]
+         }'\
+      http://localhost:3000/api/subscriptions/plan-features/64f5a7b1c25a
     ```
-*  **Response:**
-        *   Success: 200 status with the message for cancellation request
-        *  Failure: 400 or 500 based on error.
 
-#### subscribe a plan
+##### Response
+*   **Status Code**: `200 OK` (Successful)
 
-*   **Description:** Subscribes a user to a specific plan.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/v1/users/subscribe`
-*   **Headers:**
-     * `Content-Type: application/json`
-    *   `Authorization: Bearer YOUR_JWT_TOKEN`
-*  **Request body (raw JSON):**
+#### 2.9. Update Standard Features
+##### Description
+Updates only the standard features of a subscription plan.
 
-    ```json
-    {
-        "planId": "6763d06487f004a49970fd5a",
-        "billingCycle": "monthly"
-    }
-    ```
-*  **Response:**
-        *   Success: 200 with new sub details.
-        * Failure: 400, 500 based on server error.
-
-#### update plan
-
-*   **Description:** Updates the user's subscription plan.
-*   **Method:** `PUT`
-*   **URL:** `http://localhost:5000/api/v1/users/subscription/update`
-*  **Headers:**
-    *   `Content-Type: application/json`
-    *   `Authorization: Bearer YOUR_JWT_TOKEN`
-*  **Request body (raw JSON):**
-    ```json
-    {
-        "planId": "6763d06487f004a49970fd5a",
-        "billingCycle": "monthly"
-    }
-    ```
-* **Response:**
-        *    Success: 200 . with updated subscription details
-        *  Failure: 400 or 500 status code with the respective errors.
-
-### USER OPERATION
-
-#### user details
-
-*   **Description:** Retrieves details of the currently authenticated user.
-*   **Method:** `GET`
-*   **URL:** `http://localhost:5000/api/users/details`
-*   **Headers:** None
-*  **Response:**
-    *   Success: 200 status with user data .
-  *  Failure: 400, 500 status codes with error.
-
-#### delete User
-
-*   **Description:** Initiates the process to delete the authenticated user.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/v1/users/delete`
-*   **Headers:** None
-*   **Request Body:**
- ```json
+##### Request
+*   **Method**: `PUT`
+*   **URL**: `http://localhost:3000/api/subscriptions/plan-features/64f5a7b1c25a`
+*   **Headers**:
+    * `Content-Type: application/json`
+     *   `Authorization: Bearer YOUR_ADMIN_TOKEN`
+*   **Body**:
+```json
 {
-    "name":"Nikunja",
-    "email":"xnikunja@gmail.com",
-    "picture":"dsafsd"
+  "features": {
+    "teamMembers": 15,
+    "support": "24/7"
+  }
 }
 ```
-*   **Response:**
-    *   Success: 200 status code, an email will be sent to the given email address to confirm deletion.
-    *   Failure:  400 or 500 with the proper server error.
-
-#### confim delete user
-
-*   **Description:** Confirms the deletion of the user account using a token.
-*   **Method:** `POST`
-*   **URL:** `http://localhost:5000/api/users/confirm-delete`
-    *  **Headers:** None
-*  **Request body :**
-    ```json
-    {
-      "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDAxODRkNGE2NjJiMjVkZTc1MTgiLCJpYXQiOjE3MzQ0MjY2NjUsImV4cCI6MTczNDQzMDI2NX0.sEFZye1spypGkzc6pIIOwh_x7Xg6qMN3Woaw3wqowm0"
-    }
+*   **Curl Command**:
+    ```bash
+      curl -X PUT \
+       -H "Content-Type: application/json" \
+        -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+       -d '{
+              "features": {
+                "teamMembers": 15,
+               "support": "24/7"
+              }
+           }' \
+       http://localhost:3000/api/subscriptions/plan-features/64f5a7b1c25a
     ```
-*   **Response:**
-    * Success: 200 with the message for user deletion.
-       * Failure: 400,500 errors if invalid token or any server issue.
----
+
+##### Response
+* **Status Code**: `200 OK` (Successful)
+
+#### 2.10. Get Plan by Categories
+##### Description
+This endpoint is not clearly defined in the Postman documentation. More details will be provided once available.
+
+##### Request
+*   **Method**: `GET`
+*   **URL**: Not specified
+*   **Headers**: None
+*   **Body**: None
+
+##### Response
+*   **Status Code**: Not specified
+
+### 3. User Management
+#### 3.1. Reactivate User
+##### Description
+Reactivates a previously deactivated user.
+
+##### Request
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/reactivate`
+*   **Headers**: None
+*   **Body**:
+```json
+{
+  "name":"Nikunja",
+  "email":"xnikunja@gmail.com",
+  "picture":"dsafsd"
+}
+```
+*   **Curl Command**:
+    ```bash
+       curl -X GET \
+       http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/reactivate
+    ```
+
+##### Response
+*   **Status Code**: `200 OK` (Successful)
+
+#### 3.2. Get List of Users
+##### Description
+Retrieves a list of all users in the system.
+
+##### Request
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/v1/admin/users`
+*   **Headers**:
+    
