@@ -1,1098 +1,888 @@
 # SocioX
 
-# SocioX API Documentation
+Okay, here is the comprehensive API documentation for the provided Postman collection, structured as requested:
 
-## Overview
+## SocioX API
 
-This document provides detailed API documentation for the SocioX platform. It covers authentication, user management, and subscription functionalities for both regular users and administrators.
+### Overview
+The SocioX API provides functionalities for user authentication, subscription management, and administrative tasks. It allows users to register, login, manage their subscriptions, and for administrators to handle users, subscriptions, and other administrative tasks. The API supports both parent and child user types, each with varying levels of access and permissions.
 
 ### Authentication
-
-SocioX utilizes JWT (JSON Web Tokens) for authentication. Most endpoints require a valid bearer token in the `Authorization` header.
+The SocioX API uses JSON Web Tokens (JWT) for authentication. Most endpoints require a valid JWT in the `Authorization` header as a bearer token. Ensure to include `Bearer` prefix e.g., `Bearer your_token_here`.
 
 ### Endpoints
 
-The API is structured into several main sections:
+### Auth
 
-*   **Auth:** Handles user registration, login, and password reset.
-*   **Admin:** Contains endpoints for managing users, subscriptions, and admin accounts.
-*   **Users:** Manages user operations such as profiles , subscription management and account deletion.
+#### 1. Register parent email
+*   **Description**: Registers a new parent user.
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/auth/register`
+*   **Headers**:
+    *   `Content-Type: application/json`
+*   **Request Body**:
 
-## Auth
-
-### Register parent email
-    
-Registers a new parent user with the platform.
-   
-   **Endpoint:**
-   ```
-   POST /api/v1/auth/register
-   ```
-   
-   **Request Body:**
-   
-   ```json
-   {
-      "email": "parent@example.com",
-      "password": "yourpassword123",
-      "name": "Parent User"
-   }
-   ```
-   
-   
-   **Response:**
-   
-      -Status Code: 200 Created or any relevant success code
-        - This endpoint does not return any data in the response body upon successful  creation.
-
-### Register child email
-
-Registers a new child user under a parent account.
-    
-    **Endpoint:**
-    ```
-    POST /api/users/child-users
-    ```
-   
-   **Headers:**
-   
-   - `Content-Type: application/json`
-   - `Authorization: Bearer <parent_jwt_token>`
-    
-   **Request Body:**
-   
-   ```json
-    {
-      "email": "child@example.com",
-      "password": "childpassword123",
-      "name": "Child User",
-      "permissions": ["create_posts", "view_analytics"]
-   }
-   ```
-    
-  **Response:**
-  
-      - Status Code: 201 Created or any relevant success code
-        - This endpoint does not return any data in the response body upon successful child user creation.
-
-### Login email
-
-Authenticates a user and issues a JWT token.
-    
-    **Endpoint:**
-    ```
-    POST /api/v1/auth/login
-    ```
-    
-    **Request Body:**
-    
     ```json
     {
-        "email": "user@example.com",
-        "password": "yourpassword123"
+        "email": "xnikunjadu@gmail.com",
+        "password": "yourpassword123",
+        "name": "Test User"
     }
     ```
-      
-  **Response:**
-  
-     - Status Code: 200 OK or any relevant success code
-       - This endpoint does not return any data in the response body upon successful login. A JWT is expected to be returned in the HTTP header.
+*   **Response**:
+      *   On Success: 201 (Created)
+    *   A valid JWT in the response.
+ *   **Response Example**:
 
-### Forgot Password
-    
-Initiates the password reset process by sending a reset link to the user's email.
-    
-    **Endpoint:**
+     ```json
+      {
+          "token":"your-generated-jwt-token",
+           "message": "User created successfully"
+      }
     ```
-    POST /api/auth/forgot-password
-    ```
-    **Request Body:**
-    
+*   **Notes**:
+    *   The password should be securely hashed on the server side.
+
+#### 2. Register child email
+*   **Description**: Registers a new child user under a parent account.
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/users/child-users`
+*   **Headers**:
+    *   `Content-Type: application/json`
+    *   `Authorization: Bearer <parent_jwt_token>`
+
+*   **Request Body**:
+
     ```json
     {
-        "email": "user@example.com"
+        "email": "child@example.com",
+        "password": "childewqepassword123",
+        "name": "Child User",
+        "permissions": ["create_posts", "view_analytics"]
     }
     ```
-    
-    **Response:**
+*   **Response**:
+      *   On Success: 201 (Created)
+    *   A valid JWT in the response.
+*   **Response Example**:
+
+     ```json
+      {
+          "token":"your-generated-jwt-token",
+           "message": "User created successfully"
+      }
+    ```
+*   **Notes**:
+    *   Requires a valid parent JWT for authorization.
+    *   Permissions can be tailored to your application's needs.
   
-       -Status Code: 200 OK or any relevant success code
-        - This endpoint does not return any data in the response body upon successful request of the email.
 
-### Reset Email Password
+#### 3. Login email
+*   **Description**: Logs in an existing user via email and password.
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/auth/login`
+*   **Headers**:
+    *   `Content-Type: application/json`
+*   **Request Body**:
 
-Resets the user's password using a provided OTP.
-    
-  **Endpoint:**
-  ```
-  POST /api/auth/reset-password
-  ```
-    
-  **Request Body:**
-    
-  ```json
-  {
-      "email": "user@example.com",
-      "otp": "123456",
-      "newPassword": "your-new-password"
-  }
-  ```
-
-  **Response:**
-  
-      -Status Code: 200 OK or any relevant success code
-        -This endpoint does not return any data in the response body upon successful password reset.
-
-## Admin
-
-### User Subscription Management
-
-#### Subscribe user plan
-    
-Subscribes a user to a plan.
-   
-   **Endpoint:**
-   ```
-   POST /api/v1/admin/users/{userId}/subscription
-   ```
-   **Headers:**
-   
-  - `Content-Type: application/json`
-  - `Authorization: Bearer <admin_jwt_token>`
-     
-   **URL Parameters:**
-   
-   -`userId`: The ID of the user to subscribe.
-       
-   **Request Body:**
-
-   ```json
-   {
-       "planId": "67616c378c821544d3c5400b",
-       "billingCycle": "monthly"
-   }
-   ```
-  
-  **Response:**
-  
-      -Status Code: 200 OK or any relevant success code
-        -This endpoint does not return any data in the response body upon successful plan subscription.
-
-#### Cancel subs user plan
-    
-Cancels a user's active subscription.
-    
-    **Endpoint:**
-    ```
-    POST /api/v1/admin/users/{userId}/subscription/cancel
-   ```
-    **Headers:**
-   
-     - `Content-Type: application/json`
-     - `Authorization: Bearer <admin_jwt_token>`
-       
-    **URL Parameters:**
-   
-      -`userId`: The ID of the user whose subscription is to be cancelled.
-    
-  **Request Body:**
-    
-  ```json
-    {
-        "reason": "Cancellation reason..."
-    }
-  ```
-
-   **Response:**
-  
-      -Status Code: 200 OK or any relevant success code
-        -This endpoint does not return any data in the response body upon successful subscription cancellation.
-    
-#### Get sub by userid
-    
-Retrieves a user's current subscription details.
-    
-    **Endpoint:**
-    ```
-    GET /api/admin/users/{userId}/subscription
-    ```
-     **Headers:**
-   
-        - `Content-Type: application/json`
-        -`Authorization: Bearer <admin_jwt_token>`
-         
-    **URL Parameters:**
-    
-       -`userId`: The ID of the user whose subscription information is to be retrieved.
-     
-    **Response:**
-   
-       -Status Code: 200 OK
-       -Response body contains user subscription information.
-       
- #### Update sub by user id
-    
-Updates a user's subscription.
-    
-    **Endpoint:**
-    ```
-    POST /api/admin/users/{userId}/subscription/update
-    ```
-    
-    **Headers:**
-      
-    - `Content-Type: application/json`
-    - `Authorization: Bearer <admin_jwt_token>`
-  
-    **URL Parameters:**
-    
-       -`userId`: ID of the user whose subscription is to be updated.
-   
-    **Request Body:**
-    
-   ```json
-    {
-      "planId": "67616c378c821544d3c5400b",
-      "billingCycle": "monthly"
-    }
-   ```
-   
-    
-    **Response:**
-  
-      -Status Code: 200 OK or any relevant success code
-       -This endpoint does not return any data in the response body upon successful plan update.
-
-### Subscription Management
-
-#### get Plans
-
-Retrieves a list of subscription plans, with options for filtering.
-    
-    **Endpoint:**
-    ```
-    GET /api/v1/admin/subscription/plans
-   ```
-    **Headers:**
-   
-    - `Authorization: Bearer <admin_jwt_token>`
-      
-   **Query Parameters (optional):**
-   
-   -   `category`: Filter by plan category (e.g., "enterprise").
-   -   `status`: Filter by plan status (e.g., "active").
-   -  `name`: Filter by plan name (e.g., "premium").
-
-  **Response:**
-   
-    -Status Code: 200 OK
-    - Response body contains list of plan objects.
- 
-#### Get Plans by id
-
-Retrieves a subscription plan by its ID.
-    
-    **Endpoint:**
-    ```
-    GET /api/admin/subscription/plans/{planId}
-    ```
-  
-    **Headers:**
-       
-    - `Content-Type: application/json`
-       
-    **URL Parameters:**
-    
-       -`planId`: ID of the subscription plan to be retrieved.
-       
-   **Response:**
-  
-     - Status Code: 200 OK
-     - Response body contains plan information.
-
-#### Update custom features
-    
-Updates the custom features of a subscription plan.
-    
-    **Endpoint:**
-    ```
-    PATCH /api/admin/subscription/plans/{planId}/features
-    ```
-     **Headers:**
-   
-       - `Content-Type: application/json`
-       - `Authorization: Bearer <admin_jwt_token>`
-     
-    **URL Parameters:**
-    
-      -`planId`: ID of the subscription plan to update.
-    
-   **Request Body:**
-    
     ```json
-     {
-       "customFeatures": [
-          "White label reports",
+    {
+        "email": "john@example.com",
+        "password": "childewqepassword123"
+    }
+    ```
+* **Response**:
+    *   On success: 200 (ok)
+    *   A valid JWT token in the response.
+*   **Response Example**:
+        ```json
+        {
+        "token":"your-generated-jwt-token"
+           "message": "Logged in successfully"
+        }
+    ```
+*  **Notes**:
+    *   The password should be securely hashed on server.
+  
+
+#### 4. Forgot Password
+*   **Description**: Initiates the password reset process by sending an OTP (One-Time Password) to user email.
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/auth/forgot-password`
+*   **Headers**:
+    *   `Content-Type: application/json`
+*   **Request Body**:
+
+    ```json
+    {
+        "email": "xnikunjadu2@gmail.com"
+    }
+    ```
+*   **Response**:
+    *    On Success: 200 (ok)
+    *   Response message containing the status of task.
+*   **Response Example**:
+    ```json
+        {
+           "message": "Password reset OTP send to your register email"
+        }
+    ```
+*   **Notes**:
+    *   The server should generate and store a time-sensitive OTP for the email.
+
+#### 5. Reset Email Password
+*   **Description**: Resets user password after OTP verification.
+*   **Method**: `POST`
+*  **URL**: `http://localhost:5000/api/auth/reset-password`
+*   **Headers**:
+    *   `Content-Type: application/json`
+*   **Request Body**:
+
+    ```json
+    {
+        "email": "xnikunjadu2@gmail.com",
+        "otp": "360892",
+        "newPassword": "your-new-password"
+    }
+    ```
+  **On Success**: 200 (Ok)
+*   **Response**:
+    *  A success message
+*  **Response Example**:
+     ```json
+        {
+           "message": "Password reset  successfully"
+        }
+    ```
+*   **Notes**:
+    *   The server should verify the OTP and update the password after secure hashing.
+
+### Admin
+
+#### User Subscription
+
+##### 1. Subscribe user plan
+*   **Description**: Subscribes a user to a specific plan.
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/admin/users/{userId}/subscription`
+*   **Headers**:
+    *   `Content-Type: application/json`
+    *  `Authorization: Bearer <admin_jwt_token>`
+*   **Request Body**:
+
+    ```json
+    {
+        "planId": "67616c378c821544d3c5400b",
+        "billingCycle": "monthly"
+    }
+    ```
+*   **Response**:
+           *    On Success: 201 (Created)
+      * Success message along the plan details.
+*   **Notes**:
+    *   Requires admin authentication via JWT.
+    *   The `userId` should be path variable and a valid user ObjectId
+
+##### 2. Cancel user plan
+*   **Description**: Cancels a user's active subscription.
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/admin/users/{userId}/subscription/cancel`
+ *  **Headers**:
+    *  `Content-Type: application/json`
+    *  `Authorization: Bearer <admin_jwt_token>`
+*   **Request Body**:
+
+    ```json
+    {
+        "reason": "i dont really know the reason"
+    }
+    ```
+*   **Response**:
+    *   On Success: 200 (Ok)
+    *  A success message
+*   **Notes**:
+    *  Requires admin authentication via JWT.
+    * `userId` should be a valid mongoDB ObjectId.
+
+##### 3. get sub by userId
+*   **Description**: Retrieves a user's subscription details.
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/admin/users/{userId}/subscription`
+*  **Headers**:
+    *   `Content-Type: application/json`
+    *   `Authorization: Bearer <admin_jwt_token>`
+
+*  **Response**:
+    *    On Success: 200 (Ok)
+    *   subscription details
+*   **Notes**:
+     *  Requires admin authentication via JWT.
+    *   `userId` should be a valid mongoDB ObjectId.
+
+##### 4. Update sub by userId
+*   **Description**: Updates a user's subscription details.
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/admin/users/{userId}/subscription/update`
+*    **Headers**:
+        *   `Content-Type: application/json`
+        *   `Authorization: Bearer <admin_jwt_token>`
+*   **Request Body**:
+
+    ```json
+    {
+        "planId": "67616c378c821544d3c5400b",
+        "billingCycle": "monthly"
+    }
+    ```
+*   **Response**:
+   *    On Success: 200 (Ok)
+  *   Updated plan details
+*   **Notes**:
+    *  Requires admin authentication via JWT.
+    *   `userId` should be a valid mongoDB ObjectId.
+
+#### Subscription Management
+
+##### 1. Get Plans
+*   **Description**: Retrieves a list of subscription plans based on query parameters.
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/v1/admin/subscription/plans`
+*   **Query Parameters**:
+    *   `category`: Filter by Plan Category (e.g., enterprise, basic).
+    *   `status`: Filter by plan status (e.g., active, inactive )
+    *   `name`: filter by plan name
+*   **Headers**:
+    *   `Authorization: Bearer <admin_jwt_token>`
+*   **Response**:
+    *   On Success: 200 (Ok)
+    *   A list of plan objects in the body
+*   **Notes**:
+    *   Requires admin authentication via JWT.
+    * Example URL: `http://localhost:5000/api/v1/admin/subscription/plans?category=enterprise&status=active&name=premium`
+
+#####  2. Get Plans by id
+    *  **Description**: Retrieves a subscription plan's details based on plan id.
+    *  **Method**: `GET`
+    *  **URL**: `http://localhost:5000/api/admin/subscription/plans/{planId}`
+    *   **Headers**:
+        *   `Authorization: Bearer <admin_jwt_token>`
+    *  **Response**:
+        * On Success: 200 (Ok)
+        *   Plan object
+    *   **Notes**:
+        *   Requires admin authentication via JWT.
+        * `planId` should be a valid mongoDB ObjectId.
+
+##### 3. Update custom features
+
+*   **Description**: Updates custom features for a specific subscription plan.
+*   **Method**:  `PATCH`
+*   **URL**: `http://localhost:5000/api/admin/subscription/plans/{planId}/features`
+*    **Headers**:
+        *   `Authorization: Bearer <admin_jwt_token>`
+        *  `Content-Type: application/json`
+*   **Request Body**:
+
+    ```json
+    {
+        "customFeatures": [
+           "White label reports",
            "Custom URL shortener",
            "Advanced team permissions",
            "API rate limit increase"
         ]
     }
     ```
-   
-    **Response:**
-      -Status Code: 200 OK or any relevant success code
-       - This endpoint does not return any data in the response body upon successful  custom feature update.
+*   **Response**:
+        *   On Success: 200 (Ok)
+        *   Confirmation message along with plan object
+*   **Notes**:
+        *  Requires admin authentication via JWT.
+        *   `planId` should be a valid mongoDB ObjectId.
 
-#### create plan
-
-Creates a new subscription plan.
-  **Endpoint:**
-  ```
-    POST /api/admin/subscription/plans
-  ```
-    
-    **Headers:**
-
-      -`Content-Type: application/json`
-      -`Authorization: Bearer <admin_jwt_token>`
-    **Request Body:**
-
-```json
-    {
-      "name": "premium",
-      "displayName": "Premium Plan",
-      "price": {
-        "monthly": {
-          "amount": 29.99,
-          "currency": "USD"
-        },
+##### 4. Create plan
+    *   **Description**: Creates a new subscription plane
+    *   **Method**: `POST`
+    *   **URL**: `http://localhost:5000/api/admin/subscription/plans/`
+    *    **Headers**:
+            *   `Authorization: Bearer <admin_jwt_token>`
+            *    `Content-Type: application/json`
+    *   **Request Body**:
+    ```json
+     {
+        "name": "premium",
+        "displayName": "Premium Plan",
+        "price": {
+            "monthly": {
+            "amount": 29.99,
+            "currency": "USD"
+            },
         "yearly": {
-          "amount": 299.99,
-          "currency": "USD",
-          "savings": 60
-        }
-      },
-      "features": {
-        "socialAccounts": {
-          "total": 10,
-        "perPlatform": {
-            "facebook": 3,
-            "instagram": 3,
-            "twitter": 4
-          }
-        },
-       "teamMembers": 5,
-        "posting": {
-          "postsPerDay": 20,
-          "bulkScheduling": true,
-          "autoScheduling": true
-        },
-        "analytics": {
-          "reportTypes": ["basic", "advanced"],
-          "exportFormats": ["pdf", "csv"],
-          "retentionDays": 365
-        },
-       "support": "24/7",
-        "additional": {
-          "customBranding": true,
-          "apiAccess": true,
-          "contentCalendar": true,
-          "hashtagManager": true
-        }
-      },
-       "recommended": true,
-       "category": "enterprise"
-    }
-    ```
-
-  **Response:**
-  
-     - Status Code: 201 Created or any relevant success code
-     - This endpoint does not return any data in the response body upon successful plan creation.
-
-#### update plan
-   
-Updates an existing subscription plan.
-   
-   **Endpoint:**
-   ```
-    PUT /api/admin/subscription/plans/{planId}
-   ```
-   
-  **Headers:**
-        
-   - `Content-Type: application/json`
-   - `Authorization: Bearer <admin_jwt_token>`
-         
-  **URL Parameters:**
-       
-  -`planId`: ID of the subscription plan to be updated.
-       
-  **Request Body:**
-   ```json
-    {
-    "name": "basic",
-    "displayName": "Basic Plan",
-    "price": {
-        "monthly": {
-        "amount": 29.99,
-        "currency": "USD"
-      },
-      "yearly": {
-        "amount": 299.99,
-        "currency": "USD",
-        "savings": 59.89
+            "amount": 299.99,
+            "currency": "USD",
+            "savings": 60
             }
         },
-       "features": {
-        "socialAccounts": {
-           "total": 5,
-           "perPlatform": {
-                "facebook": 2,
-                "instagram": 2,
-                "twitter": 1
-           }
-        },
-        "teamMembers": 3,
-        "posting": {
-        "postsPerDay": 10,
-        "bulkScheduling": true,
-        "autoScheduling": false
-        },
+        "features": {
+            "socialAccounts": {
+            "total": 10,
+            "perPlatform": {
+                "facebook": 3,
+                "instagram": 3,
+                "twitter": 4
+                }
+            },
+            "teamMembers": 5,
+            "posting": {
+            "postsPerDay": 20,
+            "bulkScheduling": true,
+            "autoScheduling": true
+            },
         "analytics": {
-        "reportTypes": ["basic", "advanced"],
-        "exportFormats": ["pdf", "csv"],
-        "retentionDays": 30
-      },
-      "support": "email",
-       "additional": {
-        "customBranding": false,
-        "apiAccess": false,
-        "contentCalendar": true,
-        "hashtagManager": true
+            "reportTypes": ["basic", "advanced"],
+            "exportFormats": ["pdf", "csv"],
+            "retentionDays": 365
+            },
+            "support": "24/7",
+            "additional": {
+            "customBranding": true,
+            "apiAccess": true,
+            "contentCalendar": true,
+            "hashtagManager": true
+            }
+        },
+        "recommended": true,
+           "category": "enterprise"
+    }
+   ```
+    * **Response**:
+         *On Success: 201 (Created)
+        *    A success message with new created plan object.
+   *   **Notes**:
+            *  Requires admin authentication via JWT.
+##### 5. Update plan
+
+*   **Description**: Updates an existing subscription plan's overall structure and attributes.
+*   **Method**: `PUT`
+*   **URL**: `http://localhost:5000/api/admin/subscription/plans/{planId}`
+*    **Headers**:
+        *   `Authorization: Bearer <admin_jwt_token>`
+        *    `Content-Type: application/json`
+*   **Request Body**:
+        ```json
+          {
+              "name": "basic",
+               "displayName": "Basic Plan",
+                "price": {
+                "monthly": {
+                    "amount": 29.99,
+                    "currency": "USD"
+                },
+                "yearly": {
+                    "amount": 299.99,
+                    "currency": "USD",
+                    "savings": 59.89
+                    }
+                },
+              "features": {
+                "socialAccounts": {
+                    "total": 5,
+                    "perPlatform": {
+                    "facebook": 2,
+                        "instagram": 2,
+                        "twitter": 1
+                    }
+                },
+              "teamMembers": 3,
+            "posting": {
+                "postsPerDay": 10,
+                "bulkScheduling": true,
+                "autoScheduling": false
+                },
+                "analytics": {
+                    "reportTypes": ["basic", "advanced"],
+                    "exportFormats": ["pdf", "csv"],
+                    "retentionDays": 30
+                    },
+                    "support": "email",
+                    "additional": {
+                        "customBranding": false,
+                        "apiAccess": false,
+                        "contentCalendar": true,
+                        "hashtagManager": true
+                    }
+              },
+                "recommended": false,
+                "category": "basic"
         }
-    },
-    "recommended": false,
-    "category": "basic"
-  }
-   ```
-  **Response:**
-   
-     - Status Code: 200 OK or any relevant success code
-       - This endpoint does not return any data in the response body upon successful plan update.
+        ```
+*   **Response**:
+      *    On Success: 200 (Ok)
+      *    A success message including the updated plan details
+*   **Notes**:
+        *  Requires admin authentication via JWT.
+        *   `planId` should be a valid mongoDB ObjectId.
 
-#### update plan status
-    
-Updates the status of a given subscription plan (e.g., active/inactive).
-    
-    **Endpoint:**
-    ```
-    POST /api/subscription/admin/plans/{planId}/status
-    ```
-   **Headers:**
-   
-    - `Authorization: Bearer <admin_jwt_token>`
-    -   `Content-Type: application/json`
-
-    **URL Parameters:**
-      
-      -`planId`: ID of the plan for which status is to be updated.
-    
-    **Request Body:**
-   
-   ```json
-    {
-       "status": "active"
-    }
-   ```
-
-   **Response:**
-   
-      - Status Code: 200 OK or any relevant success code
-      - This endpoint does not return any data in the response body upon successful status update.
-
-#### delete plan
-    
-Deletes a subscription plan by its ID.
-    
-  **Endpoint:**
-  ```
-   DELETE /api/subscription/admin/plans/{planId}
-  ```
-  
-   **Headers:**
-       
-   -`Authorization: Bearer <admin_jwt_token>`
-   -`Content-Type: application/json`
-      
-  **URL Parameters:**
-   
-  -`planId`: ID of the plan to be deleted.
-  
-  **Request Body:**
-    
-  ```json
-   {
-      "status": "inactive"
-   }
-  ```
-
-   **Response:**
-  
-      - Status Code: 200 or 204 No content. No response body on success.
-
-### update both features
-
-Updates both standard and custom features of a subscription plan.
-  
-  **Endpoint:**
-   ```
-    PUT /api/subscriptions/plan-features/{planId}
-   ```
-     
-   **Headers:**
-    
-   -  `Content-Type: application/json`
-   - `Authorization: Bearer <admin_jwt_token>`
-        
-  **URL Parameters:**
-       
-   -   `planId`: The ID of the subscription plan to update.
-       
-   **Request Body:**
-  
- ```json
-    {
-    "features": {
-        "socialAccounts": {
-          "total": 15,
-          "perPlatform": {
-            "facebook": 5,
-            "instagram": 5,
-              "twitter": 5
-          }
-        },
-        "teamMembers": 10,
-        "posting": {
-         "postsPerDay": 50,
-          "bulkScheduling": true,
-         "autoScheduling": true
-        },
-        "analytics": {
-          "reportTypes": ["basic", "advanced"],
-          "exportFormats": ["pdf", "csv"],
-          "retentionDays": 90
-        },
-       "support": "priority"
-      },
-    "customFeatures": [
-        "White label reports",
-        "Custom URL shortener",
-        "Advanced team permissions"
-      ]
-    }
-  ```
-
-   **Response:**
-  
-      -Status Code: 200 OK or any relevant success code
-       - This endpoint does not return any data in the response body after update.
-      
-### update standard feature
-    
-Updates only the standard features of a subscription plan.
-        
-  **Endpoint:**
-  ```
-   PUT /api/subscriptions/plan-features/{planId}
-  ```
-    
-  **Headers:**
-  
-      - `Content-Type: application/json`
-      - `Authorization: Bearer <admin_jwt_token>`
-        
-  **URL Parameters:**
-       
-    - `planId`: The ID of the subscription plan to update.
-
-  **Request Body:**
-    
- ```json
-  {
-    "features": {
-        "teamMembers": 15,
-        "support": "24/7"
-      }
-  }
- ```
-   
-  **Response:**
-  
-     -Status Code: 200 OK or any relevant success code
-       -This endpoint does not return any data in the response body after update.
-
-#### GET PLAN BY CATEGORIES
-
-this feature was not tested properly.
-  
-**Endpoint:**
-```
-    GET  /api/subscriptions/plan-features
-```
-
-### User Management
-
-#### Reactivate user
-    
-Reactivates a deactivated user.
-   
-    **Endpoint:**
-   ```
-    GET /api/admin/users/{userId}/reactivate
-   ```
-  **Headers:**
-
-       - `Authorization: Bearer <admin_jwt_token>`
-     
-  **URL Parameters:**
-  
-     -`userId`:  ID of the user to reactivate.
-
-    **Response:**
-  
-      - Status Code: 200 OK or any relevant success code
-        - This endpoint does not return any data in the response body upon successful reactivation.
-
-#### Get List of users
-    
-Retrieves a list of all users.
-  
- **Endpoint:**
-  ```
-   GET /api/v1/admin/users
-  ```
-    
-   **Headers:**
-        
-    - `Authorization: Bearer <admin_jwt_token>`
-         
-   **Response:**
- 
-       -Status Code: 200 OK
-       -Response body contains a list of all users
-
-#### User delete
-    
-Initiates the deletion process of a user
-    
-    **Endpoint:**
-    ```
-    DELETE /api/admin/users/{userId}
-    ```
-    
-   **Headers:**
-   
-      - `Authorization: Bearer <admin_jwt_token>`
- 
-   **URL Parameters:**
-        
-     -`userId`: ID of the user to delete
-         
-     **Response:**
- 
-     -Status Code: 200 OK or any relevant success code
-       -This endpoint does not return any data in the response body upon successful user delete request.
-
-#### Deactivate User
-
-Deactivates a user.
-    
-    **Endpoint:**
-    ```
-     GET /api/admin/users/{userId}/deactivate
-    ```
-    
-   **Headers:**
-        
-      - `Authorization: Bearer <admin_jwt_token>`
-        
-  **URL Parameters:**
-     
-  - `userId`: ID of the user to deactivate
-         
-   **Response:**
-  
-     - Status Code: 200 OK or any relevant success code
-       - This endpoint does not return any data in the response body upon successful deactivation.
-
-#### Complete user details by id
-   
-Retrieves complete details of a user.
-    
-    **Endpoint:**
-    ```
-    GET /api/admin/users/{userId}/details
-    ```
-  
-  **Headers:**
-     
-     - `Authorization: Bearer <admin_jwt_token>`
- 
-  **URL Parameters:**
-       
-    - `userId`: ID of the user to retrieve details.
-
-   **Response:**
-  
-      - Status Code: 200 OK
-      - Response body contains complete user details.
-
-#### Send reset password link
-  
-Sends a reset password link to the user (admin initiated).
-    
-  **Endpoint:**
-  ```
-   POST /api/admin/users/sendPasswordResetLink
-  ```
-
-   **Headers:**
-
-       -`Authorization: Bearer <admin_jwt_token>`
-
-     **Request Body:**
-
-```json
-   {
-       "email": "user@example.com"
-   }
-```
-  **Response:**
-     - Status Code: 200 OK or any relevant success code
-        - This endpoint does not return any data in the response body upon successful password reset request.
-
-#### reset user password
-   
-Resets a user's password with provided token.
-   
-    **Endpoint:**
-   ```
-     POST /api/admin/users/reset-password
-   ```
-  **Headers:**
-       
-    -`Authorization: Bearer <admin_jwt_token>`
-        
-  **Request Body:**
-    
-  ```json
-      {
-          "token": "valid_reset_token",
-          "newPassword": "new_secure_password"
-      }
-  ```
-   **Response:**
-  
-       - Status Code: 200 OK or any relevant success code
-         - This endpoint does not return any data in the response body upon successful password reset.
-
-### Admin Management
-
-#### Admin Login
-    
-Authenticates an admin user and returns a JWT token.
-   
-   **Endpoint:**
-   ```
-    POST /api/v1/admin/login
-   ```
-   
-  **Headers:**
-
-      - `Content-Type: application/json`
-
-  **Request Body:**
-
-  ```json
-   {
-       "email": "admin@example.com",
-       "password": "adminpassword123"
-   }
-  ```
-   
-   **Response:**
-   
-     -Status Code: 200 and returns JWT in response header.
-
-#### Create admin by superadmin
-      
-Creates a new admin user by super admin.
-  
-   **Endpoint:**
-  ```
-   POST /api/v1/admin/create-admin
-  ```
-   
-   **Headers:**
-
-        -`Authorization: Bearer <super_admin_jwt_token>`
-        -`Content-Type: application/json`
-     
-  **Request Body:**
-
-  ```json    
+##### 6. Update plan status
+*  **Description**: Updates the status (e.g., active, inactive) of a specified plan
+ *   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/subscription/admin/plans/{planId}/status`
+*    **Headers**:
+        *    `Content-Type: application/json`
+        *    `Authorization: Bearer <admin_jwt_token>`
+*   **Request Body**:
+     ```json
      {
-        "email": "newadmin@example.com",
-        "password": "securePassword123!",
-       "name": "New Admin",
-       "permissions": [
-        "manage_users",
-       "view_user_details",
-       "manage_content"
+         "status": "active"
+     }
+     ```
+ * **Response**:
+        *    On Success: 200 (Ok)
+        *  A success message with the updated fields.
+*   **Notes**
+     *     Requires admin authentication via JWT.
+        *  `planId` should be a valid mongoDB ObjectId.
+##### 7. Delete plan
+    *  **Description**:  Deletes a plan from the system.
+    * **Method**: `DELETE`
+    *  **URL**: `http://localhost:5000/api/subscription/admin/plans/{planId}`
+ *    **Headers**:
+        *   `Content-Type: application/json`
+        *   `Authorization: Bearer <admin_jwt_token>`
+*   **Response**:
+    *    On Success: 200 (Ok)
+    *   A Success Message
+*   **Notes**:
+    *   Requires admin authentication via JWT.
+    *   `planId` should be a valid mongoDB ObjectId.
+
+##### 8. update both ( features and CustomFeatures)
+*  **Description**: Updates both the standard and custom features of subscription plan.
+    * **Method**: `PUT`
+ *  **URL**: `http://localhost:3000/api/subscriptions/plan-features/{planId}`
+ *    **Headers**:
+        *    `Content-Type: application/json`
+        *   `Authorization: Bearer <admin_jwt_token>`
+*   **Request Body**:
+     ```json
+    {
+        "features": {
+            "socialAccounts": {
+            "total": 15,
+            "perPlatform": {
+                "facebook": 5,
+                "instagram": 5,
+                "twitter": 5
+            }
+        },
+            "teamMembers": 10,
+        "posting": {
+            "postsPerDay": 50,
+            "bulkScheduling": true,
+            "autoScheduling": true
+            },
+        "analytics": {
+            "reportTypes": ["basic", "advanced"],
+            "exportFormats": ["pdf", "csv"],
+            "retentionDays": 90
+        },
+            "support": "priority"
+    },
+        "customFeatures": [
+            "White label reports",
+            "Custom URL shortener",
+            "Advanced team permissions"
         ]
     }
-```
-     
-  **Response:**
-  
-     -Status Code: 201 or any other relevant success code
-       -  This endpoint does not return any data in the response body upon successful admin creation.
+     ```
+*   **Response**:
+    *   On Success: 200 (ok)
+     *  A success message along the updated features.
+*   **Notes**:
+    *   Requires admin authentication via JWT.
+   * `planId` should be a valid mongoDB ObjectId.
 
-#### get-all-admins
-    
-Retrieves a list of all admin users.
-    
-    **Endpoint:**
-   ```
-    GET /api/v1/admin/get-all-admins
-   ```
-  
-    **Headers:**
-  
-     - `Authorization: Bearer <super_admin_jwt_token>`
- 
-   **Response:**
-         -Status Code: 200 OK and returns list of admin users.
-         
-#### delete admins
-    
-Deletes an admin user by their ID.
-    
-    **Endpoint:**
-   ```
-   DELETE /api/v1/admin/delete-admin/{adminId}
-   ```
-   
-    **Headers:**
-    
-     -`Authorization: Bearer <super_admin_jwt_token>`
-        
-  **URL Parameters:**
-   
-    -   `adminId`: ID of the admin to be deleted.
-        
-   **Response:**
- 
-      - Status Code : 200 OK or 204 No content, no response body on success.
+##### 9. update standard feature
+*  **Description**: Updates the standard features of a subscription plan
+*  **Method**: `PUT`
+ *    **URL**: `http://localhost:3000/api/subscriptions/plan-features/{planId}`
+ *    **Headers**:
+        *    `Content-Type: application/json`
+        *    `Authorization: Bearer <admin_jwt_token>`
+*  **Request Body**:
 
-#### get-admin-details
-   
-Retrieves details of a specific admin user.
-    
-  **Endpoint:**
-   ```
-   GET /api/v1/admin/get-admin-details/{adminId}
-   ```
-   
-    **Headers:**
-    
-     -`Authorization: Bearer <super_admin_jwt_token>`
-         
-  **URL Parameters:**
-  
-    -   `adminId`: The ID of the admin user to get the details of.
-        
-  **Response:**
-  
-    - Status Code : 200 OK and returns the admin details.
+        ```json
+        {
+                    "features": {
+                        "teamMembers": 15,
+                        "support": "24/7"
+                    }
+        }
+        ```
+*  **Response**:
+         *    On Success: 200 (ok)
+         *    A success message including updated plan features
+* **Notes**:
+        *   Requires admin authentication via JWT.
+        *  `planId` should be a valid mongoDB ObjectId.
 
-#### update admin permission
-    
-Updates the permissions of a specific admin user.
-    
-    **Endpoint:**
+#####  10. GET PLAN BY GATAGOTIES
+ *   **Description**: Get plan based upon categories.
+    *  **Method**: `GET`
+ *  **URL**: `http://localhost:3000/api/subscriptions/plan-features`
+ *    **Headers**:
+        *   `Authorization: Bearer <admin_jwt_token>`
+* **Response**:
+    *    On Success: 200 (ok)
+    *    list of plans
+* **Notes**:
+       *   Requires admin authentication via JWT.
+
+#### User Management
+
+##### 1. Reactivate user
+*   **Description**: Reactivates a user account which is deactivated.
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/admin/users/{userId}/reactivate`
+ *    **Headers**:
+        *   `Authorization: Bearer <admin_jwt_token>`
+*    **Response**:
+        *   On Success: 200 (Ok)
+        *   Success message
+*   **Notes**:
+    *  Requires admin authentication via JWT.
+    *   `userId` should be a valid mongoDB ObjectId.
+
+##### 2. Get List of users
+*   **Description**: Fetches a list of all users.
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/v1/admin/users`
+    *   **Headers**:
+        *    `Content-Type: application/json`
+        *    `Authorization: Bearer <admin_jwt_token>`
+*   **Response**:
+    * On Success: 200 (Ok)
+     *   A list of user objects
+*   **Notes**:
+     *      Requires admin authentication via JWT.
+
+##### 3. User delete
+*   **Description**:  Deletes a specified user.
+*   **Method**: `DELETE`
+*   **URL**: `http://localhost:5000/api/admin/users/{userId}`
+  *   **Headers**:
+     *   `Authorization: Bearer <admin_jwt_token>`
+*  **Response**:
+    *    On Success: 200 (Ok)
+    *   A message confirming user deletion
+* **Notes**:
+     *    Requires admin authentication via JWT.
+    *   `userId` should be a valid mongoDB ObjectId.
+
+#####  4. Deactivate User
+*   **Description**: Deactivates a user
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/admin/users/{userId}/deactivate`
+*    **Headers**:
+        *   `Authorization: Bearer <admin_jwt_token>`
+*   **Response**:
+  * On Success 200 (ok)
+        *   A success message
+*   **Notes**:
+    * Requires admin authentication via JWT.
+    *   `userId` should be a valid mongoDB ObjectId.
+
+##### 5. Complete user details by id
+*  **Description**: Fetches details about a specific user by id.
+*   **Method**: `GET`
+*  **URL**:  `http://localhost:5000/api/admin/users/{userId}/details`
+*   **Headers**:
+    *   `Authorization: Bearer <admin_jwt_token>`
+*   **Response**:
+    *    On Success: 200 (Ok)
+    *   User details along with profile and subscription object
+* **Notes**:
+    *   Requires admin authentication via JWT.
+    *   `userId` should be a valid mongoDB ObjectId.
+  
+
+##### 6. Send reset password link
+*   **Description**:  Sends a password reset link to a user email.
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/admin/users/sendPasswordResetLink`
+*    **Headers**:
+        *   `Authorization: Bearer <admin_jwt_token>`
+*   **Request Body**:
+
+    ```json
+    {
+        "email": "xnikunjadu2@gmail.com"
+    }
     ```
-     GET /api/v1/admin/get-admin-details/{adminId}
+*  **Response**:
+    *    On Success: 200 (ok).
+     *  A success message
+*  **Notes**:
+       *   Requires admin authentication via JWT.
+
+##### 7. Reset user password
+*  **Description**: Reset user password using JWT token.
+ *  **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/admin/users/reset-password`
+ *    **Headers**:
+        *   `Authorization: Bearer <admin_jwt_token>`
+*   **Request Body**:
+     ```json
+    {
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJpYXQiOjE3MzQ1MDg1ODgsImV4cCI6MTczNDUxMjE4OH0.e17UzfnRrBCAqXkWfP9LWmN3UZyaSFaQtEz7keJDrhY",
+        "newPassword":"123456"
+    }
     ```
-     **Headers:**
+*    **Response**:
+        * On Success: 200 (ok)
+     *   A success Message
+*   **Notes**:
+         *   Requires admin authentication via JWT.
+
+#### Admin Management
+##### 1. Admin Login
+    *  **Description**: Logs in an admin user with their credentials.
+    *  **Method**: `POST`
+    * **URL**: `http://localhost:5000/api/v1/admin/login`
+*    **Headers**:
+        *   `Content-Type: application/json`
+*   **Request Body**:
+    ```json
+    {
+       "email": "nikunjadu2@gmail.com",
+       "password": "nikunjadu2"
+     }
+    ```
+*  **Response**:
+        * On Success 200 (ok)
+     *    A Valid JWT token along with confirmation message
+*   **Notes**:
+         *   Admin password will be handled on server side.
+
+##### 2. Create admin by superAdmin
+*   **Description**: Creates  new admin user by a super admin account.
+*   **Method**: `POST`
+*   **URL**:  `http://localhost:5000/api/v1/admin/create-admin`
+*    **Headers**:
+         *   `Content-Type: application/json`
+         *  `Authorization: Bearer <super_admin_jwt_token>`
+*   **Request Body**:
+
+    ```json
+    {
+        "email": "newadsmin@example.com",
+        "password": "securePassword123!",
+        "name": "New Admin",
+        "permissions": [
+            "manage_users",
+            "view_user_details",
+            "manage_content"
+        ]
+    }
+    ```
+*   **Response**:
+    *   On Success 201 (Created)
+     *  A  success messages along  created admin details.
+*   **Notes**:
+    * Requires super admin authentication via JWT.
    
-     -  `Authorization: Bearer <super_admin_jwt_token>`
-          
-  **URL Parameters:**
-      
-     - `adminId`: The ID of the admin user to update.
-        
-    **Response:**
-  
-      - Status code: 200 Ok and returns the admin details.
-        
-## user
 
-### Subscribe
+##### 3. Create admin by superAdmin
+*   **Description**: Creates a new admin user (duplicate of above one).
+*   **Method**: `POST`
+*   **URL**: `http://localhost:5000/api/v1/admin/create-admin`
+*   **Headers**:
+    *   `Authorization: Bearer <super_admin_jwt_token>`
+    *   `Content-Type: application/json`
+*   **Request Body**:
 
-#### Get current plan
+    ```json
+    {
+        "email": "newadaasdsdsmsdfdin@examasdple.com",
+        "password": "securePassword123!",
+        "name": "New Admin",
+        "permissions": [
+            "manage_users",
+            "view_user_details",
+            "manage_content"
+        ]
+    }
+    ```
+*   **Response**:
+    *    On Success 201 (Created)
+    *  A success messages.
+*   **Notes**:
+    * Requires super admin authentication via JWT.
+    *   Duplicate of Endpoint 2.
 
-Retrieves the details of a user's current subscription plan.
+##### 4. Get all admins
+*   **Description**: Retrieve all list of admin users
+*   **Method**: `GET`
+*   **URL**: `http://localhost:5000/api/v1/admin/get-all-admins`
+*    **Headers**:
+        *    `Authorization: Bearer <super_admin_jwt_token>`
+*   **Response**:
+    *    On Success 200 (Ok)
+    *  A list of all admin accounts.
+*   **Notes**:
+    *   Requires super admin authentication via JWT.
 
-    **Endpoint:**
-   ```
-      GET /api/v1/users/subscription
-   ```
-    
-  **Headers:**
+##### 5. Delete admins
+*   **Description**: Deletes an admin
+*   **Method**: `DELETE`
+*   **URL**:  `http://localhost:5000/api/v1/admin/delete-admin/{adminId}`
+ *    **Headers**:
+         *`Authorization: Bearer <admin_jwt_token>`
+*   **Response**:
+        * On Success: 200
+    *  Confirmation message
+*   **Notes**:
+    * Requires admin authentication via JWT.
+    *   `adminId` should be a valid mongoDB ObjectId.
 
-   -`Authorization: Bearer  <user_jwt_token>`
+##### 6. Get admin details
+*  **Description**: Get details of a specific admin user by their ID
+*  **Method**: `GET`
+*  **URL**: `http://localhost:5000/api/v1/admin/get-admin-details/{adminId}`
+*   **Headers**:
+     * `Authorization: Bearer <admin_jwt_token>`
+* **Response**:
+    *  On Success: 200 (Ok)
+     * Specific admin details
+* **Notes**:
+     *   Requires admin authentication via JWT.
+     *`adminId` should be a valid mongoDB ObjectId.
 
-   **Response:**
-     - Status code: 200 OK and returns current plan details.
+##### 7. Update admin permission
+*   **Description**: Updates the permissions of admin.
+*  **Method**: `GET`
+* **URL**: `http://localhost:5000/api/v1/admin/get-admin-details/{adminId}`
+*   **Headers**:
+      *    `Authorization: Bearer <admin_jwt_token>`
+* **Response**:
+    *   On Success: 200 (ok)
+   *    Update admin permission success message
+* **Notes**:
+    *   Requires admin authentication via JWT.
+     *  `adminId` should be a valid mongoDB ObjectId.
+### User
+#### Subscribe
 
-####  cancel subs
-    
-Cancels the user's current subscription.
+    ##### 1. Get Current Plan
+*  **Description**: Get a current user subscription's details.
+* **Method**: `GET`
+* **URL**: `http://localhost:5000/api/v1/users/subscription`
+*   **Headers:**
+        * `Authorization: Bearer <user_jwt_token>`
+* **Response**:
+    *    On Success: 200 (Ok)
+    *   Subscription plan object.
+*   **Notes**:
+        *   Requires user authentication via JWT.
 
-    **Endpoint:**
-   ```
-    POST /api/v1/users/cancel-subscription
-   ```
-         
-    **Headers:**
-       
-      - `Content-Type: application/json`
-      - `Authorization: Bearer <user_jwt_token>`
-    
-    **Request Body:**
-    
-  ```json
+##### 2. Cancel sub
+*  **Description**: Cancel a user subscription plan by valid user JWT token.
+  * **Method**: `POST`
+ *  **URL**: `http://localhost:5000/api/v1/users/cancel-subscription`
+*   **Headers**:
+        *   `Content-Type: application/json`
+        *    `Authorization: Bearer <user_jwt_token>`
+* **Request Body**:
+
+    ```json
+    {
+      "reason": "my wish why do u wanna know "
+     }
+     ```
+* **Response**:
+    * On Success 200(ok)
+    *   A Confirmation Message
+* **Notes:**
+    *     Requires user authentication via JWT.
+
+##### 3. Subscribe a plan
+*  **Description**:  Subscribes user to a new plan.
+ *   **Method**: `POST`
+*  **URL**: `http://localhost:5000/api/v1/users/subscribe`
+*   **Headers**:
+        *    `Content-Type: application/json`
+        *   `Authorization: Bearer <user_jwt_token>`
+*  **Request Body**:
+    ```json
   {
-        "reason": "Cancellation reason"
-    }
-  ```
-  
-    **Response:**
-
-      -Status code: 200 OK or any relevant success code and does not return anything in response body.
-
-#### subscribe a plan
-
-Subscribes the user to a new plan.
-    
-    **Endpoint:**
-    ```
-    POST /api/v1/users/subscribe
-    ```
-    
-    **Headers:**
-
-      - `Content-Type: application/json`
-      -`Authorization: Bearer <user_jwt_token>`
-
-    **Request Body:**
-  
-  ```json
-    {
-      "planId": "6763d06487f004a49970fd5a",
+        "planId": "6763d06487f004a49970fd5a",
         "billingCycle": "monthly"
-    }
+   }
   ```
-  
-    **Response:**
-  
-        -Status Code: 200 OK or any relevant success code and does not return anything in response body.
+*   **Response**:
+        * On Success 201 (Created)
+        *   Success Message along with the user subscription details
+*   **Notes**:
+        *    Requires user authentication via JWT.
 
-#### update plan
-    
-Updates the user's current subscription plan.
-    
-   **Endpoint:**
-  ```
-  PUT /api/v1/users/subscription/update
-  ```
-   
-    **Headers:**
-
-    -`Content-Type: application/json`
-   -`Authorization:  Bearer <user_jwt_token>`
-
-    **Request Body:**
-    
-  ```json
-    {
-      "planId": "6763d06487f004a49970fd5a",
-        "billingCycle": "monthly"
-    }
-  ```
- 
-    **Response:**
-    -Status Code: 200 OK or any relevant success code and does not return anything in response body.
-
-### USER OPERATION
-
-#### user details
-    
-Retrieves the details of the authenticated user.
-    
-    **Endpoint:**
-  ```
-    GET /api/users/details
-  ```
-     **Headers:**
-      
-     -`Authorization: Bearer <user_jwt_token>`
-
-    **Response:**
-     -Status Code: 200 OK and returns the user info object
-
-#### delete User
-    
-Initiates the process of deleting user account .
-    
-    
-**Endpoint:**
-```
-    POST  /api/v1/users/delete
-```
-   
-   **Headers:**
-       
-    - `Authorization: Bearer <user_jwt_token>`
-    
-    **Response**
-   
-     -Status Code : 200 Ok or any relevant success code and doesn't return anything in the response body.
-
-#### confim delete user
-    
-Confirms the deletion of a user account using token.
-    
-    **Endpoint:**
+##### 4. Update Plan
+*   **Description** :   Update a user's subscription plan.
+*   **Method**: `PUT`
+ *   **URL**: `http://localhost:5000/api/v1/users/subscription/update`
+*    **Headers**:
+       *   `Authorization: Bearer <user_jwt_token>`
+       * `Content-Type: application/json`
+*   **Request Body**:
+    ```json
+      {
+            "planId": "6763d06487f004a49970fd5a",
+            "billingCycle": "monthly"
+      }
    ```
-    POST /api/users/confirm-delete
-   ```
-    
-    **Headers:**
-   
-    - `Authorization: Bearer <user_jwt_token>`
-        
-  **Request Body:**
-    
-  ```json
+*   **Response**:
+    *   On Success 200(ok)
+   * A success message including update plan details.
+*  **Notes**:
+    *       Requires user authentication via JWT.
+
+#### User Operation
+
+##### 1. User Details
+*  **Description**: Get detail information about logged in user
+ *   **Method**: `GET`
+*  **URL**: `http://localhost:5000/api/users/details`
+ * **Headers**:
+      * `Authorization: Bearer <user_jwt_token>`
+* **Response**:
+     *  On Success 200 (ok)
+   *  User's profile details.
+* **Notes**:
+    *  Requires user authentication via JWT.
+
+##### 2. Delete User
+*  **Description**: Initiates a delete process, send verification email to the user.
+ * **Method**: `POST`
+* **URL**: `http://localhost:5000/api/v1/users/delete`
+*   **Headers**:
+     *  `Authorization: Bearer <admin_jwt_token>`
+*   **Response**
+   *  On Success: 200 (Ok)
+    * Confirmation message for verification email.
+*   **Notes**:
+   * Requires admin authentication via JWT.
+
+##### 3. Confirm delete user
+*  **Description**: Confirms and completes the  deletion process of user account.
+*  **Method**: `POST`
+* **URL**:  `http://localhost:5000/api/users/confirm-delete`
+* **Headers**:
+      * `Authorization: Bearer <user_jwt_token>`
+* **Request Body**:
+    ```json
     {
-        "token": "deletion_confirmation_token"
+      "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDAxODRkNGE2NjJiMjVkZTc1MTgiLCJpYXQiOjE3MzQ0MjY2NjUsImV4cCI6MTczNDQzMDI2NX0.sEFZye1spypGkzc6pIIOwh_x7Xg6qMN3Woaw3wqowm0"
     }
-  ```
-
-   **Response:**
-
-         - Status Code: 200 OK or any relevant success code and doesn't return anything in the response body upon successful confirmation.
+    ```
+* **Response**:
+        *   On Success: 200
+        *   Confirmation message

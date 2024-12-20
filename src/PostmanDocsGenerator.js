@@ -50,11 +50,11 @@ class PostmanDocsGenerator {
         const prompt = `Create comprehensive API documentation for the following Postman collection chunk. 
         Include detailed descriptions, request/response examples, and any important notes.
         
-        The output should be in the following format:
-        # API_NAME
-        ## Overview
-        ### Authentication
-        ### Endpoints
+        The write in this format:
+        API_NAME
+        Overview
+        Authentication
+        Endpoints
         
      
 
@@ -64,7 +64,7 @@ class PostmanDocsGenerator {
         ${JSON.stringify(chunk, null, 2)}`;
 
         const completion = await this.openai.chat.completions.create({
-            model: "google/gemini-2.0-flash-exp:free",
+            model: process.env.OPENAI_MODEL,
             messages: [
                 { 
                     role: "system", 
