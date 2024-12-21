@@ -1,379 +1,514 @@
 # SocioX
 
-Okay, here is the comprehensive API documentation for the provided Postman collection, structured as requested:
+# SocioX API Documentation
 
-## SocioX API
+## Overview
+This document provides comprehensive details about the SocioX API, including authentication, and various endpoints. The API allows for user registration, login, subscription management, admin functionalities, and user operations.
 
-### Overview
-The SocioX API provides functionalities for user authentication, subscription management, and administrative tasks. It allows users to register, login, manage their subscriptions, and for administrators to handle users, subscriptions, and other administrative tasks. The API supports both parent and child user types, each with varying levels of access and permissions.
+## Authentication
+The SocioX API primarily uses **JWT (JSON Web Token) Bearer authentication.** Most protected endpoints require a valid JWT token to be included in the `Authorization` header as follows:
 
-### Authentication
-The SocioX API uses JSON Web Tokens (JWT) for authentication. Most endpoints require a valid JWT in the `Authorization` header as a bearer token. Ensure to include `Bearer` prefix e.g., `Bearer your_token_here`.
+   ```
+   Authorization: Bearer <your_jwt_token>
+   ```
+   
+Some API also required Admin JWT Token as follows:
 
-### Endpoints
+   ```
+   Authorization: Bearer <your_admin_jwt_token>
+   ```
 
-### Auth
+## Endpoints
 
-#### 1. Register parent email
-*   **Description**: Registers a new parent user.
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/v1/auth/register`
-*   **Headers**:
-    *   `Content-Type: application/json`
-*   **Request Body**:
+### Auth API
 
-    ```json
-    {
-        "email": "xnikunjadu@gmail.com",
-        "password": "yourpassword123",
+#### Register Parent Email
+**Overview:** Registers a new parent user
+
+**Method:** `POST`
+
+**URL:** `http://localhost:5000/api/v1/auth/register`
+
+**Request Headers:**
+   - `Content-Type: application/json`
+
+**Request Body:**
+
+   ```json
+   {
+        "email": "parent@example.com",
+        "password": "yoursecurepassword123",
         "name": "Test User"
-    }
-    ```
-*   **Response**:
-      *   On Success: 201 (Created)
-    *   A valid JWT in the response.
- *   **Response Example**:
+   }
+   ```
 
+**Response:**
+
+ *   Successful Registration 201: Returns user details
+    ```json
+   {
+     "userId": "676601f4c1921cff857d586f",
+     "email": "parent@example.com",
+      "userType": "parent"
+   }
+   ```
+
+*   Error Response 400: Returns an error if the user already exists(email already in use).
      ```json
-      {
-          "token":"your-generated-jwt-token",
-           "message": "User created successfully"
-      }
-    ```
-*   **Notes**:
-    *   The password should be securely hashed on the server side.
+   {
+     "message": "User already exist",
+     "status": 400,
+     "data": null
+    }
+   ```
+*   Error response 500: Returns an error occurs during registration process..
+   ```json
+    {
+      "message": "Internal Server Error",
+      "status": 500,
+      "data": null
+    }
+   ```
+**Notes:**
+    * This method is used for creating parent users only.    
 
-#### 2. Register child email
-*   **Description**: Registers a new child user under a parent account.
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/users/child-users`
-*   **Headers**:
-    *   `Content-Type: application/json`
-    *   `Authorization: Bearer <parent_jwt_token>`
+#### Register Child Email
+**Overview:** Registers a new child user under a parent account.
 
-*   **Request Body**:
+**Method:** `POST`
 
+**URL:** `http://localhost:5000/api/v1/users/child-users`
+
+**Authentication:** Bearer JWT token of the parent user in the header, needed to create a child account.
+
+**Request Headers:**
+   - `Content-Type: application/json`
+   - `Authorization: Bearer <parent_jwt_token>`
+
+**Request Body:**
+   ```json
+   {
+     "email": "child@example.com",
+     "password": "childpassword123",
+     "name": "Child User"
+   }
+   ```
+
+**Response:**
+ *   Successful Registration 201: Returns user details
     ```json
     {
-        "email": "child@example.com",
-        "password": "childewqepassword123",
-        "name": "Child User",
-        "permissions": ["create_posts", "view_analytics"]
-    }
-    ```
-*   **Response**:
-      *   On Success: 201 (Created)
-    *   A valid JWT in the response.
-*   **Response Example**:
-
-     ```json
-      {
-          "token":"your-generated-jwt-token",
-           "message": "User created successfully"
+     "userId": "676601f4c1921cff857d586f",
+      "userType": "child",
+      "email": "child@example.com",
+      "parentId": "676601f4c1921cff857d522f"
       }
-    ```
-*   **Notes**:
-    *   Requires a valid parent JWT for authorization.
-    *   Permissions can be tailored to your application's needs.
+   ```
+
+*   Error Response 400: Returns an error if the child user already exists.
+     ```json
+    {
+      "message": "User already exist",
+      "status": 400,
+        "data": null
+    }
+   ```
+*   Error response 500: Returns an error occurs during registration process.
+   ```json
+    {
+      "message": "Internal Server Error",
+      "status": 500,
+      "data": null
+    }
+   ```
+**Notes:**
+    *  This method is used for creating child users under parent account.
+    *  The parent user's JWT token must be included in the Authorization header.
+
+#### Login Email
+**Overview:** Logs in an existing user
+
+**Method:** `POST`
+
+**URL:** `http://localhost:5000/api/v1/auth/login`
+
+**Request Headers:**
+   - `Content-Type: application/json`
+
+**Request Body:**
+   ```json
+   {
+     "email": "user@example.com",
+     "password": "userpassword123"
+   }
+   ```
+
+**Response:**
+   * Successfull login 200: Returns jwt token and user details.
+   ```json
+   {
+   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY2NDc4ZGIyNWM1ZDdjZGIzN2YyYmUiLCJlbWFpbCI6Im5pa3VuamFkdTVAZ21haWwuY29tIiwidXNlclR5cGUiOiJwYXJlbnQiLCJwZXJtaXNzaW9ucyI6W10sImlhdCI6MTczNDc2MDU0OSwiZXhwIjoxNzM0ODQ2OTQ5fQ.eQ0q-Jtx5L925P8gD_F7h7u-78Q19-Q5e9xOzhwUoY",
+    "user": {
+            "userId": "6766478db25c5d7cdb37f2be",
+            "email": "nikunjadu5@gmail.com",
+            "userType": "parent"
+       }
+     }
+
+   ```
+
+     *   Error Response 400: Returns an error on wrong credentials.
+          ```json
+              {
+                "message": "Invalid credentials",
+                "status": 400,
+                "data": null
+            }
+         ```
+     * Error response 500: Returns an error occurs during login process.
+          ```json
+           {
+            "message": "Internal Server Error",
+             "status": 500,
+            "data": null
+          }
+         ```
+**Notes:**
+    * A valid email id and password required for login.
+
+#### Forgot Password
+
+**Overview:** Request a password reset link via email.
+
+**Method:** `POST`
+
+**URL:** `http://localhost:5000/api/auth/forgot-password`
+
+**Request Headers:**
+   - `Content-Type: application/json`
+
+**Request Body:**
+   ```json
+   {
+     "email": "user@example.com"
+   }
+   ```
+
+**Response:**
+   *   Successfull request 200: Returns a success message that reset link has been sent.
+        ```json
+             {
+            "message": "A reset link has been sent to your email address.",
+            "status": 200,
+             "data": null
+            }
+        ```
+*   Error Response 400: Returns  an error if email id does not exists.
+  ```json
+   {
+       "message":"User not found",
+       "status":400,
+       "data":null
+   }
+   ```
+*   Error response 500: Returns an error occurs during request process.
+    ```json
+        {
+          "message": "Internal Server Error",
+        "status": 500,
+          "data": null
+         }
+     ```
+**Notes:**
+    *  The email used here should register in user database.
+
+#### Reset Email Password
+**Overview:** Resets the user's password using an email and OTP.
+
+**Method:** `POST`
+
+**URL:** `http://localhost:5000/api/auth/reset-password`
+
+**Request Headers:**
+  - `Content-Type: application/json`
+**Request Body:**
+   ```json
+   {
+     "email": "user@example.com",
+     "otp": "123456",
+     "newPassword": "newsecurepass123"
+   }
+   ```
+
+**Response:**
+    * Successfull password changed 200: Returns success message that password has been updated.
+          ```json
+           {
+               "message": "Password updated successfully",
+               "status": 200,
+               "data": null
+           }
+        ```
+    * Error Response 400: Returns an error if email and otp does not match.
+     ```json
+    {
+      "message":"Invalid email or OTP",
+      "status":400,
+      "data":null
+    }
+   ```
+   *   Error response 500: Returns an error occurs during request process.
+           ```json
+            {
+              "message": "Internal Server Error",
+              "status": 500,
+            "data": null
+            }
+        ```
+**Notes:** 
+    *  A valid email, otp and new password required here for update password.
+
+### Admin API
+
+#### User Subscription Management
+
+##### Subscribe User Plan
+**Overview:** Subscribes a user to a specific plan.
+**Method:** `POST`
+**URL:** `http://localhost:5000/api/v1/admin/users/{userId}/subscription`
+**Authentication:** Bearer JWT  Token of the parent or super admin
+
+**Request Headers:**
+   - `Content-Type: application/json`
+  -`Authorization: Bearer <admin_jwt_token>`
+
+**Request Body:**
+   ```json
+   {
+      "planId": "67616c378c821544d3c5400b",
+     "billingCycle": "monthly" 
+   }
+   ```
+
+**Response:**
+   * Succesfully subscription 200 : Returns success message and  subscription details.
+   ```json
+  {
+    "message": "User subscription is updated.",
+    "status": 200,
+    "data": {
+        "subscriptionId": "67665e597cd2cd7c47cc26af",
+        "planId": "67616c378c821544d3c5400b",
+        "userId": "6761443efbceffa2810be4be",
+        "billingCycle": "monthly",
+            }
+    }
+   ```
   
-
-#### 3. Login email
-*   **Description**: Logs in an existing user via email and password.
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/v1/auth/login`
-*   **Headers**:
-    *   `Content-Type: application/json`
-*   **Request Body**:
-
-    ```json
-    {
-        "email": "john@example.com",
-        "password": "childewqepassword123"
+  *   Error Response 400: Returns an error if user or plan id doesnot exists.
+  ```json
+  {
+        "message": "Invalid User or Plan ID",
+       "status": 400,
+       "data": null
     }
+   ```
+  *   Error response 500: Returns an error occurs during request process.
+   ```json
+    {
+    "message": "Internal Server Error",
+        "status": 500,
+        "data": null
+    }
+   ```
+**Notes:**
+    *  The `userId`  in the url  should belong to a user.
+    *   The user id and plan id should be valid
+    
+##### Cancel User Plan
+**Overview:** Cancels a user's current subscription plan.
+
+**Method:** `POST`
+
+**URL:** `http://localhost:5000/api/v1/admin/users/{userId}/subscription/cancel`
+
+**Authentication:** Bearer JWT token of the super_admin or parent user.
+
+**Request Headers:**
+   - `Content-Type: application/json`
+   -  `Authorization: Bearer <admin_jwt_token>`
+
+**Request Body:**
+   ```json
+   {
+     "reason": "User does not wish to continue with the plan."
+   }
+   ```
+
+**Response:**
+    * Successful Cancellation 200: Return success message and subscription id.
+                ```json
+                 {
+                     "message": "User subscription is cancelled.",
+                     "status": 200,
+                     "data": {
+                       "subscriptionId" : "676665812cf47edc02011a5e"
+                   }
+                 }
+              ```
+*   Error Response 400: Returns invalid user id
+  ```json
+  {
+      "message":"Invalid User ID",
+      "status":400,
+      "data":null
+  }
+   ```
+*  Error response 500: Returns an error occurs during request process.
+   ```json        
+ {
+            "message": "Internal Server Error",
+            "status": 500,
+            "data": null
+      }
+        ```
+**Notes:**
+    *  The `userId` in url should belong to a user.
+
+##### Get Subscription by User ID
+**Overview:** Retrieves a  subscription details of a user.
+
+**Method:** `GET`
+
+**URL:** `http://localhost:5000/api/admin/users/{userId}/subscription`
+
+**Authentication:** Admin JWT token is required for this endpoint.
+
+**Request Headers:**
+   - `Content-Type: application/json`
+  - `Authorization: Bearer <admin_jwt_token>`
+
+**Response:**
+    * Successful retrieval 200: Returns user subscription details.
+     ```json
+  {
+    "message": "User subscription found.",
+     "status": 200,
+     "data": {
+     "subscriptionId": "67665e597cd2cd7c47cc26af",
+      "planId": "67616c378c821544d3c5400b",
+       "userId": "6761443efbceffa2810be4be",
+         "billingCycle": "monthly",
+       "status": "active"
+        }
+    }
+  ```
+
+* Error Response 400: Returns an error if the user does not exists.
+  ```json
+ {
+ "message": "No subscription found for this user.",
+  "status": 400,
+  "data": null
+}
+  ```
+
+* Error response 500: Returns an error occurs during request process.
+   ```json
+    {
+         "message": "Internal Server Error",
+        "status": 500,
+        "data": null
+    }
+   ```
+**Notes:**
+    *  The `userId` in url should belong to a user.
+    *  Admin JWT token needed to access this route.
+
+##### Update Subscription by User ID
+**Overview:** Updates a user's current subscription details.
+**Method:** `POST`
+**URL:** `http://localhost:5000/api/admin/users/{userId}/subscription/update`
+
+**Authentication:** Bearer JWT token of the super_admin or parent user.
+
+**Request Headers:**
+  - `Content-Type: application/json`
+  -  `Authorization: Bearer <admin_jwt_token>`
+
+**Request Body:**
+ ```json
+  {
+     "planId": "67616c378c821544d3c5400b",
+     "billingCycle": "monthly"
+  }
+ ```
+**Response:**
+   * Succesfully updated 200 Return success message and update subscription details.
+       ```json
+      {
+        "message": "User subscription is updated.",
+         "status": 200,
+        "data": {
+             "subscriptionId": "6766671e7cd2cd7c47cc26b0",
+             "planId": "67616c378c821544d3c5400b",
+             "userId": "6761443efbceffa2810be4be",
+             "billingCycle": "monthly",
+              "status":"active"
+         }
+      }
+      ```
+   * Error Response 400: Returns an error if user id or plan id does not exist..
+       ```json
+         {
+         "message": "Invalid User or Plan ID",
+         "status": 400,
+         "data": null
+         }
     ```
-* **Response**:
-    *   On success: 200 (ok)
-    *   A valid JWT token in the response.
-*   **Response Example**:
+  *   Error response 500: Returns an error occurs during request process.
         ```json
         {
-        "token":"your-generated-jwt-token"
-           "message": "Logged in successfully"
+           "message": "Internal Server Error",
+           "status": 500,
+            "data": null
         }
-    ```
-*  **Notes**:
-    *   The password should be securely hashed on server.
-  
-
-#### 4. Forgot Password
-*   **Description**: Initiates the password reset process by sending an OTP (One-Time Password) to user email.
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/auth/forgot-password`
-*   **Headers**:
-    *   `Content-Type: application/json`
-*   **Request Body**:
-
-    ```json
-    {
-        "email": "xnikunjadu2@gmail.com"
-    }
-    ```
-*   **Response**:
-    *    On Success: 200 (ok)
-    *   Response message containing the status of task.
-*   **Response Example**:
-    ```json
-        {
-           "message": "Password reset OTP send to your register email"
-        }
-    ```
-*   **Notes**:
-    *   The server should generate and store a time-sensitive OTP for the email.
-
-#### 5. Reset Email Password
-*   **Description**: Resets user password after OTP verification.
-*   **Method**: `POST`
-*  **URL**: `http://localhost:5000/api/auth/reset-password`
-*   **Headers**:
-    *   `Content-Type: application/json`
-*   **Request Body**:
-
-    ```json
-    {
-        "email": "xnikunjadu2@gmail.com",
-        "otp": "360892",
-        "newPassword": "your-new-password"
-    }
-    ```
-  **On Success**: 200 (Ok)
-*   **Response**:
-    *  A success message
-*  **Response Example**:
-     ```json
-        {
-           "message": "Password reset  successfully"
-        }
-    ```
-*   **Notes**:
-    *   The server should verify the OTP and update the password after secure hashing.
-
-### Admin
-
-#### User Subscription
-
-##### 1. Subscribe user plan
-*   **Description**: Subscribes a user to a specific plan.
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/v1/admin/users/{userId}/subscription`
-*   **Headers**:
-    *   `Content-Type: application/json`
-    *  `Authorization: Bearer <admin_jwt_token>`
-*   **Request Body**:
-
-    ```json
-    {
-        "planId": "67616c378c821544d3c5400b",
-        "billingCycle": "monthly"
-    }
-    ```
-*   **Response**:
-           *    On Success: 201 (Created)
-      * Success message along the plan details.
-*   **Notes**:
-    *   Requires admin authentication via JWT.
-    *   The `userId` should be path variable and a valid user ObjectId
-
-##### 2. Cancel user plan
-*   **Description**: Cancels a user's active subscription.
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/v1/admin/users/{userId}/subscription/cancel`
- *  **Headers**:
-    *  `Content-Type: application/json`
-    *  `Authorization: Bearer <admin_jwt_token>`
-*   **Request Body**:
-
-    ```json
-    {
-        "reason": "i dont really know the reason"
-    }
-    ```
-*   **Response**:
-    *   On Success: 200 (Ok)
-    *  A success message
-*   **Notes**:
-    *  Requires admin authentication via JWT.
-    * `userId` should be a valid mongoDB ObjectId.
-
-##### 3. get sub by userId
-*   **Description**: Retrieves a user's subscription details.
-*   **Method**: `GET`
-*   **URL**: `http://localhost:5000/api/admin/users/{userId}/subscription`
-*  **Headers**:
-    *   `Content-Type: application/json`
-    *   `Authorization: Bearer <admin_jwt_token>`
-
-*  **Response**:
-    *    On Success: 200 (Ok)
-    *   subscription details
-*   **Notes**:
-     *  Requires admin authentication via JWT.
-    *   `userId` should be a valid mongoDB ObjectId.
-
-##### 4. Update sub by userId
-*   **Description**: Updates a user's subscription details.
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/admin/users/{userId}/subscription/update`
-*    **Headers**:
-        *   `Content-Type: application/json`
-        *   `Authorization: Bearer <admin_jwt_token>`
-*   **Request Body**:
-
-    ```json
-    {
-        "planId": "67616c378c821544d3c5400b",
-        "billingCycle": "monthly"
-    }
-    ```
-*   **Response**:
-   *    On Success: 200 (Ok)
-  *   Updated plan details
-*   **Notes**:
-    *  Requires admin authentication via JWT.
-    *   `userId` should be a valid mongoDB ObjectId.
+       ```
+**Notes:**
+    *  The `userId` in url should belong to a user.
+    *  The user id and plan id should be valid
+    * Admin  JWT token needed to access this route.
 
 #### Subscription Management
 
-##### 1. Get Plans
-*   **Description**: Retrieves a list of subscription plans based on query parameters.
-*   **Method**: `GET`
-*   **URL**: `http://localhost:5000/api/v1/admin/subscription/plans`
-*   **Query Parameters**:
-    *   `category`: Filter by Plan Category (e.g., enterprise, basic).
-    *   `status`: Filter by plan status (e.g., active, inactive )
-    *   `name`: filter by plan name
-*   **Headers**:
-    *   `Authorization: Bearer <admin_jwt_token>`
-*   **Response**:
-    *   On Success: 200 (Ok)
-    *   A list of plan objects in the body
-*   **Notes**:
-    *   Requires admin authentication via JWT.
-    * Example URL: `http://localhost:5000/api/v1/admin/subscription/plans?category=enterprise&status=active&name=premium`
+##### Get Plans
+**Overview:** Fetches a list of subscription plans based on optional query parameters.
+**Method:** `GET`
 
-#####  2. Get Plans by id
-    *  **Description**: Retrieves a subscription plan's details based on plan id.
-    *  **Method**: `GET`
-    *  **URL**: `http://localhost:5000/api/admin/subscription/plans/{planId}`
-    *   **Headers**:
-        *   `Authorization: Bearer <admin_jwt_token>`
-    *  **Response**:
-        * On Success: 200 (Ok)
-        *   Plan object
-    *   **Notes**:
-        *   Requires admin authentication via JWT.
-        * `planId` should be a valid mongoDB ObjectId.
+**URL:** `http://localhost:5000/api/v1/admin/subscription/plans?category={category}&status={status}&name={name}`
 
-##### 3. Update custom features
+**Authentication:** Admin JWT needed to access this route.
 
-*   **Description**: Updates custom features for a specific subscription plan.
-*   **Method**:  `PATCH`
-*   **URL**: `http://localhost:5000/api/admin/subscription/plans/{planId}/features`
-*    **Headers**:
-        *   `Authorization: Bearer <admin_jwt_token>`
-        *  `Content-Type: application/json`
-*   **Request Body**:
+**Request Headers:**
+      -  `Authorization: Bearer <admin_jwt_token>`
 
-    ```json
-    {
-        "customFeatures": [
-           "White label reports",
-           "Custom URL shortener",
-           "Advanced team permissions",
-           "API rate limit increase"
-        ]
-    }
-    ```
-*   **Response**:
-        *   On Success: 200 (Ok)
-        *   Confirmation message along with plan object
-*   **Notes**:
-        *  Requires admin authentication via JWT.
-        *   `planId` should be a valid mongoDB ObjectId.
+**Query Parameters:**
+   - `category`: (Optional) Filters plans by category (e.g., "enterprise").
+    - `status`: (Optional) Filters plans by status (e.g., "active").
+    - `name`: (Optional) Filters plans by name (e.g., "premium").
 
-##### 4. Create plan
-    *   **Description**: Creates a new subscription plane
-    *   **Method**: `POST`
-    *   **URL**: `http://localhost:5000/api/admin/subscription/plans/`
-    *    **Headers**:
-            *   `Authorization: Bearer <admin_jwt_token>`
-            *    `Content-Type: application/json`
-    *   **Request Body**:
-    ```json
-     {
-        "name": "premium",
-        "displayName": "Premium Plan",
-        "price": {
-            "monthly": {
-            "amount": 29.99,
-            "currency": "USD"
-            },
-        "yearly": {
-            "amount": 299.99,
-            "currency": "USD",
-            "savings": 60
-            }
-        },
-        "features": {
-            "socialAccounts": {
-            "total": 10,
-            "perPlatform": {
-                "facebook": 3,
-                "instagram": 3,
-                "twitter": 4
-                }
-            },
-            "teamMembers": 5,
-            "posting": {
-            "postsPerDay": 20,
-            "bulkScheduling": true,
-            "autoScheduling": true
-            },
-        "analytics": {
-            "reportTypes": ["basic", "advanced"],
-            "exportFormats": ["pdf", "csv"],
-            "retentionDays": 365
-            },
-            "support": "24/7",
-            "additional": {
-            "customBranding": true,
-            "apiAccess": true,
-            "contentCalendar": true,
-            "hashtagManager": true
-            }
-        },
-        "recommended": true,
-           "category": "enterprise"
-    }
-   ```
-    * **Response**:
-         *On Success: 201 (Created)
-        *    A success message with new created plan object.
-   *   **Notes**:
-            *  Requires admin authentication via JWT.
-##### 5. Update plan
-
-*   **Description**: Updates an existing subscription plan's overall structure and attributes.
-*   **Method**: `PUT`
-*   **URL**: `http://localhost:5000/api/admin/subscription/plans/{planId}`
-*    **Headers**:
-        *   `Authorization: Bearer <admin_jwt_token>`
-        *    `Content-Type: application/json`
-*   **Request Body**:
-        ```json
-          {
-              "name": "basic",
-               "displayName": "Basic Plan",
-                "price": {
+**Response:**
+   * Successful retrieval 200 : Returns list of plan data based on the filter.
+   ```json
+{
+    "message": "Plans fetched successfully.",
+    "status": 200,
+    "data": [
+        {
+            "planId": "676163737d821544d3c5400d",
+            "name": "premium",
+            "displayName": "Premium Plan",
+            "price": {
                 "monthly": {
                     "amount": 29.99,
                     "currency": "USD"
@@ -381,508 +516,582 @@ The SocioX API uses JSON Web Tokens (JWT) for authentication. Most endpoints req
                 "yearly": {
                     "amount": 299.99,
                     "currency": "USD",
-                    "savings": 59.89
-                    }
-                },
+                    "savings": 60
+                }
+            },
               "features": {
-                "socialAccounts": {
-                    "total": 5,
-                    "perPlatform": {
-                    "facebook": 2,
-                        "instagram": 2,
-                        "twitter": 1
-                    }
-                },
-              "teamMembers": 3,
-            "posting": {
-                "postsPerDay": 10,
-                "bulkScheduling": true,
-                "autoScheduling": false
-                },
-                "analytics": {
-                    "reportTypes": ["basic", "advanced"],
-                    "exportFormats": ["pdf", "csv"],
-                    "retentionDays": 30
-                    },
-                    "support": "email",
-                    "additional": {
-                        "customBranding": false,
-                        "apiAccess": false,
-                        "contentCalendar": true,
-                        "hashtagManager": true
-                    }
-              },
-                "recommended": false,
-                "category": "basic"
-        }
-        ```
-*   **Response**:
-      *    On Success: 200 (Ok)
-      *    A success message including the updated plan details
-*   **Notes**:
-        *  Requires admin authentication via JWT.
-        *   `planId` should be a valid mongoDB ObjectId.
-
-##### 6. Update plan status
-*  **Description**: Updates the status (e.g., active, inactive) of a specified plan
- *   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/subscription/admin/plans/{planId}/status`
-*    **Headers**:
-        *    `Content-Type: application/json`
-        *    `Authorization: Bearer <admin_jwt_token>`
-*   **Request Body**:
-     ```json
-     {
-         "status": "active"
-     }
-     ```
- * **Response**:
-        *    On Success: 200 (Ok)
-        *  A success message with the updated fields.
-*   **Notes**
-     *     Requires admin authentication via JWT.
-        *  `planId` should be a valid mongoDB ObjectId.
-##### 7. Delete plan
-    *  **Description**:  Deletes a plan from the system.
-    * **Method**: `DELETE`
-    *  **URL**: `http://localhost:5000/api/subscription/admin/plans/{planId}`
- *    **Headers**:
-        *   `Content-Type: application/json`
-        *   `Authorization: Bearer <admin_jwt_token>`
-*   **Response**:
-    *    On Success: 200 (Ok)
-    *   A Success Message
-*   **Notes**:
-    *   Requires admin authentication via JWT.
-    *   `planId` should be a valid mongoDB ObjectId.
-
-##### 8. update both ( features and CustomFeatures)
-*  **Description**: Updates both the standard and custom features of subscription plan.
-    * **Method**: `PUT`
- *  **URL**: `http://localhost:3000/api/subscriptions/plan-features/{planId}`
- *    **Headers**:
-        *    `Content-Type: application/json`
-        *   `Authorization: Bearer <admin_jwt_token>`
-*   **Request Body**:
-     ```json
-    {
-        "features": {
             "socialAccounts": {
-            "total": 15,
+               "total": 10,
+                "perPlatform": {
+                  "facebook": 3,
+                 "instagram": 3,
+                "twitter": 4
+            }
+            },
+              "teamMembers": 5,
+              "posting": {
+                "postsPerDay": 20,
+                "bulkScheduling": true,
+                "autoScheduling": true
+           },
+              "analytics": {
+                 "reportTypes": [
+                        "basic",
+                     "advanced"
+                    ],
+                "exportFormats": [
+                    "pdf",
+                     "csv"
+                   ],
+            "retentionDays": 365
+                },
+           "support": "24/7",
+                "additional": {
+                    "customBranding": true,
+                    "apiAccess": true,
+                 "contentCalendar": true,
+                   "hashtagManager": true
+                }
+            },
+       "recommended": true,
+       "category": "enterprise",
+       "createdAt": "2024-06-22T17:56:03.325Z",
+      "status": "active",
+      "customFeatures": [
+                "White label reports",
+                "Custom URL shortener",
+                "Advanced team permissions",
+               "API rate limit increase"
+             ]
+         }    
+      ]
+}
+   ```
+* Error Response 400: Returns an empty array of plan data if does not match the filter criteria.
+   ```json
+{
+    "message": "Plans fetched successfully.",
+    "status": 200,
+    "data": []
+}
+   ```
+  *   Error response 500: Returns an error occurs during request process.
+         ```json
+          {
+            "message": "Internal Server Error",
+            "status": 500,
+           "data": null
+          }
+       ```
+**Notes:**
+    *  All the query parameters are optional.
+    * Admin JWT token is needed to access this route.
+
+##### Get Plans by ID
+**Overview:** Retrieves plan details by plan ID.
+**Method:** `GET`
+**URL:** `http://localhost:5000/api/admin/subscription/plans/{planId}`
+
+**Authentication:** Bearer JWT token of admin or super admin is required.
+
+**Request Headers:**
+   - `Content-Type: application/json`
+   - `Authorization: Bearer <admin_jwt_token>`
+
+**Response:**
+ * Successfull retrieval 200: Returns plan data if found by plan id.
+   ```json
+   {
+    "message": "Plan fetched successfully.",
+     "status": 200,
+      "data": {
+        "planId": "676163737d821544d3c5400d",
+        "name": "premium",
+       "displayName": "Premium Plan",
+        "price": {
+            "monthly": {
+                "amount": 29.99,
+                "currency": "USD"
+           },
+           "yearly": {
+               "amount": 299.99,
+               "currency": "USD",
+              "savings": 60
+           }
+       },
+         "features": {
+       "socialAccounts": {
+          "total": 10,
             "perPlatform": {
-                "facebook": 5,
-                "instagram": 5,
-                "twitter": 5
+                  "facebook": 3,
+                  "instagram": 3,
+                "twitter": 4
+        }
+       },
+            "teamMembers": 5,
+            "posting": {
+                "postsPerDay": 20,
+             "bulkScheduling": true,
+               "autoScheduling": true
+          },
+             "analytics": {
+               "reportTypes": [
+                  "basic",
+                "advanced"
+                ],
+                "exportFormats": [
+                    "pdf",
+                    "csv"
+               ],
+              "retentionDays": 365
+           },
+            "support": "24/7",
+         "additional": {
+               "customBranding": true,
+               "apiAccess": true,
+               "contentCalendar": true,
+                "hashtagManager": true
+             }
+         },
+     "recommended": true,
+      "category": "enterprise",
+       "createdAt": "2024-06-22T17:56:03.325Z",
+       "status": "active",
+       "customFeatures": [
+            "White label reports",
+          "Custom URL shortener",
+           "Advanced team permissions",
+         "API rate limit increase"
+        ]
+      }
+}
+
+   ```
+* Error Response 400: Returns an error if plan does not exists.
+  ```json
+ {
+  "message": "Plan not found.",
+    "status": 400,
+   "data": null
+ }
+  ```
+  *   Error response 500: Returns an error occurs during request process.
+         ```json
+            {
+             "message": "Internal Server Error",
+              "status": 500,
+            "data": null
+           }
+        ```
+**Notes:**
+    *  The `planId` in the URL should be valid.
+    *  Admin JWT token needed to access this route.
+
+##### Update Custom Features
+**Overview:** Updates custom features for an existing plan.
+
+**Method:** `PATCH`
+
+**URL:** `http://localhost:5000/api/admin/subscription/plans/{planId}/features`
+
+**Authentication:** Bearer JWT token of the admin or super admin is required.
+
+**Request Headers:**
+   - `Content-Type: application/json`
+   -  `Authorization: Bearer <admin_jwt_token>`
+
+**Request Body:**
+   ```json
+   {
+     "customFeatures": [
+       "White label reports",
+       "Custom URL shortener",
+       "Advanced team permissions",
+     "API rate limit increase"
+      ]
+   }
+   ```
+
+**Response:**
+* Successful update 200: Returns success message.
+  ```json
+   {
+        "message": "Plan custom features updated successfully.",
+        "status": 200,
+        "data": null
+    }
+   ```
+* Error Response 400: Returns an error if the plan or plan id does not exists
+   ```json
+  {
+     "message": "Plan not found.",
+     "status": 400,
+      "data": null
+    }
+   ```
+*  Error response 500: Returns an error occurs during request process.
+  ```json
+ {
+     "message": "Internal Server Error",
+    "status": 500,
+     "data": null
+ }
+  ```
+**Notes:**
+    *  The `planId` in the URL should be valid and exist in plan db.
+    * Only the `customFeatures` array will be updated.
+    * Admin JWT token is needed to access this route.
+
+##### Create Plan
+**Overview:** Creates a new subscription plan.
+**Method:** `POST`
+
+**URL:** `http://localhost:5000/api/admin/subscription/plans`
+
+**Authentication:** Bearer JWT token of the super admin.
+
+**Request Headers:**
+   - `Content-Type: application/json`
+    - `Authorization: Bearer <admin_jwt_token>`
+
+**Request Body:**
+  ```json
+   {
+  "name": "premium",
+    "displayName": "Premium Plan",
+    "price": {
+       "monthly": {
+          "amount": 29.99,
+          "currency": "USD"
+        },
+      "yearly": {
+          "amount": 299.99,
+           "currency": "USD",
+            "savings": 60
+      }
+   },
+     "features": {
+        "socialAccounts": {
+           "total": 10,
+             "perPlatform": {
+               "facebook": 3,
+                 "instagram": 3,
+                 "twitter": 4
+            }
+          },
+      "teamMembers": 5,
+      "posting": {
+           "postsPerDay": 20,
+            "bulkScheduling": true,
+        "autoScheduling": true
+       },
+      "analytics": {
+         "reportTypes": [
+             "basic",
+           "advanced"
+            ],
+           "exportFormats": [
+                "pdf",
+              "csv"
+             ],
+         "retentionDays": 365
+         },
+     "support": "24/7",
+    "additional": {
+           "customBranding": true,
+        "apiAccess": true,
+           "contentCalendar": true,
+           "hashtagManager": true
+        }
+    },
+   "recommended": true,
+   "category": "enterprise"
+}
+  ```
+
+**Response:**
+*  Successful plan creation 201: Returns the newly created plan details.
+  ```json
+   {
+    "message": "Subscription plan created successfully.",
+    "status": 201,
+     "data": {
+        "planId": "6766a18351be246c3a275f5c",
+         "name": "premium",
+          "displayName": "Premium Plan",
+        "price": {
+            "monthly": {
+              "amount": 29.99,
+             "currency": "USD"
+            },
+            "yearly": {
+                "amount": 299.99,
+                "currency": "USD",
+                "savings": 60
             }
         },
-            "teamMembers": 10,
-        "posting": {
-            "postsPerDay": 50,
-            "bulkScheduling": true,
+         "features": {
+            "socialAccounts": {
+              "total": 10,
+              "perPlatform": {
+                  "facebook": 3,
+                "instagram": 3,
+                "twitter": 4
+            }
+     },
+    "teamMembers": 5,
+     "posting": {
+           "postsPerDay": 20,
+           "bulkScheduling": true,
             "autoScheduling": true
-            },
+      },
         "analytics": {
-            "reportTypes": ["basic", "advanced"],
-            "exportFormats": ["pdf", "csv"],
-            "retentionDays": 90
+            "reportTypes": [
+              "basic",
+            "advanced"
+             ],
+            "exportFormats": [
+                "pdf",
+               "csv"
+            ],
+           "retentionDays": 365
+      },
+    "support": "24/7",
+       "additional": {
+            "customBranding": true,
+           "apiAccess": true,
+           "contentCalendar": true,
+            "hashtagManager": true
+         }
+       },
+        "recommended": true,
+         "category": "enterprise",
+     "createdAt": "2024-06-22T20:23:32.672Z",
+       "status": "inactive",
+      "customFeatures": []
+      }
+ }
+
+  ```
+ * Error Response 400: Returns an error if the plan already exists
+ ```json
+{
+   "message": "Plan with this name already exists.",
+  "status": 400,
+  "data": null
+}
+ ```
+*  Error Response 500: Server error if something occurs while creating plan.
+  ```json
+ {
+    "message": "Internal Server Error",
+     "status": 500,
+      "data": null
+ }
+ ```
+**Notes:**
+    *  The structure of requested body should be accurate according to instruction.
+    * Admin JWT token is needed to access this route.
+
+##### Update Plan
+**Overview:** Updates an existing subscription plan.
+**Method:** `PUT`
+**URL:** `http://localhost:5000/api/admin/subscription/plans/{planId}`
+
+**Authentication:** Admin JWT token is required to access this route.
+
+**Request Headers:**
+    - `Content-Type: application/json`
+    - `Authorization: Bearer <admin_jwt_token>`
+
+**Request Body:**
+ ```json
+  {
+ "name": "basic",
+  "displayName": "Basic Plan",
+  "price": {
+    "monthly": {
+        "amount": 29.99,
+        "currency": "USD"
+  },
+    "yearly": {
+       "amount": 299.99,
+        "currency": "USD",
+       "savings": 59.89
+      }
+   },
+    "features": {
+     "socialAccounts": {
+        "total": 5,
+          "perPlatform": {
+               "facebook": 2,
+              "instagram": 2,
+                "twitter": 1
+            }
         },
-            "support": "priority"
-    },
-        "customFeatures": [
-            "White label reports",
-            "Custom URL shortener",
-            "Advanced team permissions"
-        ]
+         "teamMembers": 3,
+       "posting": {
+           "postsPerDay": 10,
+           "bulkScheduling": true,
+            "autoScheduling": false
+         },
+        "analytics": {
+             "reportTypes": [
+              "basic",
+              "advanced"
+             ],
+           "exportFormats": [
+              "pdf",
+           "csv"
+           ],
+            "retentionDays": 30
+       },
+        "support": "email",
+         "additional": {
+            "customBranding": false,
+            "apiAccess": false,
+           "contentCalendar": true,
+        "hashtagManager": true
     }
-     ```
-*   **Response**:
-    *   On Success: 200 (ok)
-     *  A success message along the updated features.
-*   **Notes**:
-    *   Requires admin authentication via JWT.
-   * `planId` should be a valid mongoDB ObjectId.
+ },
+    "recommended": false,
+     "category": "basic"
+ }
 
-##### 9. update standard feature
-*  **Description**: Updates the standard features of a subscription plan
-*  **Method**: `PUT`
- *    **URL**: `http://localhost:3000/api/subscriptions/plan-features/{planId}`
- *    **Headers**:
-        *    `Content-Type: application/json`
-        *    `Authorization: Bearer <admin_jwt_token>`
-*  **Request Body**:
+ ```
 
+**Response:**
+  * Successfull update 200: Returns a success message.
+    ```json
+{
+    "message": "Subscription plan updated successfully.",
+    "status": 200,
+    "data": null
+}
+    ```
+* Error Response 400:  Returns an error if plan id does not exists.
+     ```json
+{
+   "message": "Plan not found.",
+   "status": 400,
+  "data": null
+}
+   ```
+ *  Error Response 500: Return server error while updating a plan.
+    ```json
+{
+"message": "Internal Server Error",
+  "status": 500,
+    "data": null
+}
+    ```
+**Notes:**
+  * The `planId` in the URL should be valid and exists in plan database.
+    * All the fields present in body will be updated including plan id.
+    * Admin JWT token is needed to access this route.
+
+
+##### Update Plan Status
+**Overview:** Updates the status of a subscription plan.
+**Method:** `POST`
+**URL:** `http://localhost:5000/api/subscription/admin/plans/{planId}/status`
+
+**Authentication:** Admin JWT token is required to access this route.
+
+**Request Headers:**
+      - `Content-Type: application/json`
+     - `Authorization: Bearer <admin_jwt_token>`
+
+**Request Body:**
+  ```json
+  {
+    "status": "active"
+  }
+  ```
+
+**Response:**
+   * Successful update 200: Return an success message.
+   ```json
+{
+"message": "Plan status updated successfully.",
+    "status": 200,
+  "data": null
+  }
+   ```
+
+*  Error Response 400: Returns an error if plan id does not exists.
+          ```json
+{
+    "message": "Plan not found.",
+     "status": 400,
+     "data": null
+  }
+  ```
+
+*   Error Response 500: Returns server error while updating a plan status.
+          ```json
+          {
+            "message": "Internal Server Error",
+              "status": 500,
+            "data": null
+          }
+        ```
+**Notes:**
+    *   The `planId` in the URL should be valid.
+    *   Only  plan status  field will be updated.
+    * Admin JWT token is needed to access this route.
+
+##### Delete Plan
+**Overview:** Deletes a subscription plan.
+**Method:** `DELETE`
+
+**URL:** `http://localhost:5000/api/subscription/admin/plans/{planId}`
+**Authentication:** Admin JWT token of the super admin needed to access this route
+
+**Request Headers:**
+ -  `Authorization: Bearer <admin_jwt_token>`
+    -`Content-Type: application/json`
+**Request Body**
+```json
+ {
+    "status": "inactive"
+  }
+```
+**Response:**
+    * Successful plan delete 200:  Returns success message.
         ```json
         {
-                    "features": {
-                        "teamMembers": 15,
-                        "support": "24/7"
-                    }
-        }
+          "message": "Plan deleted successfully.",
+          "status": 200,
+            "data": null
+         }
         ```
-*  **Response**:
-         *    On Success: 200 (ok)
-         *    A success message including updated plan features
-* **Notes**:
-        *   Requires admin authentication via JWT.
-        *  `planId` should be a valid mongoDB ObjectId.
-
-#####  10. GET PLAN BY GATAGOTIES
- *   **Description**: Get plan based upon categories.
-    *  **Method**: `GET`
- *  **URL**: `http://localhost:3000/api/subscriptions/plan-features`
- *    **Headers**:
-        *   `Authorization: Bearer <admin_jwt_token>`
-* **Response**:
-    *    On Success: 200 (ok)
-    *    list of plans
-* **Notes**:
-       *   Requires admin authentication via JWT.
-
-#### User Management
-
-##### 1. Reactivate user
-*   **Description**: Reactivates a user account which is deactivated.
-*   **Method**: `GET`
-*   **URL**: `http://localhost:5000/api/admin/users/{userId}/reactivate`
- *    **Headers**:
-        *   `Authorization: Bearer <admin_jwt_token>`
-*    **Response**:
-        *   On Success: 200 (Ok)
-        *   Success message
-*   **Notes**:
-    *  Requires admin authentication via JWT.
-    *   `userId` should be a valid mongoDB ObjectId.
-
-##### 2. Get List of users
-*   **Description**: Fetches a list of all users.
-*   **Method**: `GET`
-*   **URL**: `http://localhost:5000/api/v1/admin/users`
-    *   **Headers**:
-        *    `Content-Type: application/json`
-        *    `Authorization: Bearer <admin_jwt_token>`
-*   **Response**:
-    * On Success: 200 (Ok)
-     *   A list of user objects
-*   **Notes**:
-     *      Requires admin authentication via JWT.
-
-##### 3. User delete
-*   **Description**:  Deletes a specified user.
-*   **Method**: `DELETE`
-*   **URL**: `http://localhost:5000/api/admin/users/{userId}`
-  *   **Headers**:
-     *   `Authorization: Bearer <admin_jwt_token>`
-*  **Response**:
-    *    On Success: 200 (Ok)
-    *   A message confirming user deletion
-* **Notes**:
-     *    Requires admin authentication via JWT.
-    *   `userId` should be a valid mongoDB ObjectId.
-
-#####  4. Deactivate User
-*   **Description**: Deactivates a user
-*   **Method**: `GET`
-*   **URL**: `http://localhost:5000/api/admin/users/{userId}/deactivate`
-*    **Headers**:
-        *   `Authorization: Bearer <admin_jwt_token>`
-*   **Response**:
-  * On Success 200 (ok)
-        *   A success message
-*   **Notes**:
-    * Requires admin authentication via JWT.
-    *   `userId` should be a valid mongoDB ObjectId.
-
-##### 5. Complete user details by id
-*  **Description**: Fetches details about a specific user by id.
-*   **Method**: `GET`
-*  **URL**:  `http://localhost:5000/api/admin/users/{userId}/details`
-*   **Headers**:
-    *   `Authorization: Bearer <admin_jwt_token>`
-*   **Response**:
-    *    On Success: 200 (Ok)
-    *   User details along with profile and subscription object
-* **Notes**:
-    *   Requires admin authentication via JWT.
-    *   `userId` should be a valid mongoDB ObjectId.
-  
-
-##### 6. Send reset password link
-*   **Description**:  Sends a password reset link to a user email.
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/admin/users/sendPasswordResetLink`
-*    **Headers**:
-        *   `Authorization: Bearer <admin_jwt_token>`
-*   **Request Body**:
-
-    ```json
-    {
-        "email": "xnikunjadu2@gmail.com"
-    }
-    ```
-*  **Response**:
-    *    On Success: 200 (ok).
-     *  A success message
-*  **Notes**:
-       *   Requires admin authentication via JWT.
-
-##### 7. Reset user password
-*  **Description**: Reset user password using JWT token.
- *  **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/admin/users/reset-password`
- *    **Headers**:
-        *   `Authorization: Bearer <admin_jwt_token>`
-*   **Request Body**:
-     ```json
-    {
-        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJpYXQiOjE3MzQ1MDg1ODgsImV4cCI6MTczNDUxMjE4OH0.e17UzfnRrBCAqXkWfP9LWmN3UZyaSFaQtEz7keJDrhY",
-        "newPassword":"123456"
-    }
-    ```
-*    **Response**:
-        * On Success: 200 (ok)
-     *   A success Message
-*   **Notes**:
-         *   Requires admin authentication via JWT.
-
-#### Admin Management
-##### 1. Admin Login
-    *  **Description**: Logs in an admin user with their credentials.
-    *  **Method**: `POST`
-    * **URL**: `http://localhost:5000/api/v1/admin/login`
-*    **Headers**:
-        *   `Content-Type: application/json`
-*   **Request Body**:
-    ```json
-    {
-       "email": "nikunjadu2@gmail.com",
-       "password": "nikunjadu2"
-     }
-    ```
-*  **Response**:
-        * On Success 200 (ok)
-     *    A Valid JWT token along with confirmation message
-*   **Notes**:
-         *   Admin password will be handled on server side.
-
-##### 2. Create admin by superAdmin
-*   **Description**: Creates  new admin user by a super admin account.
-*   **Method**: `POST`
-*   **URL**:  `http://localhost:5000/api/v1/admin/create-admin`
-*    **Headers**:
-         *   `Content-Type: application/json`
-         *  `Authorization: Bearer <super_admin_jwt_token>`
-*   **Request Body**:
-
-    ```json
-    {
-        "email": "newadsmin@example.com",
-        "password": "securePassword123!",
-        "name": "New Admin",
-        "permissions": [
-            "manage_users",
-            "view_user_details",
-            "manage_content"
-        ]
-    }
-    ```
-*   **Response**:
-    *   On Success 201 (Created)
-     *  A  success messages along  created admin details.
-*   **Notes**:
-    * Requires super admin authentication via JWT.
-   
-
-##### 3. Create admin by superAdmin
-*   **Description**: Creates a new admin user (duplicate of above one).
-*   **Method**: `POST`
-*   **URL**: `http://localhost:5000/api/v1/admin/create-admin`
-*   **Headers**:
-    *   `Authorization: Bearer <super_admin_jwt_token>`
-    *   `Content-Type: application/json`
-*   **Request Body**:
-
-    ```json
-    {
-        "email": "newadaasdsdsmsdfdin@examasdple.com",
-        "password": "securePassword123!",
-        "name": "New Admin",
-        "permissions": [
-            "manage_users",
-            "view_user_details",
-            "manage_content"
-        ]
-    }
-    ```
-*   **Response**:
-    *    On Success 201 (Created)
-    *  A success messages.
-*   **Notes**:
-    * Requires super admin authentication via JWT.
-    *   Duplicate of Endpoint 2.
-
-##### 4. Get all admins
-*   **Description**: Retrieve all list of admin users
-*   **Method**: `GET`
-*   **URL**: `http://localhost:5000/api/v1/admin/get-all-admins`
-*    **Headers**:
-        *    `Authorization: Bearer <super_admin_jwt_token>`
-*   **Response**:
-    *    On Success 200 (Ok)
-    *  A list of all admin accounts.
-*   **Notes**:
-    *   Requires super admin authentication via JWT.
-
-##### 5. Delete admins
-*   **Description**: Deletes an admin
-*   **Method**: `DELETE`
-*   **URL**:  `http://localhost:5000/api/v1/admin/delete-admin/{adminId}`
- *    **Headers**:
-         *`Authorization: Bearer <admin_jwt_token>`
-*   **Response**:
-        * On Success: 200
-    *  Confirmation message
-*   **Notes**:
-    * Requires admin authentication via JWT.
-    *   `adminId` should be a valid mongoDB ObjectId.
-
-##### 6. Get admin details
-*  **Description**: Get details of a specific admin user by their ID
-*  **Method**: `GET`
-*  **URL**: `http://localhost:5000/api/v1/admin/get-admin-details/{adminId}`
-*   **Headers**:
-     * `Authorization: Bearer <admin_jwt_token>`
-* **Response**:
-    *  On Success: 200 (Ok)
-     * Specific admin details
-* **Notes**:
-     *   Requires admin authentication via JWT.
-     *`adminId` should be a valid mongoDB ObjectId.
-
-##### 7. Update admin permission
-*   **Description**: Updates the permissions of admin.
-*  **Method**: `GET`
-* **URL**: `http://localhost:5000/api/v1/admin/get-admin-details/{adminId}`
-*   **Headers**:
-      *    `Authorization: Bearer <admin_jwt_token>`
-* **Response**:
-    *   On Success: 200 (ok)
-   *    Update admin permission success message
-* **Notes**:
-    *   Requires admin authentication via JWT.
-     *  `adminId` should be a valid mongoDB ObjectId.
-### User
-#### Subscribe
-
-    ##### 1. Get Current Plan
-*  **Description**: Get a current user subscription's details.
-* **Method**: `GET`
-* **URL**: `http://localhost:5000/api/v1/users/subscription`
-*   **Headers:**
-        * `Authorization: Bearer <user_jwt_token>`
-* **Response**:
-    *    On Success: 200 (Ok)
-    *   Subscription plan object.
-*   **Notes**:
-        *   Requires user authentication via JWT.
-
-##### 2. Cancel sub
-*  **Description**: Cancel a user subscription plan by valid user JWT token.
-  * **Method**: `POST`
- *  **URL**: `http://localhost:5000/api/v1/users/cancel-subscription`
-*   **Headers**:
-        *   `Content-Type: application/json`
-        *    `Authorization: Bearer <user_jwt_token>`
-* **Request Body**:
-
-    ```json
-    {
-      "reason": "my wish why do u wanna know "
-     }
-     ```
-* **Response**:
-    * On Success 200(ok)
-    *   A Confirmation Message
-* **Notes:**
-    *     Requires user authentication via JWT.
-
-##### 3. Subscribe a plan
-*  **Description**:  Subscribes user to a new plan.
- *   **Method**: `POST`
-*  **URL**: `http://localhost:5000/api/v1/users/subscribe`
-*   **Headers**:
-        *    `Content-Type: application/json`
-        *   `Authorization: Bearer <user_jwt_token>`
-*  **Request Body**:
-    ```json
-  {
-        "planId": "6763d06487f004a49970fd5a",
-        "billingCycle": "monthly"
-   }
-  ```
-*   **Response**:
-        * On Success 201 (Created)
-        *   Success Message along with the user subscription details
-*   **Notes**:
-        *    Requires user authentication via JWT.
-
-##### 4. Update Plan
-*   **Description** :   Update a user's subscription plan.
-*   **Method**: `PUT`
- *   **URL**: `http://localhost:5000/api/v1/users/subscription/update`
-*    **Headers**:
-       *   `Authorization: Bearer <user_jwt_token>`
-       * `Content-Type: application/json`
-*   **Request Body**:
-    ```json
-      {
-            "planId": "6763d06487f004a49970fd5a",
-            "billingCycle": "monthly"
-      }
+   * Error Response 400: Returns an error if plan does not exist..
+```json
+{
+   "message": "Plan not found.",
+     "status": 400,
+   "data": null
+}
    ```
-*   **Response**:
-    *   On Success 200(ok)
-   * A success message including update plan details.
-*  **Notes**:
-    *       Requires user authentication via JWT.
+  *  Error Response 500: Returns internal server error occurs while deleting plan.
+        ```json
+        {
+          "message": "Internal Server Error",
+          "status": 500,
+            "data": null
+       }
+       ```
+**Notes:**
+    * The `planId` in the URL should be valid.
+    * Admin JWT token is required for this route.
 
-#### User Operation
+##### Update Both Features
+**Overview:** Updates both standard and custom features for a plan.
+**Method:** `PUT`
+**URL:** `http://localhost:3000/api/subscriptions/plan-features/{planId}`
 
-##### 1. User Details
-*  **Description**: Get detail information about logged in user
- *   **Method**: `GET`
-*  **URL**: `http://localhost:5000/api/users/details`
- * **Headers**:
-      * `Authorization: Bearer <user_jwt_token>`
-* **Response**:
-     *  On Success 200 (ok)
-   *  User's profile details.
-* **Notes**:
-    *  Requires user authentication via JWT.
+**Authentication:** Bearer JWT token of the super admin needed to perform the operation
 
-##### 2. Delete User
-*  **Description**: Initiates a delete process, send verification email to the user.
- * **Method**: `POST`
-* **URL**: `http://localhost:5000/api/v1/users/delete`
-*   **Headers**:
-     *  `Authorization: Bearer <admin_jwt_token>`
-*   **Response**
-   *  On Success: 200 (Ok)
-    * Confirmation message for verification email.
-*   **Notes**:
-   * Requires admin authentication via JWT.
-
-##### 3. Confirm delete user
-*  **Description**: Confirms and completes the  deletion process of user account.
-*  **Method**: `POST`
-* **URL**:  `http://localhost:5000/api/users/confirm-delete`
-* **Headers**:
-      * `Authorization: Bearer <user_jwt_token>`
-* **Request Body**:
-    ```json
-    {
-      "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDAxODRkNGE2NjJiMjVkZTc1MTgiLCJpYXQiOjE3MzQ0MjY2NjUsImV4cCI6MTczNDQzMDI2NX0.sEFZye1spypGkzc6pIIOwh_x7Xg6qMN3Woaw3wqowm0"
-    }
-    ```
-* **Response**:
-        *   On Success: 200
-        *   Confirmation message
+**Request Headers:**
+     - `

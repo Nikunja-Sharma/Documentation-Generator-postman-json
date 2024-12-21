@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"xnikunjadu@gmail.com\",\n    \"password\": \"yourpassword123\",\n    \"name\": \"Test User\"\n  }",
+							"raw": "{\n    \"email\": \"dasdasdasdas\",\n    \"password\": \"yousdasdrpassword123\",\n    \"name\": \"Teasddasdsasasdddaasst Uasser\"\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -48,6 +48,16 @@
 				{
 					"name": "Register child email",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY1NGE3MmQ3ZTBlMTZiM2I1NDk2ZjIiLCJlbWFpbCI6ImRhc2Rhc2Rhc2RhcyIsInVzZXJUeXBlIjoicGFyZW50IiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MzQ2OTE0NDIsImV4cCI6MTczNDc3Nzg0Mn0.mbqtNUup3re3Ebo8FV1JaBFWVgrXfb5KAu1iE3RqYzs",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -56,12 +66,13 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYyYjdiZDQzZTFiNjgzZDZhYTlkMmEiLCJlbWFpbCI6ImNoaWxkQGV4YW1wbGUuY29tIiwidXNlclR5cGUiOiJjaGlsZCIsInBlcm1pc3Npb25zIjpbImNyZWF0ZV9wb3N0cyIsInZpZXdfYW5hbHl0aWNzIl0sInBhcmVudElkIjoiNjc2MTQ0M2VmYmNlZmZhMjgxMGJlNGJlIiwiaWF0IjoxNzM0NTIyODE0LCJleHAiOjE3MzQ2MDkyMTR9.E6aWLfK0ar0MSpAd6vDyhXPF9gYbG9y5UbsApb-JFMM"
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYyYjdiZDQzZTFiNjgzZDZhYTlkMmEiLCJlbWFpbCI6ImNoaWxkQGV4YW1wbGUuY29tIiwidXNlclR5cGUiOiJjaGlsZCIsInBlcm1pc3Npb25zIjpbImNyZWF0ZV9wb3N0cyIsInZpZXdfYW5hbHl0aWNzIl0sInBhcmVudElkIjoiNjc2MTQ0M2VmYmNlZmZhMjgxMGJlNGJlIiwiaWF0IjoxNzM0NTIyODE0LCJleHAiOjE3MzQ2MDkyMTR9.E6aWLfK0ar0MSpAd6vDyhXPF9gYbG9y5UbsApb-JFMM",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"child@example.com\",\n  \"password\": \"childewqepassword123\",\n  \"name\": \"Child User\",\n  \"permissions\": [\"create_posts\", \"view_analytics\"]\n}",
+							"raw": "{\n  \"email\": \"123\",\n  \"password\": \"123\",\n  \"name\": \"Child User\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -69,7 +80,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/users/child-users",
+							"raw": "http://localhost:5000/api/v1/users/child-users",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -77,6 +88,7 @@
 							"port": "5000",
 							"path": [
 								"api",
+								"v1",
 								"users",
 								"child-users"
 							]
@@ -96,7 +108,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"childewqepassword123\"\n}",
+							"raw": "{  \n    \"email\": \"nikunjadu2@gmail.com\",\n    \"password\": \"nikunjadu2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -907,7 +919,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1ODY4OTAsImV4cCI6MTczNDYzMDA5MH0.7UDVNeiSiOiI_s909RiuviVKQ6M0pJGzPNLOBcxYUWs",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2UxMTZjYjk0MDk5NjBhOTZmNWU4IiwiZW1haWwiOiJuaWt1bmphZHUyQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsInBlcm1pc3Npb25zIjpbXSwiaWF0IjoxNzM0NjkyNTc4LCJleHAiOjE3MzQ3MzU3Nzh9.gVkPGreBEfaApAgmbNBvSINXI0wDBcXzcEwZ1CzhsLw",
 											"type": "string"
 										}
 									]
@@ -929,7 +941,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/v1/admin/users",
+									"raw": "http://localhost:5000/api/v1/admin/users?page=1&limit=10&search=&userType=&authSource=&isActive=&sort=createdAt&order=desc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -940,6 +952,40 @@
 										"v1",
 										"admin",
 										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "search",
+											"value": ""
+										},
+										{
+											"key": "userType",
+											"value": ""
+										},
+										{
+											"key": "authSource",
+											"value": ""
+										},
+										{
+											"key": "isActive",
+											"value": ""
+										},
+										{
+											"key": "sort",
+											"value": "createdAt"
+										},
+										{
+											"key": "order",
+											"value": "desc"
+										}
 									]
 								}
 							},
@@ -1042,7 +1088,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDU5NjAsImV4cCI6MTczNDU0OTE2MH0.sIanIim1nre35LOT3O4ubxF2HvKW56u0PsHDvg2Ksxg",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2UxMTZjYjk0MDk5NjBhOTZmNWU4IiwiZW1haWwiOiJuaWt1bmphZHUyQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsInBlcm1pc3Npb25zIjpbXSwiaWF0IjoxNzM0NjkyNTc4LCJleHAiOjE3MzQ3MzU3Nzh9.gVkPGreBEfaApAgmbNBvSINXI0wDBcXzcEwZ1CzhsLw",
 											"type": "string"
 										}
 									]
@@ -1059,7 +1105,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/admin/users/6761443efbceffa2810be4be/details",
+									"raw": "http://localhost:5000/api/v1/admin/users/6761443efbceffa2810be4be/details",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1067,6 +1113,7 @@
 									"port": "5000",
 									"path": [
 										"api",
+										"v1",
 										"admin",
 										"users",
 										"6761443efbceffa2810be4be",
@@ -1084,7 +1131,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDgyOTcsImV4cCI6MTczNDU1MTQ5N30.6Zhupr3u4q_oihSUyVoroAr9hK0y2BLs6FcRwaqsxc4",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2UxMTZjYjk0MDk5NjBhOTZmNWU4IiwiZW1haWwiOiJuaWt1bmphZHUyQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsInBlcm1pc3Npb25zIjpbXSwiaWF0IjoxNzM0NjkyNTc4LCJleHAiOjE3MzQ3MzU3Nzh9.gVkPGreBEfaApAgmbNBvSINXI0wDBcXzcEwZ1CzhsLw",
 											"type": "string"
 										}
 									]
@@ -1093,7 +1140,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\":\"xnikunjadu2@gmail.com\"\r\n}",
+									"raw": "{\r\n    \"email\":\"xnikunja@gmail.com\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1101,7 +1148,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/admin/users/sendPasswordResetLink",
+									"raw": "http://localhost:5000/api/v1/admin/users/sendPasswordResetLink",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1109,6 +1156,7 @@
 									"port": "5000",
 									"path": [
 										"api",
+										"v1",
 										"admin",
 										"users",
 										"sendPasswordResetLink"
@@ -1120,21 +1168,11 @@
 						{
 							"name": "reset user password",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc1ZDVhMzQyMTFmOGIzMGNmYWRmM2I1Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwibWFuYWdlX3N1YnNjcmlwdGlvbnMiLCJtYW5hZ2VfY29udGVudCIsInZpZXdfYW5hbHl0aWNzIiwibWFuYWdlX3NldHRpbmdzIiwibWFuYWdlX2FkbWlucyJdLCJpYXQiOjE3MzQ1MDgyOTcsImV4cCI6MTczNDU1MTQ5N30.6Zhupr3u4q_oihSUyVoroAr9hK0y2BLs6FcRwaqsxc4",
-											"type": "string"
-										}
-									]
-								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJpYXQiOjE3MzQ1MDg1ODgsImV4cCI6MTczNDUxMjE4OH0.e17UzfnRrBCAqXkWfP9LWmN3UZyaSFaQtEz7keJDrhY\",\r\n    \"newPassword\":\"123456\"\r\n}",
+									"raw": "{\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzYxNDQzZWZiY2VmZmEyODEwYmU0YmUiLCJpYXQiOjE3MzQ2OTQ3MDgsImV4cCI6MTczNDY5ODMwOH0.hASa5TUIKaiZvArQYYXIkSXlsI0UjBD5n_AuHfaPJq8\",\r\n    \"newPassword\":\"123456\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1142,7 +1180,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/admin/users/reset-password",
+									"raw": "http://localhost:5000/api/v1/admin/users/reset-password",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1150,6 +1188,7 @@
 									"port": "5000",
 									"path": [
 										"api",
+										"v1",
 										"admin",
 										"users",
 										"reset-password"
@@ -1217,7 +1256,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2IyZjNiOWFhZDk2ZmIyODI4ZDgwIiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MzQ1OTU2NzIsImV4cCI6MTczNDYzODg3Mn0.r4M8XespBG12ylLQoXCaAegRtGh669n-30-b1lDsSVg",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2NTIzZWRjOTc0ZGE5NDI5NTIxYzZjIiwiZW1haWwiOiJ5b3VyLmVtYWlsQGV4YW1wbGUuY29tIiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MzQ2ODk1MjcsImV4cCI6MTczNDczMjcyN30.6JZOaQzDghPGp8Pl79LOejY72ooRUHNd8-Jz1JoO5Ck",
 											"type": "string"
 										}
 									]
@@ -1235,7 +1274,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"newadsmin@example.com\",\n    \"password\": \"securePassword123!\",\n    \"name\": \"New Admin\",\n    \"permissions\": [\n        \"manage_users\",\n        \"view_user_details\",\n        \"manage_content\"\n    ]\n}",
+									"raw": "{\n    \"email\": \"newadsmin@example.com\",\n    \"password\": \"securePassword123!\",\n    \"name\": \"New Admin\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1317,7 +1356,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2IyZjNiOWFhZDk2ZmIyODI4ZDgwIiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MzQ1OTU2NzIsImV4cCI6MTczNDYzODg3Mn0.r4M8XespBG12ylLQoXCaAegRtGh669n-30-b1lDsSVg",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2UxMTZjYjk0MDk5NjBhOTZmNWU4Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MzQ2NzkzNjIsImV4cCI6MTczNDcyMjU2Mn0.ahqNb4VawjbjwOxXeVyeVuv6oTqlDci6I_TGkx65MyY",
 											"type": "string"
 										}
 									]
@@ -1349,7 +1388,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2RiMmU1YWY4OWExODdkZDJlMTlmIiwicm9sZSI6ImFkbWluIiwicGVybWlzc2lvbnMiOlsibWFuYWdlX3VzZXJzIiwidmlld191c2VyX2RldGFpbHMiLCJtYW5hZ2VfY29udGVudCJdLCJpYXQiOjE3MzQ1OTc5NTUsImV4cCI6MTczNDY0MTE1NX0.ys-Iy4389Ki-5TrTuEljoSdleJPjUnKBHHycfNNEong",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2UxMTZjYjk0MDk5NjBhOTZmNWU4Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MzQ2NzkzNjIsImV4cCI6MTczNDcyMjU2Mn0.ahqNb4VawjbjwOxXeVyeVuv6oTqlDci6I_TGkx65MyY",
 											"type": "string"
 										}
 									]
@@ -1435,6 +1474,38 @@
 										"admin",
 										"get-admin-details",
 										"675d5a34211f8b30cfadf3b5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc2M2UxMTZjYjk0MDk5NjBhOTZmNWU4Iiwicm9sZSI6InN1cGVyX2FkbWluIiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MzQ2NzkzNjIsImV4cCI6MTczNDcyMjU2Mn0.ahqNb4VawjbjwOxXeVyeVuv6oTqlDci6I_TGkx65MyY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/api/v1/admin/permissions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"permissions"
 									]
 								}
 							},
